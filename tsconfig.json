@@ -5,6 +5,8 @@
         "noImplicitAny": true,
         "paths": {
             "@/type/*": ["./src/type/*"],
+            "@/route/*": ["./src/route/*"],
+            "@/screen/*": ["./src/screen/*"],
             "@/context/*": ["./src/context/*"],
         }
     }
