@@ -5,6 +5,7 @@
         "noImplicitAny": true,
         "module": "esnext",
         "paths": {
+            "@/api/*": ["./src/api/*"],
             "@/auth/*": ["./src/auth/*"],
             "@/type/*": ["./src/type/*"],
             "@/route/*": ["./src/route/*"],

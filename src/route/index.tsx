@@ -6,8 +6,9 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useAuthContext } from "@/context/hook/use-auth-context";
 import { useThemeContext } from "@/context/hook/use-theme-context";
 // screens
-import Home from "@/screen/home";
 import Login from "@/screen/auth/login";
+// route
+import StoreTab from "@/route/store-tab";
 
 const Stack = createNativeStackNavigator();
 
@@ -24,7 +25,7 @@ const Router = () => {
                 {state.accessToken == null || state.entitlementsToken == null ? (
                     <Stack.Screen name="Login" component={Login} />
                 ) : (
-                    <Stack.Screen name="Home" component={Home} />
+                    <Stack.Screen name="Home" component={StoreTab} />
                 )}
             </Stack.Navigator>
         </NavigationContainer>

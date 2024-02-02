@@ -1,7 +1,7 @@
 import * as React from "react";
 import Svg, { Path, SvgProps } from "react-native-svg";
 
-function SvgEye({ color = "#484C56", width = 24, height = 24 }: SvgProps) {
+const SvgEye = ({ color = "#484C56", width = 24, height = 24 }: SvgProps) => {
     return (
         <Svg
             width={width}
@@ -19,6 +19,6 @@ function SvgEye({ color = "#484C56", width = 24, height = 24 }: SvgProps) {
             />
         </Svg>
     );
-}
+};
 
 export default SvgEye;
