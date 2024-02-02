@@ -10,7 +10,8 @@ import Router from "@/route/index";
 export default function App(): ReactElement | null {
 
     const [fontsLoaded, fontError] = useFonts({
-        Inter: require("./assets/fonts/Inter.ttf")
+        Inter: require("./assets/fonts/Inter.ttf"),
+        DrukWide: require("./assets/fonts/Druk-Wide-Bold.ttf"),
     });
 
     if (!fontsLoaded && !fontError) return null;
