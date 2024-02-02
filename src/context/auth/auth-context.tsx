@@ -12,7 +12,13 @@ export const initialAuthState: IAuthContext = {
     isLoading: false,
     isSignout: false,
     accessToken: null,
-    entitlementsToken: null
+    entitlementsToken: null,
+    // user info
+    balance: {
+        radianitePoint: "0",
+        valorantPoint: "0",
+        kingdomCredit: "0"
+    }
 };
 
 export const AuthContext = createContext<IAuthContext>(initialAuthState);

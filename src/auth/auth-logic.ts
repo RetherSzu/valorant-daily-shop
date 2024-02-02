@@ -87,7 +87,13 @@ const authLogic = {
 
         try {
             const response = await axios.request(options);
-            return response.data;
+            // Get access token in url
+            const tokenMatch = response.data.response.parameters.uri.match(/access_token=([^&]*)/);
+
+            if (tokenMatch) {
+                SecureStore.setItem("access_token", tokenMatch[1]);
+                return tokenMatch[1];
+            }
         } catch (error) {
             console.log(error);
         }

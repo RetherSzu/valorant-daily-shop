@@ -30,7 +30,11 @@ const valorantProvider = {
         }
     },
 
-    getUserWallet: async () => {
+    getUserBalance: async (): Promise<{
+        radianitePoint: string,
+        valorantPoint: string,
+        kingdomCredit: string,
+    }> => {
         const [accessToken, entitlementsToken, sub] = await Promise.all([
             SecureStore.getItemAsync("access_token"),
             SecureStore.getItemAsync("entitlements_token"),
@@ -46,8 +50,19 @@ const valorantProvider = {
             }
         };
 
-        const response =  await requestWithHeaders(options);
-        console.log(JSON.stringify(response.data, null, 4));
+        const response = await requestWithHeaders(options);
+
+        const balance = {
+            radianitePoint: response.data?.Balances["e59aa87c-4cbf-517a-5983-6e81511be9b7"].toString(),
+            valorantPoint: response.data?.Balances["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"].toString(),
+            kingdomCredit: response.data?.Balances["85ca954a-41f2-ce94-9b45-8ca3dd39a00d"].toString()
+        };
+
+        await SecureStore.setItemAsync("radianite_point", balance.radianitePoint);
+        await SecureStore.setItemAsync("valorant_point", balance.valorantPoint);
+        await SecureStore.setItemAsync("kingdom_credit", balance.kingdomCredit);
+
+        return balance;
     }
 };
 

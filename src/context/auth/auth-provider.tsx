@@ -1,5 +1,7 @@
 import * as SecureStore from "expo-secure-store";
 import { ReactNode, useCallback, useEffect, useMemo, useReducer } from "react";
+// api
+import valorantProvider from "@/api/valorant-provider";
 // auth
 import authLogic from "@/auth/auth-logic";
 // type
@@ -17,8 +19,7 @@ const reducer = (state: IAuthContext, action: IAuthAction<EAuthContextType>) => 
 
             return {
                 ...state,
-                accessToken: ac.payload.accessToken,
-                entitlementsToken: ac.payload.entitlementsToken
+                ...ac.payload
             };
         case EAuthContextType.SET_TOKEN:
             ac = action as IAuthAction<EAuthContextType.SET_TOKEN>;
@@ -33,6 +34,13 @@ const reducer = (state: IAuthContext, action: IAuthAction<EAuthContextType>) => 
                 ...state,
                 accessToken: null,
                 entitlementsToken: null
+            };
+        case EAuthContextType.SET_BALANCE:
+            ac = action as IAuthAction<EAuthContextType.SET_BALANCE>;
+
+            return {
+                ...state,
+                balance: ac.payload
             };
         default:
             return state;
@@ -49,15 +57,30 @@ export function AuthProvider({ children }: Props) {
     const [state, dispatch] = useReducer(reducer, initialAuthState);
 
     const initialize = useCallback(async () => {
-        const accessToken = await SecureStore.getItemAsync("access_token");
-        const entitlementsToken = await SecureStore.getItemAsync("entitlements_token");
+
+        const [accessToken,
+            entitlementsToken,
+            radianitePoint,
+            valorantPoint,
+            kingdomCredit
+        ] = await Promise.all([
+            SecureStore.getItemAsync("access_token"),
+            SecureStore.getItemAsync("entitlements_token"),
+            SecureStore.getItemAsync("radianite_point"),
+            SecureStore.getItemAsync("valorant_point"),
+            SecureStore.getItemAsync("kingdom_credit")
+        ]);
+
 
         if (accessToken && entitlementsToken) {
             dispatch({
                 type: EAuthContextType.INITIAL,
                 payload: {
                     accessToken,
-                    entitlementsToken
+                    entitlementsToken,
+                    radianitePoint,
+                    valorantPoint,
+                    kingdomCredit
                 }
             });
         }
@@ -71,12 +94,11 @@ export function AuthProvider({ children }: Props) {
         if (cookies["ssid"] != "") {
             await authLogic.cookieReauth();
         } else {
-            const token = await authLogic.getToken(username, password);
-
-            if (!token) return;
+            await authLogic.getToken(username, password);
         }
 
         await authLogic.getEntitlement();
+
 
         const accessToken = SecureStore.getItem("access_token");
         const entitlementsToken = SecureStore.getItem("entitlements_token");
@@ -88,6 +110,15 @@ export function AuthProvider({ children }: Props) {
                 entitlementsToken
             }
         });
+        console.log("login success", accessToken, entitlementsToken);
+
+        await valorantProvider.getUserInfo();
+
+        const balance = await valorantProvider.getUserBalance();
+
+        console.log(balance);
+
+        dispatch({ type: EAuthContextType.SET_BALANCE, payload: balance });
 
         return Promise.resolve();
     };
@@ -114,6 +145,8 @@ export function AuthProvider({ children }: Props) {
             isSignout: state.isSignout,
             accessToken: state.accessToken,
             entitlementsToken: state.entitlementsToken,
+            // user info
+            balance: state.balance,
             //
             login,
             logout
