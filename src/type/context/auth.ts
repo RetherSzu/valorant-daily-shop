@@ -1,28 +1,30 @@
 export type IAuthContext = {
     // fn
     login: (username: string, password: string) => Promise<void>;
+    logout: () => void;
     // state
     isLoading: boolean;
     isSignout: boolean;
     accessToken: string | null;
-    entitlementToken: string | null;
+    entitlementsToken: string | null;
 }
 
 export enum EAuthContextType {
     INITIAL = "INITIAL",
-    LOGIN = "LOGIN",
-    LOGOUT = "LOGOUT",
+    SET_TOKEN = "SET_TOKEN",
+    LOGOUT = "LOGOUT"
 }
 
 export type IPayloadAuth = {
     [EAuthContextType.INITIAL]: {
-        user: any;
+        accessToken: string | null;
+        entitlementsToken: string | null;
     };
-    [EAuthContextType.LOGIN]: {
-        accessToken: string;
-        entitlementToken: string;
+    [EAuthContextType.SET_TOKEN]: {
+        accessToken: string | null;
+        entitlementsToken: string | null;
     };
-    [EAuthContextType.LOGOUT]: undefined;
+    [EAuthContextType.LOGOUT]: {};
 };
 
 export type IAuthAction<T extends EAuthContextType> = {

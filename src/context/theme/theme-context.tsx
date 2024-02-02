@@ -7,11 +7,11 @@ import { IThemeContext } from "@/type/context/theme";
 export const initialThemeState: IThemeContext = {
     dark: true,
     colors: {
-        primary: "rgb(255, 45, 85)",
+        primary: "#FF4656",
         background: "#1B1D21",
         card: "rgb(255, 255, 255)",
         text: "#FFFFFF",
-        border: "rgb(199, 199, 204)",
+        border: "#222429",
         notification: "rgb(255, 69, 58)"
     }
 };

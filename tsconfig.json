@@ -3,11 +3,14 @@
     "compilerOptions": {
         "strict": true,
         "noImplicitAny": true,
+        "module": "esnext",
         "paths": {
+            "@/auth/*": ["./src/auth/*"],
             "@/type/*": ["./src/type/*"],
             "@/route/*": ["./src/route/*"],
             "@/screen/*": ["./src/screen/*"],
             "@/context/*": ["./src/context/*"],
+            "@/component/*": ["./src/component/*"],
         }
     }
 }

@@ -1,15 +1,15 @@
 {
     "expo": {
-        "name": "valorant-dayli-shop",
-        "slug": "valorant-dayli-shop",
+        "name": "valorant-daily-shop",
+        "slug": "valorant-daily-shop",
         "version": "1.0.0",
         "orientation": "portrait",
         "icon": "./assets/icon.png",
-        "userInterfaceStyle": "light",
+        "userInterfaceStyle": "dark",
         "splash": {
             "image": "./assets/splash.png",
             "resizeMode": "contain",
-            "backgroundColor": "#ffffff"
+            "backgroundColor": "#1B1D21"
         },
         "assetBundlePatterns": [
             "**/*"
@@ -25,6 +25,14 @@
         },
         "web": {
             "favicon": "./assets/favicon.png"
-        }
+        },
+        "androidStatusBar": {
+            "barStyle": "light-content",
+            "backgroundColor": "#1B1D21"
+        },
+        "plugins": [
+            "expo-font",
+            "expo-secure-store"
+        ]
     }
 }
