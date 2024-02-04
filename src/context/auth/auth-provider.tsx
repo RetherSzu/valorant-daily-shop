@@ -42,6 +42,24 @@ const reducer = (state: IAuthContext, action: IAuthAction<EAuthContextType>) => 
                 ...state,
                 balance: ac.payload
             };
+        case EAuthContextType.SET_SHOP:
+            ac = action as IAuthAction<EAuthContextType.SET_SHOP>;
+
+            return {
+                ...state,
+                shop: ac.payload
+            };
+        case EAuthContextType.DECREMENT_TIMER:
+            return {
+                ...state,
+                shop: {
+                    ...state.shop,
+                    offers: {
+                        ...state.shop.offers,
+                        SingleItemOffersRemainingDurationInSeconds: state.shop.offers.SingleItemOffersRemainingDurationInSeconds - 1,
+                    },
+                },
+            };
         default:
             return state;
     }
@@ -58,7 +76,8 @@ export function AuthProvider({ children }: Props) {
 
     const initialize = useCallback(async () => {
 
-        const [accessToken,
+        const [
+            accessToken,
             entitlementsToken,
             radianitePoint,
             valorantPoint,
@@ -71,20 +90,24 @@ export function AuthProvider({ children }: Props) {
             SecureStore.getItemAsync("kingdom_credit")
         ]);
 
-
         if (accessToken && entitlementsToken) {
+
+            const shop = await valorantProvider.getFrontShop();
+
             dispatch({
                 type: EAuthContextType.INITIAL,
                 payload: {
                     accessToken,
                     entitlementsToken,
-                    radianitePoint,
-                    valorantPoint,
-                    kingdomCredit
+                    balance: {
+                        radianitePoint,
+                        valorantPoint,
+                        kingdomCredit
+                    },
+                    shop
                 }
             });
         }
-
     }, []);
 
     const login = async (username: string, password: string) => {
@@ -99,7 +122,6 @@ export function AuthProvider({ children }: Props) {
 
         await authLogic.getEntitlement();
 
-
         const accessToken = SecureStore.getItem("access_token");
         const entitlementsToken = SecureStore.getItem("entitlements_token");
 
@@ -110,15 +132,18 @@ export function AuthProvider({ children }: Props) {
                 entitlementsToken
             }
         });
-        console.log("login success", accessToken, entitlementsToken);
 
         await valorantProvider.getUserInfo();
 
         const balance = await valorantProvider.getUserBalance();
 
-        console.log(balance);
-
         dispatch({ type: EAuthContextType.SET_BALANCE, payload: balance });
+
+        const shop = await valorantProvider.getFrontShop();
+
+        if (!shop) return;
+
+        dispatch({ type: EAuthContextType.SET_SHOP, payload: shop });
 
         return Promise.resolve();
     };
@@ -139,6 +164,14 @@ export function AuthProvider({ children }: Props) {
         (async () => initialize())();
     }, []);
 
+    useEffect(() => {
+        const timer = setInterval(() => {
+            dispatch({ type: EAuthContextType.DECREMENT_TIMER, payload: {} });
+        }, 1000);
+
+        return () => clearInterval(timer); // cleanup on component unmount
+    }, [dispatch]);
+
     const memoizedValue = useMemo(
         () => ({
             isLoading: state.isLoading,
@@ -147,6 +180,8 @@ export function AuthProvider({ children }: Props) {
             entitlementsToken: state.entitlementsToken,
             // user info
             balance: state.balance,
+            // shop
+            shop: state.shop,
             //
             login,
             logout

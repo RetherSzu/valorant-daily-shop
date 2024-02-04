@@ -1,5 +1,7 @@
 import * as SecureStore from "expo-secure-store";
-import axios, { AxiosRequestConfig } from "axios";
+import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
+// type
+import { StorefrontResponse } from "@/type/api/shop";
 
 // ----------------------------------------------------------------------
 
@@ -63,6 +65,69 @@ const valorantProvider = {
         await SecureStore.setItemAsync("kingdom_credit", balance.kingdomCredit);
 
         return balance;
+    },
+
+    getFrontShop: async () => {
+        const [accessToken, entitlementsToken, sub] = await Promise.all([
+            SecureStore.getItemAsync("access_token"),
+            SecureStore.getItemAsync("entitlements_token"),
+            SecureStore.getItemAsync("sub")
+        ]);
+
+        const options = {
+            method: "GET",
+            url: `https://pd.eu.a.pvp.net/store/v2/storefront/${sub}`,
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+                "X-Riot-Entitlements-JWT": ` ${entitlementsToken}`
+            }
+        };
+
+        try {
+            const response: AxiosResponse<StorefrontResponse> = await axios.request(options);
+
+            if (response.data.SkinsPanelLayout.SingleItemStoreOffers) {
+                return { bundles: response.data.FeaturedBundle.Bundles, offers: response.data.SkinsPanelLayout };
+            }
+        } catch (error) {
+            console.error("Error in getFrontShop:", error);
+            throw error;
+        }
+    },
+
+    getWeaponLevelById: async (id: string) => {
+        const options = {
+            method: "GET",
+            url: "https://valorant-api.com/v1/weapons/skins"
+        };
+
+        try {
+            const response = await axios.request(options);
+            for (let i = 0; i < response.data.data.length; i++) {
+                for (let x = 0; x < response.data.data[i].levels.length; x++) {
+                    if (response.data.data[i].levels[x].uuid === id) {
+                        return response.data.data[i];
+                    }
+                }
+            }
+            return false;
+        } catch (error) {
+            console.error(error);
+        }
+    },
+
+    getThemeById: async (id: string) => {
+        const options = {
+            method: "GET",
+            url: `https://valorant-api.com/v1/themes/${id}`
+        };
+
+        try {
+            const response = await axios.request(options);
+            return response.data.data;
+        } catch (error) {
+            console.error(error);
+        }
     }
 };
 

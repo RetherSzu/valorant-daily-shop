@@ -18,6 +18,15 @@ export const initialAuthState: IAuthContext = {
         radianitePoint: "0",
         valorantPoint: "0",
         kingdomCredit: "0"
+    },
+    // shop
+    shop: {
+        offers: {
+            SingleItemOffers: [],
+            SingleItemStoreOffers: [],
+            SingleItemOffersRemainingDurationInSeconds: 0
+        },
+        bundles: ""
     }
 };
 
