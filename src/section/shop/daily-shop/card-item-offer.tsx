@@ -43,7 +43,7 @@ const CardItemOffer = ({ item }: Props): ReactElement => {
             try {
                 const response = await valorantProvider.getWeaponLevelById(item.Rewards[0].ItemID);
                 const themeResponse = await valorantProvider.getThemeById(response.themeUuid);
-                console.log(JSON.stringify(themeResponse, null, 4));
+
                 if (!response) return;
 
                 setSkinData(response);
@@ -62,9 +62,9 @@ const CardItemOffer = ({ item }: Props): ReactElement => {
     return (
         <View className="flex-1 bg-[#222429] rounded-3xl p-4">
             <Text variant="titleMedium" style={{ color: colors.text }}>{skinData.displayName}</Text>
-            <Text variant="labelLarge" style={{ color: colors.text, opacity: .5 }}>{themeData.displayName}</Text>
-            <Image source={{ uri: skinData.displayIcon }} className="flex-1 rotate-45 scale-125" resizeMode="center" />
-            <View className="flex-row gap-4 items-center">
+            <Text variant="labelLarge" style={{ color: colors.text, opacity: .5 }} className="pb-4">{themeData.displayName}</Text>
+            <Image source={{ uri: skinData.displayIcon }} className="flex-1 rotate-45 scale-110" resizeMode="center" />
+            <View className="flex-row gap-4 items-center pt-4">
                 <Image
                     source={require("../../../../assets/valorant-point.png")}
                     resizeMode="contain"
