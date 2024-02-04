@@ -27,7 +27,6 @@ const Store = () => {
                 paddingLeft: 8
             },
             tabBarLabelStyle: {
-                fontFamily: "DinExtraBold",
                 fontSize: 16,
                 letterSpacing: .5,
                 lineHeight: 24,
