@@ -27,6 +27,14 @@ const Header = (): ReactElement => {
                     style={{ width: 24, height: 24 }}
                 />
             </View>
+            <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", gap: 8 }}>
+                <Typography variant="body2">{balance.kingdomCredit}</Typography>
+                <Image
+                    source={require("../../../assets/kingdom-credit.png")}
+                    resizeMode="contain"
+                    style={{ width: 24, height: 24 }}
+                />
+            </View>
         </View>
     );
 };
