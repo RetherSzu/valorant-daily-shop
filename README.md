@@ -11,7 +11,7 @@ ensuring players never miss out on exclusive deals.
 
 ## Features
 
-- [ ] **Daily Shop Updates**: Get the latest info on items available in the Valorant daily shop.
+- [x] **Daily Shop Updates**: Get the latest info on items available in the Valorant daily shop.
 - [ ] **Bundles Preview**: Preview upcoming and current bundles to plan your purchases.
 - [ ] **Night Market Access**: Explore night market deals and discounts anytime, anywhere.
 
