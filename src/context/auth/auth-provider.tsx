@@ -56,9 +56,9 @@ const reducer = (state: IAuthContext, action: IAuthAction<EAuthContextType>) => 
                     ...state.shop,
                     offers: {
                         ...state.shop.offers,
-                        SingleItemOffersRemainingDurationInSeconds: state.shop.offers.SingleItemOffersRemainingDurationInSeconds - 1,
-                    },
-                },
+                        SingleItemOffersRemainingDurationInSeconds: state.shop.offers.SingleItemOffersRemainingDurationInSeconds - 1
+                    }
+                }
             };
         default:
             return state;
@@ -90,7 +90,8 @@ export function AuthProvider({ children }: Props) {
             SecureStore.getItemAsync("kingdom_credit")
         ]);
 
-        if (accessToken && entitlementsToken) {
+        try {
+            if (!accessToken && !entitlementsToken) return;
 
             const shop = await valorantProvider.getFrontShop();
 
@@ -107,6 +108,16 @@ export function AuthProvider({ children }: Props) {
                     shop
                 }
             });
+
+        } catch (error) {
+            const username = await SecureStore.getItemAsync("username");
+            const password = await SecureStore.getItemAsync("password");
+
+            if (username && password) {
+                await login(username, password);
+            }
+
+            console.error(error);
         }
     }, []);
 
