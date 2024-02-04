@@ -21,7 +21,7 @@ const DayliShop = () => {
     }
 
     return (
-        <View className="flex flex-1 pt-4" style={{ backgroundColor: "#1B1D21", gap: 16 }}>
+        <View className="flex flex-1 pt-4" style={{ backgroundColor: "#1B1D21", gap: 8 }}>
             <View className="flex flex-row items-center justify-between">
                 <Text variant="titleLarge" style={{ color: colors.text }}>NEXT OFFER:</Text>
                 <Text

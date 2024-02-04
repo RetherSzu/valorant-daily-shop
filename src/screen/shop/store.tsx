@@ -48,7 +48,7 @@ const Store = () => {
     };
 
     return (
-        <View className="flex-1" style={{gap: 16, marginHorizontal: 16}}>
+        <View className="flex-1" style={{ gap: 8, marginHorizontal: 16 }}>
             <Text variant="displaySmall" style={{ color: colors.text, fontFamily: "DrukWide" }}>STORE</Text>
             <Tab.Navigator {...tabNavigatorOptions}>
                 <Tab.Screen name="Offers" component={DayliShop} />
