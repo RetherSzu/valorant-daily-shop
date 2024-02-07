@@ -3,6 +3,10 @@
 > [!WARNING]
 > This project is currently under development and is not yet ready for public use.
 
+> [!WARNING]
+> Valorant daily shop was created under Riot Game's ["Legal Jibber Jabber"](https://www.riotgames.com/en/legal) policy using assets owned by Riot Games. Riot
+> Games does not endorse or sponsor this project.
+
 ## Description
 
 This application allows Valorant players to check the daily shop, bundles, and night market items directly through their
