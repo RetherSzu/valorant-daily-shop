@@ -61,7 +61,7 @@ const authLogic = {
         return cookies;
     },
 
-    getToken: async (username: string, password: string): Promise<string | undefined> => {
+    getToken: async (username: string, password: string): Promise<boolean> => {
         console.log("getToken");
         const [tdid, asid, clid] = await Promise.all([
             SecureStore.getItemAsync("tdid"),
@@ -74,29 +74,35 @@ const authLogic = {
             url: "https://auth.riotgames.com/api/v1/authorization",
             headers: {
                 cookie: `${tdid};${asid};${clid}`,
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
             },
             data: {
                 type: "auth",
                 username: username,
                 password: password,
-                remember: true,
+                remember: false,
                 language: "en_US"
             }
         };
 
         try {
             const response = await axios.request(options);
+
+            if (response.data.type === "multifactor") {
+                console.log("Multifactor authentication required");
+                return true;
+            }
+
             // Get access token in url
             const tokenMatch = response.data.response.parameters.uri.match(/access_token=([^&]*)/);
 
             if (tokenMatch) {
                 SecureStore.setItem("access_token", tokenMatch[1]);
-                return tokenMatch[1];
             }
         } catch (error) {
             console.log(error);
         }
+        return false;
     },
 
     cookieReauth: async (): Promise<undefined> => {
@@ -162,6 +168,43 @@ const authLogic = {
         } catch (error) {
             console.log(error);
         }
+    },
+
+    async multifactor(code: string): Promise<boolean> {
+
+        const [tdid, asid, clid] = await Promise.all([
+            SecureStore.getItemAsync("tdid"),
+            SecureStore.getItemAsync("asid"),
+            SecureStore.getItemAsync("clid")
+        ]);
+
+        const options = {
+            url: "https://auth.riotgames.com/api/v1/authorization",
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json; charset=utf-8",
+                cookie: `${tdid};${asid};${clid}`
+            },
+            data: {
+                type: "multifactor",
+                code: code,
+                rememberDevice: true
+            }
+        };
+
+        try {
+            const response = await axios.request(options);
+            const responseURL = response.data.response.parameters.uri;
+            const tokenMatch = responseURL.match(/access_token=([^&]*)/);
+
+            if (tokenMatch) {
+                await SecureStore.setItemAsync("access_token", tokenMatch[1]);
+                return true;
+            }
+        } catch (error) {
+            console.error(error);
+        }
+        return false;
     }
 };
 

@@ -6,6 +6,7 @@
         "module": "esnext",
         "paths": {
             "@/api/*": ["./src/api/*"],
+            "@/assets/*": ["./assets/*"],
             "@/auth/*": ["./src/auth/*"],
             "@/type/*": ["./src/type/*"],
             "@/util/*": ["./src/util/*"],

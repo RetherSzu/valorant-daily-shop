@@ -8,6 +8,7 @@ import authLogic from "@/auth/auth-logic";
 import { EAuthContextType, IAuthAction, IAuthContext } from "@/type/context/auth";
 //
 import { AuthContext, initialAuthState } from "./auth-context";
+import { useNavigation } from "@react-navigation/native";
 
 const reducer = (state: IAuthContext, action: IAuthAction<EAuthContextType>) => {
 
@@ -74,6 +75,8 @@ type Props = {
 export function AuthProvider({ children }: Props) {
     const [state, dispatch] = useReducer(reducer, initialAuthState);
 
+    const navigation = useNavigation();
+
     const initialize = useCallback(async () => {
 
         const [
@@ -128,7 +131,12 @@ export function AuthProvider({ children }: Props) {
         if (cookies["ssid"] != "") {
             await authLogic.cookieReauth();
         } else {
-            await authLogic.getToken(username, password);
+            const multifactor = await authLogic.getToken(username, password);
+
+            if (multifactor) {
+                navigation.navigate("Multifactor");
+                return;
+            }
         }
 
         await authLogic.getEntitlement();
