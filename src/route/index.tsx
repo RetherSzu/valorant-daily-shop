@@ -6,7 +6,7 @@ import { useAuthContext } from "@/context/hook/use-auth-context";
 import { useThemeContext } from "@/context/hook/use-theme-context";
 // screens
 import Login from "@/screen/auth/login";
-import Multifactor from "@/screen/auth/multifactor";
+import UnsupportedMultifactor from "@/screen/auth/unsupported-multifactor";
 // route
 import StoreTab from "@/route/store-tab";
 
@@ -25,15 +25,14 @@ const Router = () => {
                 {state.accessToken == null || state.entitlementsToken == null ? (
                     <>
                         <Stack.Screen name="Login" component={Login} />
-                        <Stack.Screen name="Multifactor" component={Multifactor} />
+                        <Stack.Screen name="Multifactor" component={UnsupportedMultifactor} />
                     </>
                 ) : (
                     <Stack.Screen name="Home" component={StoreTab} />
                 )}
             </Stack.Navigator>
         </>
-    )
-        ;
+    );
 };
 
 export default Router;

@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import authLogic from "@/auth/auth-logic";
 // component
 import NumericKeyboard from "@/component/input/numeric-keyboard";
+// context
 import { useThemeContext } from "@/context/hook/use-theme-context";
 
 const INPUT_COUNT = 6;
