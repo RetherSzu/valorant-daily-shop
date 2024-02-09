@@ -168,6 +168,9 @@ export function AuthProvider({ children }: Props) {
     };
 
     const logout = async () => {
+        await SecureStore.deleteItemAsync("username");
+        await SecureStore.deleteItemAsync("password");
+        await SecureStore.deleteItemAsync("stay_sign_in");
         await SecureStore.deleteItemAsync("access_token");
         await SecureStore.deleteItemAsync("entitlements_token");
         await SecureStore.deleteItemAsync("sub");

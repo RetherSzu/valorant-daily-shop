@@ -22,7 +22,7 @@ const Login = (): ReactElement => {
 
     const [password, setPassword] = useState("");
 
-    const [staySignIn, setStaySignIn] = useState(SecureStore.getItem("staySignIn") ?? false);
+    const [staySignIn, setStaySignIn] = useState(SecureStore.getItem("stay_sign_in") ?? false);
 
     const [show, setShow] = useState(true);
 
@@ -33,14 +33,14 @@ const Login = (): ReactElement => {
         setLoading(true);
 
         if (staySignIn) {
-            await SecureStore.setItemAsync("staySignIn", String(staySignIn));
+            await SecureStore.setItemAsync("stay_sign_in", String(staySignIn));
             await SecureStore.setItemAsync("username", username);
             await SecureStore.setItemAsync("password", password);
         }
 
         // Ensure that the username and password was deleted
         if (!staySignIn) {
-            await SecureStore.deleteItemAsync("staySignIn");
+            await SecureStore.deleteItemAsync("stay_sign_in");
             await SecureStore.deleteItemAsync("username");
             await SecureStore.deleteItemAsync("password");
         }
@@ -54,11 +54,12 @@ const Login = (): ReactElement => {
         const getStoredCredentials = async () => {
             const storedUsername = await SecureStore.getItemAsync("username");
             const storedPassword = await SecureStore.getItemAsync("password");
+            const storedStaySignIn = await SecureStore.getItemAsync("stay_sign_in");
 
             if (storedUsername) setUsername(storedUsername);
             if (storedPassword) setPassword(storedPassword);
 
-            await handleLogin();
+            if (storedStaySignIn) await handleLogin();
         };
         (async () => getStoredCredentials())();
     }, []);
