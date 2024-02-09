@@ -19,7 +19,7 @@ const StoreStackScreen = (): ReactElement => {
                 backgroundColor: "#1B1D21"
             },
             title: "",
-            "headerRight": () => <Header />
+            "header": () => <Header />
         }}>
             <StoreStack.Screen name="StoreStack" component={Store} />
         </StoreStack.Navigator>
