@@ -1,7 +1,7 @@
-import { useState } from "react";
 import { View } from "react-native";
 import { Checkbox } from "react-native-paper";
 import * as SecureStore from "expo-secure-store";
+import { ReactElement, useEffect, useState } from "react";
 // component
 import Button from "@/component/button/button";
 import SvgAvatar from "@/component/icon/avatar";
@@ -12,7 +12,7 @@ import EyePasswordButton from "@/component/button/eye-password-button";
 import { useAuthContext } from "@/context/hook/use-auth-context";
 import { useThemeContext } from "@/context/hook/use-theme-context";
 
-const Login = () => {
+const Login = (): ReactElement => {
 
     const { colors } = useThemeContext();
 
@@ -22,7 +22,7 @@ const Login = () => {
 
     const [password, setPassword] = useState("");
 
-    const [staySignIn, setStaySignIn] = useState(false);
+    const [staySignIn, setStaySignIn] = useState(SecureStore.getItem("staySignIn") ?? false);
 
     const [show, setShow] = useState(true);
 
@@ -33,12 +33,14 @@ const Login = () => {
         setLoading(true);
 
         if (staySignIn) {
+            await SecureStore.setItemAsync("staySignIn", String(staySignIn));
             await SecureStore.setItemAsync("username", username);
             await SecureStore.setItemAsync("password", password);
         }
 
         // Ensure that the username and password was deleted
         if (!staySignIn) {
+            await SecureStore.deleteItemAsync("staySignIn");
             await SecureStore.deleteItemAsync("username");
             await SecureStore.deleteItemAsync("password");
         }
@@ -47,6 +49,19 @@ const Login = () => {
 
         setLoading(false);
     };
+
+    useEffect(() => {
+        const getStoredCredentials = async () => {
+            const storedUsername = await SecureStore.getItemAsync("username");
+            const storedPassword = await SecureStore.getItemAsync("password");
+
+            if (storedUsername) setUsername(storedUsername);
+            if (storedPassword) setPassword(storedPassword);
+
+            await handleLogin();
+        };
+        (async () => getStoredCredentials())();
+    }, []);
 
     return (
         <View className="flex-1 justify-center p-4 gap-4" style={{ backgroundColor: colors.background }}>
