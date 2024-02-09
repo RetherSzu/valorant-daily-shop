@@ -17,17 +17,14 @@ const DayliShop = () => {
     const { shop: { offers } } = useAuthContext();
 
     if (offers.SingleItemOffers.length === 0) {
-        return <Loading/>;
+        return <Loading />;
     }
 
     return (
         <View className="flex flex-1 pt-4" style={{ backgroundColor: "#1B1D21", gap: 8 }}>
             <View className="flex flex-row items-center justify-between">
-                <Text variant="titleLarge" style={{ color: colors.text }}>NEXT OFFER:</Text>
-                <Text
-                    variant="titleLarge"
-                    style={{ color: "#E5E1B2" }}
-                >
+                <Text variant="titleMedium" style={{ color: colors.text }}>NEXT OFFER:</Text>
+                <Text variant="titleMedium" style={{ color: "#E5E1B2" }}>
                     {secToTime(offers.SingleItemOffersRemainingDurationInSeconds)}
                 </Text>
             </View>
