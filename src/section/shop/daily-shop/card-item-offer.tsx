@@ -11,6 +11,8 @@ import { useThemeContext } from "@/context/hook/use-theme-context";
 import { ItemStoreOffer } from "@/type/api/shop";
 import { WeaponSkin } from "@/type/api/shop/weapon-skin";
 import { WeaponTheme } from "@/type/api/shop/weapon-theme";
+// util
+import { getContentTierIcon } from "@/util/content-tier-icon";
 
 type Props = {
     item: ItemStoreOffer;
@@ -60,11 +62,37 @@ const CardItemOffer = ({ item }: Props): ReactElement => {
     }
 
     return (
-        <View className="flex-1 bg-[#222429] rounded-3xl p-4">
-            <Text variant="titleMedium" style={{ color: colors.text }}>{skinData.displayName}</Text>
-            <Text variant="labelLarge" style={{ color: colors.text, opacity: .5 }} className="pb-4">{themeData.displayName}</Text>
-            <Image source={{ uri: skinData.displayIcon }} className="flex-1 rotate-45 scale-110" resizeMode="center" />
-            <View className="flex-row gap-4 items-center pt-4">
+        <View
+            className="flex-1 bg-[#222429] p-2"
+            style={{ position: "relative", overflow: "hidden", borderRadius: 16 }}
+        >
+            <Image
+                source={getContentTierIcon(skinData.contentTierUuid)}
+                blurRadius={2}
+                style={{
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    opacity: .1
+                }}
+            />
+            <Text variant="titleLarge" style={{ color: colors.text, fontWeight: "bold" }} numberOfLines={1}>
+                {skinData.displayName.replace(themeData.displayName, "").replace(/\s/g, "")}
+            </Text>
+            <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
+                <Image source={{ uri: themeData.displayIcon }} style={{ width: 24, height: 24 }} />
+                <Text variant="labelLarge" style={{ flex: 1, color: colors.text, opacity: .5 }} numberOfLines={1}>
+                    {themeData.displayName}
+                </Text>
+            </View>
+            <Image
+                source={{ uri: skinData.displayIcon ?? skinData.chromas[0].displayIcon }}
+                style={{ flex: 1, transform: [{ rotate: "22.5deg" }, { scale: 1.25 }] }}
+                resizeMode="center"
+            />
+            <View className="flex-row gap-2 items-center pt-4">
                 <Image
                     source={require("../../../../assets/valorant-point.png")}
                     resizeMode="contain"
