@@ -89,7 +89,7 @@ const CardItemOffer = ({ item }: Props): ReactElement => {
             </View>
             <Image
                 source={{ uri: skinData.displayIcon ?? skinData.chromas[0].displayIcon }}
-                style={{ flex: 1, transform: [{ rotate: "22.5deg" }, { scale: 1.25 }] }}
+                style={{ flex: 1, transform: [{ rotate: "22.5deg" }, { scale: 1 }] }}
                 resizeMode="center"
             />
             <View className="flex-row gap-2 items-center pt-4">
