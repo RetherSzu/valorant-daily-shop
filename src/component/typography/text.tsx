@@ -1,17 +1,16 @@
+import { ReactElement } from "react";
+import { StyleProp, TextStyle } from "react-native";
 import { Text as TextPaper, TextProps } from "react-native-paper";
 // context
 import { useThemeContext } from "@/context/hook/use-theme-context";
 
-const Text = ({ children, style, ...props }: TextProps<string>) => {
+const Text = ({ children, style, ...props }: TextProps<string>): ReactElement => {
 
     const { colors } = useThemeContext();
 
-    let customStyle = { color: colors.text };
+    let customStyle: StyleProp<TextStyle> = { color: colors.text };
 
-    if (style && Array.isArray(style) && style[0]) {
-        // @ts-ignore
-        customStyle = { ...customStyle, ...style[0] };
-    }
+    if (style) customStyle = [customStyle, style];
 
     return (
         <TextPaper {...props} style={customStyle}>
