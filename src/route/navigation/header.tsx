@@ -33,7 +33,7 @@ const Header = (): ReactElement => {
                         resizeMode="contain"
                         style={{ width: 24, height: 24 }}
                     />
-                    <Text variant="bodySmall">{balance.valorantPoint}</Text>
+                    <Text variant="bodyMedium">{balance.valorantPoint}</Text>
                 </View>
                 <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", gap: 8 }}>
                     <Image
@@ -41,7 +41,7 @@ const Header = (): ReactElement => {
                         resizeMode="contain"
                         style={{ width: 24, height: 24 }}
                     />
-                    <Text variant="bodySmall">{balance.radianitePoint}</Text>
+                    <Text variant="bodyMedium">{balance.radianitePoint}</Text>
                 </View>
                 <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", gap: 8 }}>
                     <Image
@@ -49,7 +49,7 @@ const Header = (): ReactElement => {
                         resizeMode="contain"
                         style={{ width: 24, height: 24 }}
                     />
-                    <Text variant="bodySmall">{balance.kingdomCredit}</Text>
+                    <Text variant="bodyMedium">{balance.kingdomCredit}</Text>
                 </View>
             </View>
         </View>
