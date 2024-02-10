@@ -1,5 +1,7 @@
 import React from "react";
-import { ActivityIndicator, StyleProp, Text, TextStyle, TouchableHighlight, ViewStyle } from "react-native";
+import { ActivityIndicator, StyleProp, TextStyle, TouchableHighlight, ViewStyle } from "react-native";
+// component
+import Text from "@/component/typography/text";
 // context
 import { useThemeContext } from "@/context/hook/use-theme-context";
 
@@ -53,7 +55,6 @@ const Button = (
                     loading ? <ActivityIndicator color={colors.text} /> :
                         <Text
                             style={[{
-                                color: "#FCFCFD",
                                 fontSize: 16,
                                 fontWeight: "600",
                                 textAlign: "center",

@@ -1,7 +1,7 @@
 import React, { ReactElement } from "react";
 import { Image, View } from "react-native";
 // component
-import Typography from "@/component/typography/typography";
+import Text from "@/component/typography/text";
 // context
 import { useAuthContext } from "@/context/hook/use-auth-context";
 import { useThemeContext } from "@/context/hook/use-theme-context";
@@ -33,7 +33,7 @@ const Header = (): ReactElement => {
                         resizeMode="contain"
                         style={{ width: 24, height: 24 }}
                     />
-                    <Typography variant="body2">{balance.valorantPoint}</Typography>
+                    <Text variant="bodySmall">{balance.valorantPoint}</Text>
                 </View>
                 <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", gap: 8 }}>
                     <Image
@@ -41,7 +41,7 @@ const Header = (): ReactElement => {
                         resizeMode="contain"
                         style={{ width: 24, height: 24 }}
                     />
-                    <Typography variant="body2">{balance.radianitePoint}</Typography>
+                    <Text variant="bodySmall">{balance.radianitePoint}</Text>
                 </View>
                 <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", gap: 8 }}>
                     <Image
@@ -49,7 +49,7 @@ const Header = (): ReactElement => {
                         resizeMode="contain"
                         style={{ width: 24, height: 24 }}
                     />
-                    <Typography variant="body2">{balance.kingdomCredit}</Typography>
+                    <Text variant="bodySmall">{balance.kingdomCredit}</Text>
                 </View>
             </View>
         </View>

@@ -1,12 +1,12 @@
-import { View } from "react-native";
+import { Image, View } from "react-native";
 import { Checkbox } from "react-native-paper";
 import * as SecureStore from "expo-secure-store";
 import { ReactElement, useEffect, useState } from "react";
 // component
 import Button from "@/component/button/button";
+import Text from "@/component/typography/text";
 import SvgAvatar from "@/component/icon/avatar";
 import TextInput from "@/component/input/text-input";
-import Typography from "@/component/typography/typography";
 import EyePasswordButton from "@/component/button/eye-password-button";
 // context
 import { useAuthContext } from "@/context/hook/use-auth-context";
@@ -66,7 +66,14 @@ const Login = (): ReactElement => {
 
     return (
         <View className="flex-1 justify-center p-4 gap-4" style={{ backgroundColor: colors.background }}>
-            <Typography variant="h1">Sign in</Typography>
+            <View style={{ alignItems: "center", justifyContent: "center" }}>
+                <Image
+                    source={require("../../../assets/icon.png")}
+                    resizeMode="center"
+                    style={{ width: 150, height: 150 }}
+                />
+            </View>
+            <Text variant="displayMedium">Sign in</Text>
             <View className="flex-1" style={{ gap: 16 }}>
                 <TextInput
                     placeholder="Username"
@@ -89,7 +96,7 @@ const Login = (): ReactElement => {
                         uncheckedColor="#222429"
                         color={colors.primary}
                     />
-                    <Typography variant="body1">Stay sign in ?</Typography>
+                    <Text variant="bodyMedium">Stay sign in ?</Text>
                 </View>
             </View>
             <Button
