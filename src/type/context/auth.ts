@@ -1,5 +1,6 @@
 // type
-import { Offers } from "@/type/api/shop";
+import { BonusStore } from "@/type/api/shop/night-market";
+import { SkinsPanelLayout } from "@/type/api/shop/dayli-shop";
 
 export type IAuthContext = {
     // fn
@@ -17,9 +18,9 @@ export type IAuthContext = {
         kingdomCredit: string;
     };
     shop: {
-        offers: Offers;
+        offers: SkinsPanelLayout;
         bundles: any;
-        nightMarket?: any;
+        nightMarket?: BonusStore;
     };
 }
 

@@ -1,11 +1,11 @@
 import { StyleSheet, View } from "react-native";
 // types
-import { ItemStoreOffer } from "@/type/api/shop";
+import { Offers } from "@/type/api/shop";
 //
 import CardItemOffer from "./card-item-offer";
 
 type Props = {
-    offers: ItemStoreOffer[];
+    offers: Offers;
 }
 
 const CardListOffer = ({ offers }: Props) => {

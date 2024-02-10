@@ -1,3 +1,6 @@
+import { BonusStore } from "@/type/api/shop/night-market";
+import { SkinsPanelLayout } from "@/type/api/shop/dayli-shop";
+
 export type StorefrontResponse = {
     FeaturedBundle: {
         Bundle: {
@@ -25,22 +28,7 @@ export type StorefrontResponse = {
             ItemOffers: {
                 /** UUID */
                 BundleItemOfferID: string;
-                Offer: {
-                    OfferID: string;
-                    IsDirectPurchase: boolean;
-                    /** Date in ISO 8601 format */
-                    StartDate: string;
-                    Cost: {
-                        [x: string]: number;
-                    };
-                    Rewards: {
-                        /** Item Type ID */
-                        ItemTypeID: string;
-                        /** Item ID */
-                        ItemID: string;
-                        Quantity: number;
-                    }[];
-                };
+                Offer: Offer;
                 DiscountPercent: number;
                 DiscountedCost: {
                     [x: string]: number;
@@ -81,22 +69,7 @@ export type StorefrontResponse = {
             ItemOffers: {
                 /** UUID */
                 BundleItemOfferID: string;
-                Offer: {
-                    OfferID: string;
-                    IsDirectPurchase: boolean;
-                    /** Date in ISO 8601 format */
-                    StartDate: string;
-                    Cost: {
-                        [x: string]: number;
-                    };
-                    Rewards: {
-                        /** Item Type ID */
-                        ItemTypeID: string;
-                        /** Item ID */
-                        ItemID: string;
-                        Quantity: number;
-                    }[];
-                };
+                Offer: Offer;
                 DiscountPercent: number;
                 DiscountedCost: {
                     [x: string]: number;
@@ -114,50 +87,20 @@ export type StorefrontResponse = {
         }[];
         BundleRemainingDurationInSeconds: number;
     };
-    SkinsPanelLayout: Offers;
+    SkinsPanelLayout: SkinsPanelLayout;
     UpgradeCurrencyStore: {
         UpgradeCurrencyOffers: {
             /** UUID */
             OfferID: string;
             /** Item ID */
             StorefrontItemID: string;
-            Offer: {
-                OfferID: string;
-                IsDirectPurchase: boolean;
-                /** Date in ISO 8601 format */
-                StartDate: string;
-                Cost: {
-                    [x: string]: number;
-                };
-                Rewards: {
-                    /** Item Type ID */
-                    ItemTypeID: string;
-                    /** Item ID */
-                    ItemID: string;
-                    Quantity: number;
-                }[];
-            };
+            Offer: Offer;
             DiscountedPercent: number;
         }[];
     };
     AccessoryStore: {
         AccessoryStoreOffers: {
-            Offer: {
-                OfferID: string;
-                IsDirectPurchase: boolean;
-                /** Date in ISO 8601 format */
-                StartDate: string;
-                Cost: {
-                    [x: string]: number;
-                };
-                Rewards: {
-                    /** Item Type ID */
-                    ItemTypeID: string;
-                    /** Item ID */
-                    ItemID: string;
-                    Quantity: number;
-                }[];
-            };
+            Offer: Offer;
             /** UUID */
             ContractID: string;
         }[];
@@ -166,54 +109,28 @@ export type StorefrontResponse = {
         StorefrontID: string;
     };
     /** Night market */
-    BonusStore?: {
-        BonusStoreOffers: {
-            /** UUID */
-            BonusOfferID: string;
-            Offer: {
-                OfferID: string;
-                IsDirectPurchase: boolean;
-                /** Date in ISO 8601 format */
-                StartDate: string;
-                Cost: {
-                    [x: string]: number;
-                };
-                Rewards: {
-                    /** Item Type ID */
-                    ItemTypeID: string;
-                    /** Item ID */
-                    ItemID: string;
-                    Quantity: number;
-                }[];
-            };
-            DiscountPercent: number;
-            DiscountCosts: {
-                [x: string]: number;
-            };
-            IsSeen: boolean;
-        }[];
-        BonusStoreRemainingDurationInSeconds: number;
-    } | undefined;
+    BonusStore?: BonusStore;
 };
 
-export type Offers = {
-    SingleItemOffers: string[];
-    SingleItemStoreOffers: ItemStoreOffer[];
-    SingleItemOffersRemainingDurationInSeconds: number;
-}
-
-export type ItemStoreOffer = {
+export type Offer = {
     OfferID: string;
     IsDirectPurchase: boolean;
+    /** Date in ISO 8601 format */
     StartDate: string;
     Cost: {
         [x: string]: number;
     };
-    Rewards: Reward[];
+    Rewards: Rewards;
 }
 
+export type Offers = Offer[];
+
 export type Reward = {
+    /** Item Type ID */
     ItemTypeID: string;
+    /** Item ID */
     ItemID: string;
     Quantity: number;
 }
+
+export type Rewards = Reward[];

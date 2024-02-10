@@ -87,7 +87,11 @@ const valorantProvider = {
             const response: AxiosResponse<StorefrontResponse> = await axios.request(options);
 
             if (response.data.SkinsPanelLayout.SingleItemStoreOffers) {
-                return { bundles: response.data.FeaturedBundle.Bundles, offers: response.data.SkinsPanelLayout };
+                return {
+                    bundles: response.data.FeaturedBundle.Bundles,
+                    offers: response.data.SkinsPanelLayout,
+                    nightMarket: response.data?.BonusStore
+                };
             }
         } catch (error) {
             console.error("Error in getFrontShop:", error);

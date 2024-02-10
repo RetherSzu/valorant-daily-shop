@@ -8,14 +8,15 @@ import Loading from "@/component/loading/loading";
 // context
 import { useThemeContext } from "@/context/hook/use-theme-context";
 // type
-import { ItemStoreOffer } from "@/type/api/shop";
+import { Offer } from "@/type/api/shop";
 import { WeaponSkin } from "@/type/api/shop/weapon-skin";
 import { WeaponTheme } from "@/type/api/shop/weapon-theme";
 // util
 import { getContentTierIcon } from "@/util/content-tier-icon";
+import CostPoint from "@/section/shop/cost-point";
 
 type Props = {
-    item: ItemStoreOffer;
+    item: Offer;
 }
 
 const CardItemOffer = ({ item }: Props): ReactElement => {
@@ -63,7 +64,7 @@ const CardItemOffer = ({ item }: Props): ReactElement => {
 
     return (
         <View
-            className="flex-1 bg-[#222429] p-2"
+            className="flex-1 bg-[#222429] p-4"
             style={{ position: "relative", overflow: "hidden", borderRadius: 16 }}
         >
             <Image
@@ -92,16 +93,7 @@ const CardItemOffer = ({ item }: Props): ReactElement => {
                 style={{ flex: 1, transform: [{ rotate: "22.5deg" }, { scale: 1 }] }}
                 resizeMode="center"
             />
-            <View className="flex-row gap-2 items-center pt-4">
-                <Image
-                    source={require("../../../../assets/valorant-point.png")}
-                    resizeMode="contain"
-                    style={{ width: 24, height: 24 }}
-                />
-                <Text variant="titleMedium" style={{ color: colors.text }}>
-                    {item.Cost[Object.keys(item.Cost)[0]]}
-                </Text>
-            </View>
+            <CostPoint currencyId={Object.keys(item.Cost)[0]} cost={item.Cost[Object.keys(item.Cost)[0]]}/>
         </View>
     );
 };

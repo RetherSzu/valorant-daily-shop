@@ -4,14 +4,13 @@ import { ReactNode, useCallback, useEffect, useMemo, useReducer } from "react";
 import valorantProvider from "@/api/valorant-provider";
 // auth
 import authLogic from "@/auth/auth-logic";
+import { useNavigation } from "@react-navigation/native";
 // type
 import { EAuthContextType, IAuthAction, IAuthContext } from "@/type/context/auth";
 //
 import { AuthContext, initialAuthState } from "./auth-context";
-import { useNavigation } from "@react-navigation/native";
 
 const reducer = (state: IAuthContext, action: IAuthAction<EAuthContextType>) => {
-
     let ac;
 
     switch (action.type) {
@@ -58,6 +57,10 @@ const reducer = (state: IAuthContext, action: IAuthAction<EAuthContextType>) => 
                     offers: {
                         ...state.shop.offers,
                         SingleItemOffersRemainingDurationInSeconds: state.shop.offers.SingleItemOffersRemainingDurationInSeconds - 1
+                    },
+                    nightMarket: {
+                        ...state.shop.nightMarket,
+                        BonusStoreRemainingDurationInSeconds: state.shop.nightMarket?.BonusStoreRemainingDurationInSeconds ? state.shop.nightMarket.BonusStoreRemainingDurationInSeconds - 1 : 0
                     }
                 }
             };
