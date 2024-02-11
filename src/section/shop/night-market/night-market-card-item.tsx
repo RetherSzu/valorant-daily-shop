@@ -24,23 +24,9 @@ const NightMarketCardItem = ({ item }: Props): ReactElement => {
 
     const { colors } = useThemeContext();
 
-    const [skinData, setSkinData] = useState<WeaponSkin>({
-        uuid: "",
-        levels: [],
-        chromas: [],
-        wallpaper: "",
-        themeUuid: "",
-        displayName: "",
-        displayIcon: "",
-        contentTierUuid: ""
-    });
+    const [skinData, setSkinData] = useState<WeaponSkin | undefined>();
 
-    const [themeData, setThemeData] = useState<WeaponTheme>({
-        uuid: "",
-        displayName: "",
-        displayIcon: "",
-        storeFeaturedImage: ""
-    });
+    const [themeData, setThemeData] = useState<WeaponTheme | undefined>();
 
     useEffect(() => {
         const getWeaponData = async () => {
@@ -64,7 +50,7 @@ const NightMarketCardItem = ({ item }: Props): ReactElement => {
         return Math.floor((item.Offer.Cost[Object.keys(item.Offer.Cost)[0]] - item.DiscountCosts[Object.keys(item.DiscountCosts)[0]]) / item.Offer.Cost[Object.keys(item.Offer.Cost)[0]] * 100);
     }, [item]);
 
-    if (!skinData.uuid || !themeData.uuid) {
+    if (!skinData?.uuid || !themeData?.uuid) {
         return (
             <View
                 className="bg-[#222429] p-4"
@@ -82,7 +68,6 @@ const NightMarketCardItem = ({ item }: Props): ReactElement => {
                 position: "relative",
                 overflow: "hidden",
                 borderRadius: 16,
-                gap: 8,
                 backgroundColor: getContentTierColor(skinData.contentTierUuid)
             }}
         >

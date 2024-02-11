@@ -28,7 +28,6 @@ const NightMarket = () => {
         </ScrollView>
     );
 
-
     return (
         <View style={{ backgroundColor: colors.background, flex: 1 }}>
             <View className="flex flex-row items-center justify-between p-4">
