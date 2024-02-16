@@ -3,7 +3,7 @@ import { StyleProp, TextInput as DefaultTextInput, TextStyle, View, ViewStyle } 
 // context
 import { useThemeContext } from "@/context/hook/use-theme-context";
 
-type TextInputProps = {
+export type TextInputProps = {
     placeholder?: string,
     value?: string,
     onChangeText: (text: string) => void,
@@ -23,7 +23,8 @@ const TextInput = (
         textStyle,
         icon,
         backgroundColor = "#222429",
-        secureTextEntry = false
+        secureTextEntry = false,
+        ...other
     }: TextInputProps) => {
 
     const { colors } = useThemeContext();
@@ -52,6 +53,7 @@ const TextInput = (
                     color: colors.text
                 }, textStyle]}
                 placeholderTextColor="#ffffff80"
+                {...other}
             />
         </View>
     );

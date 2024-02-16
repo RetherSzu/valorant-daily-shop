@@ -1,12 +1,15 @@
+import * as Yup from "yup";
+import { useForm } from "react-hook-form";
 import { Image, View } from "react-native";
 import { Checkbox } from "react-native-paper";
 import * as SecureStore from "expo-secure-store";
+import { yupResolver } from "@hookform/resolvers/yup";
 import { ReactElement, useEffect, useState } from "react";
 // component
+import Alert from "@/component/alert/alert";
 import Button from "@/component/button/button";
 import Text from "@/component/typography/text";
-import SvgAvatar from "@/component/icon/avatar";
-import TextInput from "@/component/input/text-input";
+import RHFTextField from "@/component/hook-form/rhf-text-field";
 import EyePasswordButton from "@/component/button/eye-password-button";
 // context
 import { useAuthContext } from "@/context/hook/use-auth-context";
@@ -18,37 +21,57 @@ const Login = (): ReactElement => {
 
     const { login } = useAuthContext();
 
-    const [username, setUsername] = useState("");
-
-    const [password, setPassword] = useState("");
-
     const [staySignIn, setStaySignIn] = useState(SecureStore.getItem("stay_sign_in") ?? false);
 
     const [show, setShow] = useState(true);
 
-    const [isLoading, setLoading] = useState(false);
+    const [errorMsg, setErrorMsg] = useState("");
 
-    const handleLogin = async () => {
-        if (username === "" || password === "") return;
-        setLoading(true);
+    const LoginSchema = Yup.object().shape({
+        username: Yup.string().required("Username is required"),
+        password: Yup.string().required("Password is required")
+    });
 
-        if (staySignIn) {
-            await SecureStore.setItemAsync("stay_sign_in", String(staySignIn));
-            await SecureStore.setItemAsync("username", username);
-            await SecureStore.setItemAsync("password", password);
-        }
-
-        // Ensure that the username and password was deleted
-        if (!staySignIn) {
-            await SecureStore.deleteItemAsync("stay_sign_in");
-            await SecureStore.deleteItemAsync("username");
-            await SecureStore.deleteItemAsync("password");
-        }
-
-        await login(username, password);
-
-        setLoading(false);
+    const defaultValues = {
+        username: "",
+        password: ""
     };
+
+    const methods = useForm({
+        resolver: yupResolver(LoginSchema),
+        defaultValues
+    });
+
+    const {
+        reset,
+        handleSubmit,
+        formState: { isSubmitting, errors },
+        control,
+        setValue
+    } = methods;
+
+    const onSubmit = handleSubmit(async (data) => {
+        try {
+            if (staySignIn) {
+                await SecureStore.setItemAsync("stay_sign_in", String(staySignIn));
+                await SecureStore.setItemAsync("username", data.username);
+                await SecureStore.setItemAsync("password", data.password);
+            }
+
+            // Ensure that the username and password was deleted
+            if (!staySignIn) {
+                await SecureStore.deleteItemAsync("stay_sign_in");
+                await SecureStore.deleteItemAsync("username");
+                await SecureStore.deleteItemAsync("password");
+            }
+
+            await login(data.username, data.password);
+        } catch (error: any) {
+            console.error(error);
+            reset();
+            setErrorMsg(typeof error === "string" ? error : error.message);
+        }
+    });
 
     useEffect(() => {
         const getStoredCredentials = async () => {
@@ -56,10 +79,10 @@ const Login = (): ReactElement => {
             const storedPassword = await SecureStore.getItemAsync("password");
             const storedStaySignIn = await SecureStore.getItemAsync("stay_sign_in");
 
-            if (storedUsername) setUsername(storedUsername);
-            if (storedPassword) setPassword(storedPassword);
+            if (storedUsername) setValue("username", storedUsername);
+            if (storedPassword) setValue("password", storedPassword);
 
-            if (storedStaySignIn) await handleLogin();
+            if (storedStaySignIn) await onSubmit();
         };
         (async () => getStoredCredentials())();
     }, []);
@@ -75,37 +98,43 @@ const Login = (): ReactElement => {
             </View>
             <Text variant="displayMedium">Sign in</Text>
             <View className="flex-1" style={{ gap: 16 }}>
-                <TextInput
+                <RHFTextField
+                    name="username"
+                    // @ts-ignore
+                    control={control}
                     placeholder="Username"
-                    value={username}
-                    onChangeText={setUsername}
-                    icon={<SvgAvatar color={colors.text} />}
                 />
-                <TextInput
+                <RHFTextField
+                    name="password"
+                    // @ts-ignore
+                    control={control}
+                    secureTextEntry={show}
                     placeholder="Password"
-                    value={password}
-                    onChangeText={setPassword}
                     style={{ flexDirection: "row-reverse" }}
                     icon={<EyePasswordButton show={show} onPress={() => setShow(!show)} />}
-                    secureTextEntry={show}
                 />
                 <View className="flex flex-row items-center">
                     <Checkbox
-                        status={staySignIn ? "checked" : "unchecked"}
-                        onPress={() => setStaySignIn(!staySignIn)}
-                        uncheckedColor="#222429"
                         color={colors.primary}
+                        uncheckedColor="#222429"
+                        onPress={() => setStaySignIn(!staySignIn)}
+                        status={staySignIn ? "checked" : "unchecked"}
                     />
                     <Text variant="bodyMedium">Stay sign in ?</Text>
                 </View>
+                {!!errorMsg && <Alert severity="error">{errorMsg}</Alert>}
+                {!!errors.username && <Alert severity="warning">{errors.username.message}</Alert>}
+                {!!errors.password && <Alert severity="warning">{errors.password.message}</Alert>}
+                <View style={{ flex: 1, justifyContent: "flex-end" }}>
+                    <Button
+                        text="Login in"
+                        onPress={onSubmit}
+                        loading={isSubmitting}
+                        underlayColor="#222429"
+                        backgroundColor={colors.primary}
+                    />
+                </View>
             </View>
-            <Button
-                text="Login in"
-                onPress={handleLogin}
-                backgroundColor={colors.primary}
-                underlayColor="#222429"
-                loading={isLoading}
-            />
         </View>
     );
 };
