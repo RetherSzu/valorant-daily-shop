@@ -13,6 +13,7 @@ export const initialAuthState: IAuthContext = {
     isSignout: false,
     accessToken: null,
     entitlementsToken: null,
+    isInitialized: false,
     // user info
     balance: {
         radianitePoint: "0",

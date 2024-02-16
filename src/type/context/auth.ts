@@ -12,6 +12,7 @@ export type IAuthContext = {
     isSignout: boolean;
     accessToken: string | null;
     entitlementsToken: string | null;
+    isInitialized: boolean;
     // user info
     balance: {
         radianitePoint: string;

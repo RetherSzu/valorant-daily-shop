@@ -1,5 +1,5 @@
 import { useFonts } from "expo-font";
-import { ReactElement } from "react";
+import { ReactElement, useEffect } from "react";
 import { Provider } from "react-redux";
 import * as SplashScreen from "expo-splash-screen";
 // context
@@ -10,8 +10,15 @@ import { store } from "@/controller/store";
 // route
 import Router from "@/route/index";
 import { NavigationContainer } from "@react-navigation/native";
+import { useAuthContext } from "@/context/hook/use-auth-context";
 
 export default function App(): ReactElement | null {
+
+    const { isInitialized } = useAuthContext();
+
+    useEffect(() => {
+        if (isInitialized) (async () => SplashScreen.hideAsync())();
+    }, [isInitialized]);
 
     const [fontsLoaded, fontError] = useFonts({
         Inter: require("./assets/fonts/Inter.ttf"),
@@ -19,8 +26,6 @@ export default function App(): ReactElement | null {
     });
 
     if (!fontsLoaded && !fontError) return null;
-
-    (async () => SplashScreen.hideAsync())();
 
     return (
         <NavigationContainer>

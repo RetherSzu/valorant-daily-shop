@@ -14,15 +14,17 @@ const Stack = createNativeStackNavigator();
 
 const Router = () => {
 
-    const state = useAuthContext();
+    const { accessToken, entitlementsToken, isInitialized } = useAuthContext();
 
     const { colors } = useThemeContext();
+
+    if (!isInitialized) return null;
 
     return (
         <>
             <StatusBar barStyle="light-content" backgroundColor={colors.background} />
             <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName="Login">
-                {state.accessToken == null || state.entitlementsToken == null ? (
+                {accessToken == null || entitlementsToken == null ? (
                     <>
                         <Stack.Screen name="Login" component={Login} />
                         <Stack.Screen name="Multifactor" component={UnsupportedMultifactor} />

@@ -19,7 +19,8 @@ const reducer = (state: IAuthContext, action: IAuthAction<EAuthContextType>) => 
 
             return {
                 ...state,
-                ...ac.payload
+                ...ac.payload,
+                isInitialized: true
             };
         case EAuthContextType.SET_TOKEN:
             ac = action as IAuthAction<EAuthContextType.SET_TOKEN>;
@@ -212,6 +213,7 @@ export function AuthProvider({ children }: Props) {
             isSignout: state.isSignout,
             accessToken: state.accessToken,
             entitlementsToken: state.entitlementsToken,
+            isInitialized: state.isInitialized,
             // user info
             balance: state.balance,
             // shop
