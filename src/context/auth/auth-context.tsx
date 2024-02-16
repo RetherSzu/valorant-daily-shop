@@ -26,7 +26,11 @@ export const initialAuthState: IAuthContext = {
             SingleItemStoreOffers: [],
             SingleItemOffersRemainingDurationInSeconds: 0
         },
-        bundles: "",
+        bundles: {
+            Bundles: [],
+            Bundle: undefined,
+            BundleRemainingDurationInSeconds: 0
+        },
         nightMarket: undefined
     }
 };

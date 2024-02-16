@@ -9,7 +9,7 @@ export const initialThemeState: IThemeContext = {
     colors: {
         primary: "#FF4656",
         background: "#1B1D21",
-        card: "rgb(255, 255, 255)",
+        card: "#222429",
         text: "#FFFFFF",
         border: "#222429",
         notification: "rgb(255, 69, 58)"

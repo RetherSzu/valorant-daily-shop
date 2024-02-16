@@ -58,6 +58,15 @@ const reducer = (state: IAuthContext, action: IAuthAction<EAuthContextType>) => 
                         ...state.shop.offers,
                         SingleItemOffersRemainingDurationInSeconds: state.shop.offers.SingleItemOffersRemainingDurationInSeconds - 1
                     },
+                    bundles: {
+                        ...state.shop.bundles,
+                        Bundles: state.shop.bundles.Bundles.map((bundle) => {
+                            return {
+                                ...bundle,
+                                DurationRemainingInSeconds: bundle.DurationRemainingInSeconds - 1
+                            };
+                        })
+                    },
                     nightMarket: {
                         ...state.shop.nightMarket,
                         BonusStoreRemainingDurationInSeconds: state.shop.nightMarket?.BonusStoreRemainingDurationInSeconds ? state.shop.nightMarket.BonusStoreRemainingDurationInSeconds - 1 : 0

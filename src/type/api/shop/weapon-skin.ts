@@ -9,6 +9,8 @@ export type WeaponSkin = {
     levels: WeaponLevel[];
 }
 
+export type WeaponSkins = WeaponSkin[];
+
 export type WeaponChroma = {
     uuid: string;
     displayName: string;

@@ -88,7 +88,7 @@ const valorantProvider = {
 
             if (response.data.SkinsPanelLayout.SingleItemStoreOffers) {
                 return {
-                    bundles: response.data.FeaturedBundle.Bundles,
+                    bundles: response.data.FeaturedBundle,
                     offers: response.data.SkinsPanelLayout,
                     nightMarket: response.data?.BonusStore
                 };
@@ -99,31 +99,10 @@ const valorantProvider = {
         }
     },
 
-    getWeaponLevelById: async (id: string) => {
+    getBundle: async (id: string) => {
         const options = {
             method: "GET",
-            url: "https://valorant-api.com/v1/weapons/skins"
-        };
-
-        try {
-            const response = await axios.request(options);
-            for (let i = 0; i < response.data.data.length; i++) {
-                for (let x = 0; x < response.data.data[i].levels.length; x++) {
-                    if (response.data.data[i].levels[x].uuid === id) {
-                        return response.data.data[i];
-                    }
-                }
-            }
-            return false;
-        } catch (error) {
-            console.error(error);
-        }
-    },
-
-    getThemeById: async (id: string) => {
-        const options = {
-            method: "GET",
-            url: `https://valorant-api.com/v1/themes/${id}`
+            url: `https://valorant-api.com/v1/bundles/${id}`
         };
 
         try {
@@ -132,7 +111,7 @@ const valorantProvider = {
         } catch (error) {
             console.error(error);
         }
-    }
+    },
 };
 
 export default valorantProvider;

@@ -3,7 +3,6 @@ import { ActivityIndicator, View } from "react-native";
 // context
 import { useThemeContext } from "@/context/hook/use-theme-context";
 
-
 const Loading = (): ReactElement => {
 
     const { colors } = useThemeContext();

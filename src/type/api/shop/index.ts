@@ -1,92 +1,9 @@
+import { FeaturedBundle } from "@/type/api/shop/bundle";
 import { BonusStore } from "@/type/api/shop/night-market";
 import { SkinsPanelLayout } from "@/type/api/shop/dayli-shop";
 
 export type StorefrontResponse = {
-    FeaturedBundle: {
-        Bundle: {
-            /** UUID */
-            ID: string;
-            /** UUID */
-            DataAssetID: string;
-            /** Currency ID */
-            CurrencyID: string;
-            Items: {
-                Item: {
-                    /** Item Type ID */
-                    ItemTypeID: string;
-                    /** Item ID */
-                    ItemID: string;
-                    Amount: number;
-                };
-                BasePrice: number;
-                /** Currency ID */
-                CurrencyID: string;
-                DiscountPercent: number;
-                DiscountedPrice: number;
-                IsPromoItem: boolean;
-            }[];
-            ItemOffers: {
-                /** UUID */
-                BundleItemOfferID: string;
-                Offer: Offer;
-                DiscountPercent: number;
-                DiscountedCost: {
-                    [x: string]: number;
-                };
-            }[] | null;
-            TotalBaseCost: {
-                [x: string]: number;
-            } | null;
-            TotalDiscountedCost: {
-                [x: string]: number;
-            } | null;
-            TotalDiscountPercent: number;
-            DurationRemainingInSeconds: number;
-            WholesaleOnly: boolean;
-        };
-        Bundles: {
-            /** UUID */
-            ID: string;
-            /** UUID */
-            DataAssetID: string;
-            /** Currency ID */
-            CurrencyID: string;
-            Items: {
-                Item: {
-                    /** Item Type ID */
-                    ItemTypeID: string;
-                    /** Item ID */
-                    ItemID: string;
-                    Amount: number;
-                };
-                BasePrice: number;
-                /** Currency ID */
-                CurrencyID: string;
-                DiscountPercent: number;
-                DiscountedPrice: number;
-                IsPromoItem: boolean;
-            }[];
-            ItemOffers: {
-                /** UUID */
-                BundleItemOfferID: string;
-                Offer: Offer;
-                DiscountPercent: number;
-                DiscountedCost: {
-                    [x: string]: number;
-                };
-            }[] | null;
-            TotalBaseCost: {
-                [x: string]: number;
-            } | null;
-            TotalDiscountedCost: {
-                [x: string]: number;
-            } | null;
-            TotalDiscountPercent: number;
-            DurationRemainingInSeconds: number;
-            WholesaleOnly: boolean;
-        }[];
-        BundleRemainingDurationInSeconds: number;
-    };
+    FeaturedBundle: FeaturedBundle;
     SkinsPanelLayout: SkinsPanelLayout;
     UpgradeCurrencyStore: {
         UpgradeCurrencyOffers: {
@@ -134,3 +51,66 @@ export type Reward = {
 }
 
 export type Rewards = Reward[];
+
+export type PlayerCard = {
+    uuid: string;
+    displayName: string;
+    displayIcon: string;
+    smallArt: string;
+    wideArt: string;
+    largeArt: string;
+    themeUuid: string | null;
+    isHiddenIfNotOwned: boolean;
+}
+
+export type Spray = {
+    uuid: string;
+    displayName: string;
+    category: string | null;
+    themeUuid: string | null;
+    isNullSpray: boolean;
+    hideIfNotOwned: boolean;
+    displayIcon: string;
+    fullIcon: string;
+    fullTransparentIcon: string;
+    animationPng: string | null;
+    animationGif: string | null;
+    levels: SprayLevels;
+}
+
+export type SprayLevel = {
+    uuid: string;
+    sprayLevel: number;
+    displayName: string;
+    displayIcon: string;
+}
+
+export type SprayLevels = SprayLevel[];
+
+export type Buddy = {
+    uuid: string;
+    displayName: string;
+    isHiddenIfNotOwned: boolean;
+    themeUuid: string | null;
+    displayIcon: string;
+    levels: BuddiesLevel;
+}
+
+export type Buddies = Buddy[];
+
+export type BuddyLevel = {
+    uuid: string;
+    charmLevel: number;
+    hideIfNotOwned: boolean;
+    displayName: string;
+}
+
+export type BuddiesLevel = BuddyLevel[];
+
+export type PlayerTitle = {
+    uuid: string;
+    titleText: string;
+    displayName: string;
+}
+
+export type PlayerTitles = PlayerTitle[];

@@ -1,20 +1,20 @@
 import { Image, View } from "react-native";
-import { ReactElement, useEffect, useMemo, useState } from "react";
+import { ReactElement, useMemo } from "react";
 // api
-import valorantProvider from "@/api/valorant-provider";
+import { useGetThemeByIdQuery, useGetWeaponByLevelIdQuery } from "@/api/rtk-valorant-api";
 // component
+import Error from "@/component/error/error";
 import Text from "@/component/typography/text";
 import Loading from "@/component/loading/loading";
 // context
 import { useThemeContext } from "@/context/hook/use-theme-context";
+// section
+import CostPoint from "@/section/shop/cost-point";
+import DiscountBadge from "@/section/shop/night-market/discount-badge";
 // type
-import { WeaponSkin } from "@/type/api/shop/weapon-skin";
-import { WeaponTheme } from "@/type/api/shop/weapon-theme";
 import { BonusStoreOffer } from "@/type/api/shop/night-market";
 // util
 import { getContentTierColor, getContentTierIcon } from "@/util/content-tier-icon";
-import DiscountBadge from "@/section/shop/night-market/discount-badge";
-import CostPoint from "@/section/shop/cost-point";
 
 type Props = {
     item: BonusStoreOffer;
@@ -24,42 +24,29 @@ const NightMarketCardItem = ({ item }: Props): ReactElement => {
 
     const { colors } = useThemeContext();
 
-    const [skinData, setSkinData] = useState<WeaponSkin | undefined>();
-
-    const [themeData, setThemeData] = useState<WeaponTheme | undefined>();
-
-    useEffect(() => {
-        const getWeaponData = async () => {
-            try {
-                const response = await valorantProvider.getWeaponLevelById(item.Offer.Rewards[0].ItemID);
-                const themeResponse = await valorantProvider.getThemeById(response.themeUuid);
-
-                if (!response) return;
-
-                setSkinData(response);
-                setThemeData(themeResponse);
-            } catch (error) {
-                console.error(error);
-            }
-        };
-        (async () => getWeaponData())();
-    }, []);
-
-
     const discountCostsPercentage = useMemo(() => {
         return Math.floor((item.Offer.Cost[Object.keys(item.Offer.Cost)[0]] - item.DiscountCosts[Object.keys(item.DiscountCosts)[0]]) / item.Offer.Cost[Object.keys(item.Offer.Cost)[0]] * 100);
     }, [item]);
 
-    if (!skinData?.uuid || !themeData?.uuid) {
-        return (
-            <View
-                className="bg-[#222429] p-4"
-                style={{ position: "relative", overflow: "hidden", borderRadius: 16, gap: 8 }}
-            >
-                <Loading />
-            </View>
-        );
-    }
+    const {
+        data: weaponSkinData,
+        error: weaponSkinError,
+        isLoading: isLoadingWeapon
+    } = useGetWeaponByLevelIdQuery(item.Offer.Rewards[0].ItemID);
+
+    const skinData = weaponSkinData?.data;
+
+    const {
+        data: themeData,
+        error: themeError,
+        isLoading: isLoadingTheme
+    } = useGetThemeByIdQuery(skinData?.themeUuid ?? "");
+
+    if (isLoadingWeapon || isLoadingTheme) return <Loading />;
+
+    if (weaponSkinError || !skinData || themeError || !themeData) return <Error />;
+
+    const theme = themeData.data;
 
     return (
         <View
@@ -85,7 +72,7 @@ const NightMarketCardItem = ({ item }: Props): ReactElement => {
                 }}
             />
             <Image
-                source={{ uri: themeData.displayIcon }}
+                source={{ uri: theme.displayIcon }}
                 blurRadius={6}
                 resizeMode="contain"
                 style={{
@@ -99,11 +86,11 @@ const NightMarketCardItem = ({ item }: Props): ReactElement => {
             />
             <DiscountBadge discount={discountCostsPercentage} />
             <Text variant="titleLarge" style={{ color: colors.text, fontWeight: "bold" }} numberOfLines={1}>
-                {skinData.displayName.replace(themeData.displayName, "").replace(/\s/g, "")}
+                {skinData.displayName.replace(theme.displayName, "").replace(/\s/g, "")}
             </Text>
             <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
                 <Text variant="labelLarge" style={{ flex: 1, color: colors.text, opacity: .5 }} numberOfLines={1}>
-                    {themeData.displayName}
+                    {theme.displayName}
                 </Text>
             </View>
             <Image

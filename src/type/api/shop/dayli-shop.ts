@@ -1,4 +1,4 @@
-import { Offers } from "@/type/api/shop/index";
+import { Offers } from "@/type/api/shop";
 
 export type SkinsPanelLayout = {
     SingleItemOffers: string[];

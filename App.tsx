@@ -1,9 +1,12 @@
 import { useFonts } from "expo-font";
 import { ReactElement } from "react";
+import { Provider } from "react-redux";
 import * as SplashScreen from "expo-splash-screen";
 // context
 import { AuthProvider } from "@/context/auth/auth-provider";
 import { ThemeProvider } from "@/context/theme/theme-provider";
+// controller
+import { store } from "@/controller/store";
 // route
 import Router from "@/route/index";
 import { NavigationContainer } from "@react-navigation/native";
@@ -21,11 +24,13 @@ export default function App(): ReactElement | null {
 
     return (
         <NavigationContainer>
-            <ThemeProvider>
-                <AuthProvider>
-                    <Router />
-                </AuthProvider>
-            </ThemeProvider>
+            <Provider store={store}>
+                <ThemeProvider>
+                    <AuthProvider>
+                        <Router />
+                    </AuthProvider>
+                </ThemeProvider>
+            </Provider>
         </NavigationContainer>
     );
 }

@@ -1,5 +1,7 @@
-import axios, { AxiosError, AxiosResponse } from "axios";
 import * as SecureStore from "expo-secure-store";
+import axios, { AxiosError, AxiosResponse } from "axios";
+// util
+import axiosInstance from "@/util/axios";
 
 const authLogic = {
     authCookie: async (): Promise<{
@@ -38,7 +40,7 @@ const authLogic = {
                 }
             };
 
-            const response = await axios.request(options);
+            const response = await axiosInstance.request(options);
 
             const setCookie = response.headers["set-cookie"];
 
@@ -74,7 +76,7 @@ const authLogic = {
             url: "https://auth.riotgames.com/api/v1/authorization",
             headers: {
                 cookie: `${tdid};${asid};${clid}`,
-                "Content-Type": "application/json",
+                "Content-Type": "application/json"
             },
             data: {
                 type: "auth",
@@ -86,7 +88,7 @@ const authLogic = {
         };
 
         try {
-            const response = await axios.request(options);
+            const response = await axiosInstance.request(options);
 
             if (response.data.type === "multifactor") {
                 console.log("Multifactor authentication required");
@@ -108,12 +110,7 @@ const authLogic = {
     cookieReauth: async (): Promise<undefined> => {
         console.log("cookieReauth");
 
-        const [tdid, asid, clid, ssid] = await Promise.all([
-            SecureStore.getItemAsync("tdid"),
-            SecureStore.getItemAsync("asid"),
-            SecureStore.getItemAsync("clid"),
-            SecureStore.getItemAsync("ssid")
-        ]);
+        const ssid = await SecureStore.getItemAsync("ssid");
 
         const options = {
             method: "GET",
@@ -126,7 +123,7 @@ const authLogic = {
                 scope: "account openid"
             },
             headers: {
-                cookie: `${tdid};${asid};${clid}:${ssid}`
+                cookie: ssid
             }
         };
 
@@ -159,7 +156,7 @@ const authLogic = {
         };
 
         try {
-            const response: AxiosResponse<{ entitlements_token: string }> = await axios.request(options);
+            const response: AxiosResponse<{ entitlements_token: string }> = await axiosInstance.request(options);
             const entitlementsToken: string = response.data?.entitlements_token;
 
             if (!entitlementsToken) throw new Error("Entitlements token not found");
