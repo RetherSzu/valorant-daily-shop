@@ -14,17 +14,23 @@ const Settings = (): ReactElement => {
     const { logout } = useAuthContext();
 
     return (
-        <View className="flex-1 items-center justify-center p-8 gap-8" style={{ backgroundColor: colors.primary }}>
-            <View className="flex-row items-start w-full">
+        <View style={{
+            flex: 1,
+            backgroundColor: colors.primary,
+            justifyContent: "center",
+            alignItems: "center",
+            padding: 16,
+            gap: 16
+        }}>
+            <View style={{ flexDirection: "row", alignItems: "flex-start" }}>
                 <TitleScreen name="SETTINGS" />
             </View>
             <ScrollView
-                className="flex-1 w-full"
                 style={{
                     backgroundColor: "#1F2326",
                     padding: 16,
                     borderRadius: 20,
-                    height: "100%"
+                    width: "100%"
                 }}
                 contentContainerStyle={{
                     gap: 16,

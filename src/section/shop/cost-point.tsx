@@ -13,7 +13,7 @@ type Props = {
 
 const CostPoint = ({ currencyId, cost, textVariant = "titleMedium" }: Props) => {
     return (
-        <View className="flex-row gap-2 items-center">
+        <View style={{ flexDirection: "row", gap: 8, alignItems: "center" }}>
             <Image
                 source={getCurrencyByUuid(currencyId)}
                 resizeMode="contain"

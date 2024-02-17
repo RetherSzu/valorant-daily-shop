@@ -53,7 +53,7 @@ const Store = () => {
     };
 
     return (
-        <View className="flex-1" style={{ gap: 8 }}>
+        <View style={{ flex: 1, gap: 8 }}>
             <Text variant="displaySmall" style={{ fontFamily: "DrukWide", paddingHorizontal: 16 }}>STORE</Text>
             {/* @ts-ignore */}
             <Tab.Navigator {...tabNavigatorOptions}>

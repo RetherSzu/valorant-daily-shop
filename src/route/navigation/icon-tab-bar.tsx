@@ -28,7 +28,7 @@ const IconTabBar = ({ iconName, color, onPress, onLongPress }: Props) => {
             onPress={onPress}
             onLongPress={onLongPress}
             android_ripple={{ color: colors.primary, borderless: true }}
-            className="w-8 h-8 justify-center items-center"
+            style={{ width: 32, height: 32, justifyContent: "center", alignItems: "center" }}
         >
             {IconComponent && <IconComponent color={color} />}
         </Pressable>

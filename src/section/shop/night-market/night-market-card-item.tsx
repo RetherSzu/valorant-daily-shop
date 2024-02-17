@@ -46,11 +46,11 @@ const NightMarketCardItem = ({ item }: Props): ReactElement => {
 
     return (
         <View
-            className="bg-[#222429] p-4"
             style={{
-                position: "relative",
-                overflow: "hidden",
+                padding: 16,
                 borderRadius: 16,
+                overflow: "hidden",
+                position: "relative",
                 backgroundColor: getContentTierColor(skinData.contentTierUuid)
             }}
         >
@@ -59,12 +59,12 @@ const NightMarketCardItem = ({ item }: Props): ReactElement => {
                 blurRadius={6}
                 resizeMode="cover"
                 style={{
-                    position: "absolute",
-                    top: "30%",
-                    left: "50%",
                     right: 0,
                     bottom: 0,
-                    opacity: .1
+                    top: "30%",
+                    left: "50%",
+                    opacity: .1,
+                    position: "absolute"
                 }}
             />
             <Image

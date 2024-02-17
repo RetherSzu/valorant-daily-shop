@@ -5,6 +5,8 @@ import { useGetTitleByIdQuery } from "@/api/rtk-valorant-api";
 import Error from "@/component/error/error";
 import Text from "@/component/typography/text";
 import Loading from "@/component/loading/loading";
+// context
+import { useThemeContext } from "@/context/hook/use-theme-context";
 // section
 import CostPoint from "@/section/shop/cost-point";
 // type
@@ -15,6 +17,8 @@ type Props = {
 }
 
 const BundlePlayerTitle = ({ offer }: Props) => {
+
+    const { colors } = useThemeContext();
 
     const { data, error, isLoading } = useGetTitleByIdQuery(offer.Rewards[0].ItemID);
 
@@ -31,12 +35,13 @@ const BundlePlayerTitle = ({ offer }: Props) => {
     return (
         <ImageBackground
             source={require("../../../../assets/player-title.png")}
-            className="bg-[#222429] p-4"
             style={{
-                flexDirection: "column",
+                gap: 16,
+                padding: 16,
                 borderRadius: 16,
                 overflow: "hidden",
-                gap: 16
+                flexDirection: "column",
+                backgroundColor: colors.card
             }}
             blurRadius={150}
         >

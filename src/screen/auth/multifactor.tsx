@@ -51,7 +51,14 @@ const Multifactor = () => {
     };
 
     return (
-        <View className="flex-1 justify-around items-center" style={{ backgroundColor: colors.background }}>
+        <View
+            style={{
+                flex: 1,
+                alignItems: "center",
+                justifyContent: "space-around",
+                backgroundColor: colors.background
+            }}
+        >
             <Text variant="displaySmall" style={{ color: colors.text }}>Welcome back!</Text>
             <View style={styles.inputsContainer}>
                 {inputs.map((input, index) => (

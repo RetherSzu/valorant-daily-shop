@@ -107,8 +107,6 @@ export function AuthProvider({ children }: Props) {
         ]);
 
         try {
-            if (!accessToken && !entitlementsToken) return;
-
             const shop = await valorantProvider.getFrontShop();
 
             dispatch({

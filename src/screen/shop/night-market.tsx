@@ -30,7 +30,7 @@ const NightMarket = () => {
 
     return (
         <View style={{ backgroundColor: colors.background, flex: 1 }}>
-            <View className="flex flex-row items-center justify-between p-4">
+            <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", padding: 16 }}>
                 <Text variant="titleMedium" style={{ color: colors.text }}>TIME LEFT:</Text>
                 <Text variant="titleMedium" style={{ color: "#E5E1B2" }}>
                     {secondsToDhms(nightMarket?.BonusStoreRemainingDurationInSeconds ?? 0)}

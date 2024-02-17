@@ -60,8 +60,15 @@ const CardItemOffer = ({ item }: Props): ReactElement => {
 
     return (
         <ImageBackground
-            className="flex-1 bg-[#222429] p-4"
-            style={{ position: "relative", overflow: "hidden", borderRadius: 16, maxWidth: width / 2 - 24 }}
+            style={{
+                flex: 1,
+                padding: 16,
+                position: "relative",
+                overflow: "hidden",
+                borderRadius: 16,
+                maxWidth: width / 2 - 24,
+                backgroundColor: colors.card
+            }}
             source={{ uri: skinData.wallpaper }}
         >
             {!skinData.wallpaper && (

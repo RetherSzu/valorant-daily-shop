@@ -91,7 +91,7 @@ const Login = (): ReactElement => {
     }, []);
 
     return (
-        <View className="flex-1 justify-center p-4 gap-4" style={{ backgroundColor: colors.background }}>
+        <View style={{ flex: 1, justifyContent: "center", padding: 16, gap: 32, backgroundColor: colors.background }}>
             <View style={{ alignItems: "center", justifyContent: "center" }}>
                 <Image
                     source={require("../../../assets/icon.png")}
@@ -100,7 +100,7 @@ const Login = (): ReactElement => {
                 />
             </View>
             <Text variant="displayMedium">Sign in</Text>
-            <View className="flex-1" style={{ gap: 16 }}>
+            <View style={{ flex: 1, gap: 16 }}>
                 <RHFTextField
                     name="username"
                     // @ts-ignore
@@ -116,7 +116,7 @@ const Login = (): ReactElement => {
                     style={{ flexDirection: "row-reverse" }}
                     icon={<EyePasswordButton show={show} onPress={() => setShow(!show)} />}
                 />
-                <View className="flex flex-row items-center">
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
                     <Checkbox
                         color={colors.primary}
                         uncheckedColor="#222429"

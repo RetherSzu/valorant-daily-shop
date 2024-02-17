@@ -25,8 +25,8 @@ const DailyShop = () => {
     }
 
     return (
-        <View className="flex-1 pt-4" style={{ backgroundColor: colors.background, gap: 8, paddingHorizontal: 16 }}>
-            <View className="flex flex-row items-center justify-between">
+        <View style={{ flex: 1, paddingTop: 16, backgroundColor: colors.background, gap: 8, paddingHorizontal: 16 }}>
+            <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
                 <Text variant="titleMedium" style={{ color: colors.text }}>NEXT OFFER:</Text>
                 <Text variant="titleMedium" style={{ color: "#E5E1B2" }}>
                     {secToTime(offers.SingleItemOffersRemainingDurationInSeconds)}

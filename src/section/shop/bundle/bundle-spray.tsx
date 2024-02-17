@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Image, ImageBackground, View } from "react-native";
 // api
 import { useGetSprayByIdQuery } from "@/api/rtk-valorant-api";
@@ -5,17 +6,20 @@ import { useGetSprayByIdQuery } from "@/api/rtk-valorant-api";
 import Error from "@/component/error/error";
 import Text from "@/component/typography/text";
 import Loading from "@/component/loading/loading";
+// context
+import { useThemeContext } from "@/context/hook/use-theme-context";
 // section
 import CostPoint from "@/section/shop/cost-point";
 // type
 import { Offer } from "@/type/api/shop";
-import { useEffect } from "react";
 
 type Props = {
     offer: Offer;
 }
 
 const BundleSpray = ({ offer }: Props) => {
+
+    const { colors } = useThemeContext();
 
     const { data, error, isLoading } = useGetSprayByIdQuery(offer.Rewards[0].ItemID);
 
@@ -49,8 +53,14 @@ const BundleSpray = ({ offer }: Props) => {
         <ImageBackground
             source={{ uri: skinData.fullIcon, scale: 10 }}
             blurRadius={50}
-            className="bg-[#222429] p-4"
-            style={{ flexDirection: "column", borderRadius: 16, overflow: "hidden", gap: 16 }}
+            style={{
+                gap: 16,
+                padding: 16,
+                borderRadius: 16,
+                overflow: "hidden",
+                flexDirection: "column",
+                backgroundColor: colors.card
+            }}
         >
             <Text variant="titleLarge" style={{ fontWeight: "bold" }} numberOfLines={1}>
                 {skinData.displayName}
