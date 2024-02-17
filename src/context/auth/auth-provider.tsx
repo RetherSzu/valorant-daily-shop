@@ -133,7 +133,7 @@ export function AuthProvider({ children }: Props) {
                 await login(username, password);
             }
 
-            console.error(error);
+            dispatch({ type: EAuthContextType.INITIAL, payload: {} });
         }
     }, []);
 
