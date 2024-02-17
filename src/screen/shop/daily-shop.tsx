@@ -10,18 +10,22 @@ import CardListOffer from "@/section/shop/daily-shop/card-list-offer";
 // util
 import { secToTime } from "@/util/format-time";
 
-const DayliShop = () => {
+const DailyShop = () => {
 
     const { colors } = useThemeContext();
 
     const { shop: { offers } } = useAuthContext();
 
     if (offers.SingleItemOffers.length === 0) {
-        return <Loading />;
+        return (
+            <View style={{ backgroundColor: colors.background }}>
+                <Loading />
+            </View>
+        );
     }
 
     return (
-        <View className="flex-1 pt-4" style={{ backgroundColor: "#1B1D21", gap: 8, paddingHorizontal: 16 }}>
+        <View className="flex-1 pt-4" style={{ backgroundColor: colors.background, gap: 8, paddingHorizontal: 16 }}>
             <View className="flex flex-row items-center justify-between">
                 <Text variant="titleMedium" style={{ color: colors.text }}>NEXT OFFER:</Text>
                 <Text variant="titleMedium" style={{ color: "#E5E1B2" }}>
@@ -33,4 +37,4 @@ const DayliShop = () => {
     );
 };
 
-export default DayliShop;
+export default DailyShop;

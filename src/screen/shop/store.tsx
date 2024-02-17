@@ -7,7 +7,7 @@ import { useAuthContext } from "@/context/hook/use-auth-context";
 import { useThemeContext } from "@/context/hook/use-theme-context";
 // screen
 import BundleView from "@/screen/shop/bundle";
-import DayliShop from "@/screen/shop/daily-shop";
+import DailyShop from "@/screen/shop/daily-shop";
 import NightMarket from "@/screen/shop/night-market";
 
 const Tab = createMaterialTopTabNavigator();
@@ -58,7 +58,7 @@ const Store = () => {
             {/* @ts-ignore */}
             <Tab.Navigator {...tabNavigatorOptions}>
                 <Tab.Screen name="Featured collection" component={BundleView} />
-                <Tab.Screen name="Offers" component={DayliShop} />
+                <Tab.Screen name="Offers" component={DailyShop} />
                 {nightMarket ? <Tab.Screen name="Night market" component={NightMarket} /> : null}
             </Tab.Navigator>
         </View>
