@@ -138,46 +138,50 @@ export function AuthProvider({ children }: Props) {
     }, []);
 
     const login = async (username: string, password: string) => {
+        try {
+            const cookies = await authLogic.authCookie();
 
-        const cookies = await authLogic.authCookie();
+            if (cookies["ssid"] != "") {
+                await authLogic.cookieReauth();
+            } else {
+                const multifactor = await authLogic.getToken(username, password);
 
-        if (cookies["ssid"] != "") {
-            await authLogic.cookieReauth();
-        } else {
-            const multifactor = await authLogic.getToken(username, password);
-
-            if (multifactor) {
-                navigation.navigate("Multifactor");
-                return;
+                if (multifactor) {
+                    navigation.navigate("Multifactor");
+                    return;
+                }
             }
+
+            await authLogic.getEntitlement();
+
+            const accessToken = SecureStore.getItem("access_token");
+            const entitlementsToken = SecureStore.getItem("entitlements_token");
+
+            dispatch({
+                type: EAuthContextType.SET_TOKEN,
+                payload: {
+                    accessToken,
+                    entitlementsToken
+                }
+            });
+
+            await valorantProvider.getUserInfo();
+
+            const balance = await valorantProvider.getUserBalance();
+
+            dispatch({ type: EAuthContextType.SET_BALANCE, payload: balance });
+
+            const shop = await valorantProvider.getFrontShop();
+
+            if (!shop) return;
+
+            dispatch({ type: EAuthContextType.SET_SHOP, payload: shop });
+
+            return Promise.resolve();
+        } catch (error) {
+            dispatch({ type: EAuthContextType.LOGOUT, payload: {} });
+            throw error;
         }
-
-        await authLogic.getEntitlement();
-
-        const accessToken = SecureStore.getItem("access_token");
-        const entitlementsToken = SecureStore.getItem("entitlements_token");
-
-        dispatch({
-            type: EAuthContextType.SET_TOKEN,
-            payload: {
-                accessToken,
-                entitlementsToken
-            }
-        });
-
-        await valorantProvider.getUserInfo();
-
-        const balance = await valorantProvider.getUserBalance();
-
-        dispatch({ type: EAuthContextType.SET_BALANCE, payload: balance });
-
-        const shop = await valorantProvider.getFrontShop();
-
-        if (!shop) return;
-
-        dispatch({ type: EAuthContextType.SET_SHOP, payload: shop });
-
-        return Promise.resolve();
     };
 
     const logout = async () => {

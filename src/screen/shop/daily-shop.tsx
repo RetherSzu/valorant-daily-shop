@@ -18,7 +18,7 @@ const DailyShop = () => {
 
     if (offers.SingleItemOffers.length === 0) {
         return (
-            <View style={{ backgroundColor: colors.background }}>
+            <View style={{ flex: 1, backgroundColor: colors.background }}>
                 <Loading />
             </View>
         );

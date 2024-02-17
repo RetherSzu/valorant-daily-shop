@@ -1,6 +1,6 @@
-import { Text } from "react-native-paper";
-import { Image, ImageBackground, View } from "react-native";
 import { ReactElement } from "react";
+import { Text } from "react-native-paper";
+import { Dimensions, Image, ImageBackground, View } from "react-native";
 // api
 import { useGetThemeByIdQuery, useGetWeaponByLevelIdQuery } from "@/api/rtk-valorant-api";
 // component
@@ -18,6 +18,8 @@ import { getContentTierIcon } from "@/util/content-tier-icon";
 type Props = {
     item: Offer;
 }
+
+const width = Dimensions.get("window").width;
 
 const CardItemOffer = ({ item }: Props): ReactElement => {
 
@@ -37,7 +39,20 @@ const CardItemOffer = ({ item }: Props): ReactElement => {
         isLoading: isLoadingTheme
     } = useGetThemeByIdQuery(skinData?.themeUuid ?? "");
 
-    if (isLoadingWeapon || isLoadingTheme) return <Loading />;
+    if (isLoadingWeapon || isLoadingTheme) {
+        return (
+            <View style={{
+                flex: 1,
+                justifyContent: "center",
+                alignItems: "center",
+                backgroundColor: "#222429",
+                borderRadius: 16,
+                width: width / 2 - 24
+            }}>
+                <Loading />
+            </View>
+        );
+    }
 
     if (weaponSkinError || !skinData || themeError || !themeData) return <Error />;
 
@@ -46,7 +61,7 @@ const CardItemOffer = ({ item }: Props): ReactElement => {
     return (
         <ImageBackground
             className="flex-1 bg-[#222429] p-4"
-            style={{ position: "relative", overflow: "hidden", borderRadius: 16 }}
+            style={{ position: "relative", overflow: "hidden", borderRadius: 16, maxWidth: width / 2 - 24 }}
             source={{ uri: skinData.wallpaper }}
         >
             {!skinData.wallpaper && (
@@ -74,7 +89,7 @@ const CardItemOffer = ({ item }: Props): ReactElement => {
             </View>
             <Image
                 source={{ uri: skinData.displayIcon ?? skinData.chromas[0].displayIcon ?? skinData.chromas[0].fullRender }}
-                style={{ flex: 1, transform: [{ rotate: "22.5deg" }, { scale: 1 }] }}
+                style={{ flex: 1, transform: [{ rotate: "22.5deg" }] }}
                 resizeMode="center"
             />
             <CostPoint currencyId={Object.keys(item.Cost)[0]} cost={item.Cost[Object.keys(item.Cost)[0]]} />

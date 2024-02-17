@@ -58,7 +58,8 @@ const authLogic = {
                 SecureStore.setItem(key, value as string);
             }
         } catch (error) {
-            console.error(error);
+            console.error("authCookie", error);
+            throw error;
         }
         return cookies;
     },
@@ -102,7 +103,7 @@ const authLogic = {
                 SecureStore.setItem("access_token", tokenMatch[1]);
             }
         } catch (error) {
-            console.log(error);
+            throw new AxiosError("Invalid username or password");
         }
         return false;
     },
@@ -137,6 +138,8 @@ const authLogic = {
                 SecureStore.setItem("access_token", tokenMatch[1]);
                 return tokenMatch[1];
             }
+            console.log("cookie reauth error", error);
+            throw error;
         }
     },
 
@@ -156,14 +159,15 @@ const authLogic = {
         };
 
         try {
-            const response: AxiosResponse<{ entitlements_token: string }> = await axiosInstance.request(options);
+            const response: AxiosResponse<{ entitlements_token: string }> = await axios.request(options);
             const entitlementsToken: string = response.data?.entitlements_token;
 
             if (!entitlementsToken) throw new Error("Entitlements token not found");
 
             await SecureStore.setItemAsync("entitlements_token", entitlementsToken);
         } catch (error) {
-            console.log(error);
+            console.log("getEntitlement", error);
+            throw error;
         }
     },
 

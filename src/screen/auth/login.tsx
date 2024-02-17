@@ -1,4 +1,5 @@
 import * as Yup from "yup";
+import { AxiosError } from "axios";
 import { useForm } from "react-hook-form";
 import { Image, View } from "react-native";
 import { Checkbox } from "react-native-paper";
@@ -56,10 +57,8 @@ const Login = (): ReactElement => {
                 await SecureStore.setItemAsync("stay_sign_in", String(staySignIn));
                 await SecureStore.setItemAsync("username", data.username);
                 await SecureStore.setItemAsync("password", data.password);
-            }
-
-            // Ensure that the username and password was deleted
-            if (!staySignIn) {
+            } else {
+                // Ensure that the username and password was deleted
                 await SecureStore.deleteItemAsync("stay_sign_in");
                 await SecureStore.deleteItemAsync("username");
                 await SecureStore.deleteItemAsync("password");
@@ -67,8 +66,12 @@ const Login = (): ReactElement => {
 
             await login(data.username, data.password);
         } catch (error: any) {
-            console.error(error);
             reset();
+            const axiosError = error as AxiosError;
+            if (axiosError.response?.status === 401) {
+                setErrorMsg("Invalid username or password");
+                return;
+            }
             setErrorMsg(typeof error === "string" ? error : error.message);
         }
     });

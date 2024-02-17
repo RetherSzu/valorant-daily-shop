@@ -56,9 +56,9 @@ const BundleView = () => {
 
     useEffect(() => {
         console.log("getBundles useEffect");
-        setBundlesInfos([]);
 
         const getBundles = async () => {
+            if (featuredBundle.Bundles.length === 0) return;
             console.log("getBundles");
             const bundlePromises = featuredBundle.Bundles.map(async (bundle) => {
                 const bundleInfo = await valorantProvider.getBundle(bundle.DataAssetID);
@@ -66,18 +66,14 @@ const BundleView = () => {
             });
 
             const bundlesInfos = await Promise.all(bundlePromises);
-            console.log(bundlesInfos.length, bundleLoading);
+            console.log("useeffect", bundlesInfos.length, bundleLoading);
 
             setBundlesInfos((prev) => [...prev, ...bundlesInfos]);
             setBundleLoading(false);
         };
 
         (async () => getBundles())();
-    }, []);
-
-    useEffect(() => {
-        console.log(bundlesInfos.length, bundleLoading);
-    }, [bundleLoading, bundlesInfos]);
+    }, [featuredBundle.Bundles.length]);
 
     if (bundleLoading || bundlesInfos.length === 0) {
         return (

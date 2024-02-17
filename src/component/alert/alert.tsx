@@ -12,11 +12,11 @@ const Alert = ({ severity, children }: Props) => {
 
     const alertColor = {
         "error": {
-            backgroundColor: "rgb(255,48,48)",
-            color: "#ffac82"
+            backgroundColor: "#B71D18",
+            color: "#ffffff"
         },
         "warning": {
-            backgroundColor: "rgb(255,191,0)",
+            backgroundColor: "#FFBF00",
             color: "#212b36"
         }
     };
