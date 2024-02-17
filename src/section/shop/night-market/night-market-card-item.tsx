@@ -1,5 +1,5 @@
 import { Image, View } from "react-native";
-import { ReactElement, useMemo } from "react";
+import { ReactElement } from "react";
 // api
 import { useGetThemeByIdQuery, useGetWeaponByLevelIdQuery } from "@/api/rtk-valorant-api";
 // component
@@ -23,10 +23,6 @@ type Props = {
 const NightMarketCardItem = ({ item }: Props): ReactElement => {
 
     const { colors } = useThemeContext();
-
-    const discountCostsPercentage = useMemo(() => {
-        return Math.floor((item.Offer.Cost[Object.keys(item.Offer.Cost)[0]] - item.DiscountCosts[Object.keys(item.DiscountCosts)[0]]) / item.Offer.Cost[Object.keys(item.Offer.Cost)[0]] * 100);
-    }, [item]);
 
     const {
         data: weaponSkinData,
@@ -84,7 +80,7 @@ const NightMarketCardItem = ({ item }: Props): ReactElement => {
                     opacity: .05
                 }}
             />
-            <DiscountBadge discount={discountCostsPercentage} />
+            <DiscountBadge discount={item.DiscountPercent} />
             <Text variant="titleLarge" style={{ color: colors.text, fontWeight: "bold" }} numberOfLines={1}>
                 {skinData.displayName.replace(theme.displayName, "").replace(/\s/g, "")}
             </Text>
