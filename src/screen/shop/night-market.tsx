@@ -21,7 +21,7 @@ const NightMarket = () => {
     }
 
     const nightMarketOffers = (
-        <ScrollView style={{ paddingHorizontal: 16 }} contentContainerStyle={{ rowGap: 16 }}>
+        <ScrollView style={{ paddingHorizontal: 16 }} contentContainerStyle={{ rowGap: 16 }} overScrollMode="never">
             {nightMarket?.BonusStoreOffers.map((offer, index) => {
                 return <NightMarketCardItem item={offer} key={index} />;
             })}
