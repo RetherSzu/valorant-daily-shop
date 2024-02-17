@@ -2,13 +2,13 @@ import { Image, ImageBackground, View } from "react-native";
 // api
 import { useGetGunBuddyByIdQuery } from "@/api/rtk-valorant-api";
 // component
+import Error from "@/component/error/error";
 import Text from "@/component/typography/text";
-import Loading from "@/component/loading/loading";
 // section
 import CostPoint from "@/section/shop/cost-point";
+import BundleGunBuddySkeleton from "@/section/shop/bundle/gun-buddy/bundle-gun-buddy-skeleton";
 // type
 import { Offer } from "@/type/api/shop";
-import Error from "@/component/error/error";
 
 type Props = {
     offer: Offer;
@@ -19,7 +19,7 @@ export const BundleGunBuddy = ({ offer }: Props) => {
     const { data, error, isLoading } = useGetGunBuddyByIdQuery(offer.Rewards[0].ItemID);
 
     if (isLoading) {
-        return <Loading />;
+        return <BundleGunBuddySkeleton />;
     }
 
 
@@ -44,7 +44,7 @@ export const BundleGunBuddy = ({ offer }: Props) => {
                 style={{
                     gap: 16,
                     flex: 1,
-                    padding: 16,
+                    padding: 8,
                     flexDirection: "column",
                     justifyContent: "space-between"
                 }}

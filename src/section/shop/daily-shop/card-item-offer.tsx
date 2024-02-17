@@ -5,11 +5,11 @@ import { Dimensions, Image, ImageBackground, View } from "react-native";
 import { useGetThemeByIdQuery, useGetWeaponByLevelIdQuery } from "@/api/rtk-valorant-api";
 // component
 import Error from "@/component/error/error";
-import Loading from "@/component/loading/loading";
 // context
 import { useThemeContext } from "@/context/hook/use-theme-context";
 // section
 import CostPoint from "@/section/shop/cost-point";
+import CardOfferSkeleton from "@/section/shop/daily-shop/card-offer-skeleton";
 // type
 import { Offer } from "@/type/api/shop";
 // util
@@ -40,18 +40,7 @@ const CardItemOffer = ({ item }: Props): ReactElement => {
     } = useGetThemeByIdQuery(skinData?.themeUuid ?? "");
 
     if (isLoadingWeapon || isLoadingTheme) {
-        return (
-            <View style={{
-                flex: 1,
-                justifyContent: "center",
-                alignItems: "center",
-                backgroundColor: "#222429",
-                borderRadius: 16,
-                width: width / 2 - 24
-            }}>
-                <Loading />
-            </View>
-        );
+        return <CardOfferSkeleton />;
     }
 
     if (weaponSkinError || !skinData || themeError || !themeData) return <Error />;
@@ -62,7 +51,7 @@ const CardItemOffer = ({ item }: Props): ReactElement => {
         <ImageBackground
             style={{
                 flex: 1,
-                padding: 16,
+                padding: 8,
                 position: "relative",
                 overflow: "hidden",
                 borderRadius: 16,

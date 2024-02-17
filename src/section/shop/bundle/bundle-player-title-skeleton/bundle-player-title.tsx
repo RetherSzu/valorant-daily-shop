@@ -4,11 +4,11 @@ import { useGetTitleByIdQuery } from "@/api/rtk-valorant-api";
 // component
 import Error from "@/component/error/error";
 import Text from "@/component/typography/text";
-import Loading from "@/component/loading/loading";
 // context
 import { useThemeContext } from "@/context/hook/use-theme-context";
 // section
 import CostPoint from "@/section/shop/cost-point";
+import BundlePlayerTitleSkeleton from "@/section/shop/bundle/bundle-player-title-skeleton/bundle-player-title-skeleton";
 // type
 import { Offer } from "@/type/api/shop";
 
@@ -23,21 +23,21 @@ const BundlePlayerTitle = ({ offer }: Props) => {
     const { data, error, isLoading } = useGetTitleByIdQuery(offer.Rewards[0].ItemID);
 
     if (isLoading) {
-        return (<Loading />);
+        return <BundlePlayerTitleSkeleton />;
     }
 
     if (error || !data) {
-        return (<Error />);
+        return <Error />;
     }
 
     const playerTitle = data.data;
 
     return (
         <ImageBackground
-            source={require("../../../../assets/player-title.png")}
+            source={require("@/assets/player-title.png")}
             style={{
                 gap: 16,
-                padding: 16,
+                padding: 8,
                 borderRadius: 16,
                 overflow: "hidden",
                 flexDirection: "column",
@@ -46,7 +46,7 @@ const BundlePlayerTitle = ({ offer }: Props) => {
             blurRadius={150}
         >
             <View style={{ justifyContent: "center", alignItems: "center" }}>
-                <Image source={require("../../../../assets/player-title.png")} style={{ width: 150, height: 100 }} />
+                <Image source={require("@/assets/player-title.png")} style={{ width: 150, height: 100 }} />
             </View>
             <Text
                 variant="titleLarge"

@@ -1,6 +1,6 @@
 import { useFonts } from "expo-font";
-import { ReactElement, useEffect } from "react";
 import { Provider } from "react-redux";
+import { ReactElement, useEffect } from "react";
 import * as SplashScreen from "expo-splash-screen";
 // context
 import { AuthProvider } from "@/context/auth/auth-provider";

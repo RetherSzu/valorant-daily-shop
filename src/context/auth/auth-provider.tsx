@@ -124,14 +124,14 @@ export function AuthProvider({ children }: Props) {
             });
 
         } catch (error) {
+            dispatch({ type: EAuthContextType.INITIAL, payload: {} });
+
             const username = await SecureStore.getItemAsync("username");
             const password = await SecureStore.getItemAsync("password");
 
             if (username && password) {
                 await login(username, password);
             }
-
-            dispatch({ type: EAuthContextType.INITIAL, payload: {} });
         }
     }, []);
 

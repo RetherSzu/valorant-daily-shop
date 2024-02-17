@@ -1,15 +1,14 @@
-import { useEffect } from "react";
 import { Image, ImageBackground, View } from "react-native";
 // api
 import { useGetSprayByIdQuery } from "@/api/rtk-valorant-api";
 // component
 import Error from "@/component/error/error";
 import Text from "@/component/typography/text";
-import Loading from "@/component/loading/loading";
 // context
 import { useThemeContext } from "@/context/hook/use-theme-context";
 // section
 import CostPoint from "@/section/shop/cost-point";
+import BundleSpraySkeleton from "@/section/shop/bundle/bundle-spray/bundle-spray-skeleton";
 // type
 import { Offer } from "@/type/api/shop";
 
@@ -23,15 +22,12 @@ const BundleSpray = ({ offer }: Props) => {
 
     const { data, error, isLoading } = useGetSprayByIdQuery(offer.Rewards[0].ItemID);
 
-    useEffect(() => {
-    }, [offer.Rewards[0].ItemID]);
-
     if (isLoading) {
-        return (<Loading />);
+        return <BundleSpraySkeleton />;
     }
 
     if (error || !data) {
-        return (<Error />);
+        return <Error />;
     }
 
     const skinData = data.data;
@@ -48,14 +44,13 @@ const BundleSpray = ({ offer }: Props) => {
         );
     });
 
-
     return (
         <ImageBackground
             source={{ uri: skinData.fullIcon, scale: 10 }}
             blurRadius={50}
             style={{
                 gap: 16,
-                padding: 16,
+                padding: 8,
                 borderRadius: 16,
                 overflow: "hidden",
                 flexDirection: "column",

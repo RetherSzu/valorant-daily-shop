@@ -5,12 +5,12 @@ import { useGetThemeByIdQuery, useGetWeaponByLevelIdQuery } from "@/api/rtk-valo
 // component
 import Error from "@/component/error/error";
 import Text from "@/component/typography/text";
-import Loading from "@/component/loading/loading";
 // context
 import { useThemeContext } from "@/context/hook/use-theme-context";
 // section
 import CostPoint from "@/section/shop/cost-point";
 import DiscountBadge from "@/section/shop/night-market/discount-badge";
+import NightMarketCardSkeleton from "@/section/shop/night-market/night-market-card-skeleton";
 // type
 import { BonusStoreOffer } from "@/type/api/shop/night-market";
 // util
@@ -38,7 +38,7 @@ const NightMarketCardItem = ({ item }: Props): ReactElement => {
         isLoading: isLoadingTheme
     } = useGetThemeByIdQuery(skinData?.themeUuid ?? "");
 
-    if (isLoadingWeapon || isLoadingTheme) return <Loading />;
+    if (isLoadingWeapon || isLoadingTheme) return <NightMarketCardSkeleton />;
 
     if (weaponSkinError || !skinData || themeError || !themeData) return <Error />;
 
@@ -47,7 +47,7 @@ const NightMarketCardItem = ({ item }: Props): ReactElement => {
     return (
         <View
             style={{
-                padding: 16,
+                padding: 8,
                 borderRadius: 16,
                 overflow: "hidden",
                 position: "relative",

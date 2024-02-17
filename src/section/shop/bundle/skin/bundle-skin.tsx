@@ -4,13 +4,13 @@ import { useGetThemeByIdQuery, useGetWeaponByLevelIdQuery } from "@/api/rtk-valo
 // component
 import Error from "@/component/error/error";
 import Text from "@/component/typography/text";
-import Loading from "@/component/loading/loading";
 // section
 import CostPoint from "@/section/shop/cost-point";
 // type
 import { Offer } from "@/type/api/shop";
 // util
 import { getContentTierIcon } from "@/util/content-tier-icon";
+import BundleSkinSkeleton from "@/section/shop/bundle/skin/bundle-skin-skeleton";
 
 // -------------------------------------------------
 
@@ -34,7 +34,7 @@ const BundleSkin = ({ offer }: Props) => {
         isLoading: isLoadingTheme
     } = useGetThemeByIdQuery(skinData?.themeUuid ?? "");
 
-    if (isLoadingWeapon || isLoadingTheme) return <Loading />;
+    if (isLoadingWeapon || isLoadingTheme) return <BundleSkinSkeleton />;
 
     if (weaponSkinError || !skinData || themeError || !themeData) return <Error />;
 

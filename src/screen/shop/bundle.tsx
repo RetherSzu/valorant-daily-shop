@@ -10,12 +10,12 @@ import { useAuthContext } from "@/context/hook/use-auth-context";
 import { useThemeContext } from "@/context/hook/use-theme-context";
 // section
 import SlideItem from "@/section/shop/bundle/slide-item";
-import BundleSkin from "@/section/shop/bundle/bundle-skin";
-import BundleCard from "@/section/shop/bundle/bundle-card";
-import BundleSpray from "@/section/shop/bundle/bundle-spray";
+import BundleSkin from "@/section/shop/bundle/skin/bundle-skin";
+import BundleCard from "@/section/shop/bundle/bundle-card/bundle-card";
+import BundleSpray from "@/section/shop/bundle/bundle-spray/bundle-spray";
 import Pagination from "@/section/shop/bundle/slider-pagination";
-import BundleGunBuddy from "@/section/shop/bundle/bundle-gun-buddy";
-import BundlePlayerTitle from "@/section/shop/bundle/bundle-player-title";
+import BundleGunBuddy from "@/section/shop/bundle/gun-buddy/bundle-gun-buddy";
+import BundlePlayerTitle from "@/section/shop/bundle/bundle-player-title-skeleton/bundle-player-title";
 // type
 import { BundlesData } from "@/type/api/shop/bundle";
 

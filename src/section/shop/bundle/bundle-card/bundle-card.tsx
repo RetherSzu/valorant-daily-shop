@@ -4,9 +4,9 @@ import { useGetPlayerCardIdQuery } from "@/api/rtk-valorant-api";
 // component
 import Error from "@/component/error/error";
 import Text from "@/component/typography/text";
-import Loading from "@/component/loading/loading";
 // section
 import CostPoint from "@/section/shop/cost-point";
+import BundleCardSkeleton from "@/section/shop/bundle/bundle-card/bundle-card-skeleton";
 // type
 import { Offer } from "@/type/api/shop";
 
@@ -19,11 +19,11 @@ export const BundleCard = ({ offer }: Props) => {
     const { data, error, isLoading } = useGetPlayerCardIdQuery(offer.Rewards[0].ItemID);
 
     if (isLoading) {
-        return (<Loading />);
+        return <BundleCardSkeleton />;
     }
 
     if (error || !data) {
-        return (<Error />);
+        return <Error />;
     }
 
     const itemInfo = data.data;
@@ -44,7 +44,7 @@ export const BundleCard = ({ offer }: Props) => {
                 style={{
                     gap: 16,
                     flex: 1,
-                    padding: 16,
+                    padding: 8,
                     flexDirection: "column",
                     justifyContent: "space-between"
                 }}
