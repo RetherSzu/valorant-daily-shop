@@ -2,6 +2,8 @@ import * as SecureStore from "expo-secure-store";
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 // type
 import { StorefrontResponse } from "@/type/api/shop";
+import { WalletResponse } from "@/type/api/user-balance";
+import { PlayerInfoResponse } from "@/type/api/auth/user-info";
 
 // ----------------------------------------------------------------------
 
@@ -25,10 +27,14 @@ const valorantProvider = {
             headers: { Authorization: `Bearer ${accessToken}` }
         };
 
-        const response = await requestWithHeaders(options);
+        const response: AxiosResponse<PlayerInfoResponse> = await requestWithHeaders(options);
 
-        if (response.data?.sub) {
+        if (response.data.sub) {
             await SecureStore.setItemAsync("sub", response.data.sub);
+        }
+
+        if (response.data.affinity["pp"]) {
+            await SecureStore.setItemAsync("pp", response.data.affinity["pp"]);
         }
     },
 
@@ -37,27 +43,28 @@ const valorantProvider = {
         valorantPoint: string,
         kingdomCredit: string,
     }> => {
-        const [accessToken, entitlementsToken, sub] = await Promise.all([
+        const [accessToken, entitlementsToken, sub, pp] = await Promise.all([
             SecureStore.getItemAsync("access_token"),
             SecureStore.getItemAsync("entitlements_token"),
-            SecureStore.getItemAsync("sub")
+            SecureStore.getItemAsync("sub"),
+            SecureStore.getItemAsync("pp")
         ]);
 
         const options = {
             method: "GET",
-            url: `https://pd.eu.a.pvp.net/store/v1/wallet/${sub}`,
+            url: `https://pd.${pp}.a.pvp.net/store/v1/wallet/${sub}`,
             headers: {
                 Authorization: `Bearer ${accessToken}`,
                 "X-Riot-Entitlements-JWT": ` ${entitlementsToken}`
             }
         };
 
-        const response = await requestWithHeaders(options);
+        const response: AxiosResponse<WalletResponse> = await requestWithHeaders(options);
 
         const balance = {
-            radianitePoint: response.data?.Balances["e59aa87c-4cbf-517a-5983-6e81511be9b7"].toString(),
-            valorantPoint: response.data?.Balances["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"].toString(),
-            kingdomCredit: response.data?.Balances["85ca954a-41f2-ce94-9b45-8ca3dd39a00d"].toString()
+            radianitePoint: response.data.Balances["e59aa87c-4cbf-517a-5983-6e81511be9b7"].toString(),
+            valorantPoint: response.data.Balances["85ad13f7-3d1b-5128-9eb2-7cd8ee0b5741"].toString(),
+            kingdomCredit: response.data.Balances["85ca954a-41f2-ce94-9b45-8ca3dd39a00d"].toString()
         };
 
         await SecureStore.setItemAsync("radianite_point", balance.radianitePoint);
@@ -68,15 +75,16 @@ const valorantProvider = {
     },
 
     getFrontShop: async () => {
-        const [accessToken, entitlementsToken, sub] = await Promise.all([
+        const [accessToken, entitlementsToken, sub, pp] = await Promise.all([
             SecureStore.getItemAsync("access_token"),
             SecureStore.getItemAsync("entitlements_token"),
-            SecureStore.getItemAsync("sub")
+            SecureStore.getItemAsync("sub"),
+            SecureStore.getItemAsync("pp")
         ]);
 
         const options = {
             method: "GET",
-            url: `https://pd.eu.a.pvp.net/store/v2/storefront/${sub}`,
+            url: `https://pd.${pp}.a.pvp.net/store/v2/storefront/${sub}`,
             headers: {
                 Authorization: `Bearer ${accessToken}`,
                 "X-Riot-Entitlements-JWT": ` ${entitlementsToken}`
@@ -111,7 +119,7 @@ const valorantProvider = {
         } catch (error) {
             console.error(error);
         }
-    },
+    }
 };
 
 export default valorantProvider;

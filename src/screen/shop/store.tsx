@@ -30,7 +30,7 @@ const Store = () => {
             },
             tabBarStyle: {
                 backgroundColor: "#1B1D21",
-                paddingLeft: 8
+                paddingHorizontal: 8
             },
             tabBarLabelStyle: {
                 fontSize: 16,

@@ -20,8 +20,9 @@
         "android": {
             "adaptiveIcon": {
                 "foregroundImage": "./assets/adaptive-icon.png",
-                "backgroundColor": "#ffffff"
-            }
+                "backgroundColor": "#1B1D21"
+            },
+            "package": "valorant.daily.shop"
         },
         "web": {
             "favicon": "./assets/favicon.png"
