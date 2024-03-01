@@ -32,7 +32,8 @@ export const initialAuthState: IAuthContext = {
             Bundle: undefined,
             BundleRemainingDurationInSeconds: 0
         },
-        nightMarket: undefined
+        nightMarket: undefined,
+        plugins: []
     }
 };
 

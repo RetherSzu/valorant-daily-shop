@@ -1,7 +1,8 @@
 // type
 import { BonusStore } from "@/type/api/shop/night-market";
-import { SkinsPanelLayout } from "@/type/api/shop/dayli-shop";
 import { FeaturedBundle } from "@/type/api/shop/bundle";
+import { PluginStores } from "@/type/api/shop/plugin-store";
+import { SkinsPanelLayout } from "@/type/api/shop/dayli-shop";
 
 export type IAuthContext = {
     // fn
@@ -23,6 +24,7 @@ export type IAuthContext = {
         offers: SkinsPanelLayout;
         bundles: FeaturedBundle;
         nightMarket?: BonusStore;
+        plugins?: PluginStores;
     };
 }
 

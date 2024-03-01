@@ -18,6 +18,9 @@ export const rtkValorantApi = createApi({
         }
     }),
     endpoints: (builder) => ({
+        getBundleById: builder.query<Response<any>, string>({
+            query: (id: string) => `/bundles/${id}`
+        }),
         getWeaponByLevelId: builder.query<Response<WeaponSkin>, string>({
             query: (_id) => `/weapons/skins`,
             // @ts-ignore
@@ -63,6 +66,7 @@ export const rtkValorantApi = createApi({
 });
 
 export const {
+    useGetBundleByIdQuery,
     useGetWeaponByLevelIdQuery,
     useGetThemeByIdQuery,
     useGetPlayerCardIdQuery,

@@ -1,5 +1,6 @@
 import { FeaturedBundle } from "@/type/api/shop/bundle";
 import { BonusStore } from "@/type/api/shop/night-market";
+import { PluginStores } from "@/type/api/shop/plugin-store";
 import { SkinsPanelLayout } from "@/type/api/shop/dayli-shop";
 
 export type StorefrontResponse = {
@@ -27,6 +28,7 @@ export type StorefrontResponse = {
     };
     /** Night market */
     BonusStore?: BonusStore;
+    PluginStores?: PluginStores;
 };
 
 export type Offer = {

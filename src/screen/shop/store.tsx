@@ -9,6 +9,7 @@ import { useThemeContext } from "@/context/hook/use-theme-context";
 import BundleView from "@/screen/shop/bundle";
 import DailyShop from "@/screen/shop/daily-shop";
 import NightMarket from "@/screen/shop/night-market";
+import PluginStore from "@/screen/shop/plugin-store";
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -16,7 +17,7 @@ const Store = () => {
 
     const { colors } = useThemeContext();
 
-    const { shop: { nightMarket } } = useAuthContext();
+    const { shop: { nightMarket, plugins } } = useAuthContext();
 
     const tabNavigatorOptions = {
         initialRouteName: "Offers",
@@ -59,7 +60,8 @@ const Store = () => {
             <Tab.Navigator {...tabNavigatorOptions}>
                 <Tab.Screen name="Featured collection" component={BundleView} />
                 <Tab.Screen name="Offers" component={DailyShop} />
-                {nightMarket ? <Tab.Screen name="Night market" component={NightMarket} /> : null}
+                {nightMarket?.BonusStoreOffers && <Tab.Screen name="Night market" component={NightMarket} />}
+                {plugins && <Tab.Screen name="Plugins" component={PluginStore} />}
             </Tab.Navigator>
         </View>
     );

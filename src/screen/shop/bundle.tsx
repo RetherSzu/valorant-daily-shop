@@ -55,18 +55,14 @@ const BundleView = () => {
     }, []);
 
     useEffect(() => {
-        console.log("getBundles useEffect");
-
         const getBundles = async () => {
             if (featuredBundle.Bundles.length === 0) return;
-            console.log("getBundles");
             const bundlePromises = featuredBundle.Bundles.map(async (bundle) => {
                 const bundleInfo = await valorantProvider.getBundle(bundle.DataAssetID);
                 return { bundleInfo, bundle };
             });
 
             const bundlesInfos = await Promise.all(bundlePromises);
-            console.log("useeffect", bundlesInfos.length, bundleLoading);
 
             setBundlesInfos((prev) => [...prev, ...bundlesInfos]);
             setBundleLoading(false);
@@ -131,7 +127,7 @@ const BundleView = () => {
                     onViewableItemsChanged={handleOnViewableItemsChanged}
                     renderItem={(item) => <SlideItem bundle={item.item} bundleIndex={item.index} />}
                 />
-                <Pagination data={bundlesInfos} scrollX={scrollX} />
+                {bundlesInfos.length > 1 && <Pagination data={bundlesInfos} scrollX={scrollX} />}
             </View>
 
             <Text variant="titleLarge" style={{ fontFamily: "DrukWide" }}>COLLECTION</Text>

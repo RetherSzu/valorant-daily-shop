@@ -9,6 +9,7 @@ import Login from "@/screen/auth/login";
 import UnsupportedMultifactor from "@/screen/auth/unsupported-multifactor";
 // route
 import StoreTab from "@/route/store-tab";
+import Plugin from "@/screen/plugin/plugin";
 
 const Stack = createNativeStackNavigator();
 
@@ -30,7 +31,10 @@ const Router = () => {
                         <Stack.Screen name="Multifactor" component={UnsupportedMultifactor} />
                     </>
                 ) : (
-                    <Stack.Screen name="Home" component={StoreTab} />
+                    <>
+                        <Stack.Screen name="Home" component={StoreTab} />
+                        <Stack.Screen name="Plugin" component={Plugin} />
+                    </>
                 )}
             </Stack.Navigator>
         </>

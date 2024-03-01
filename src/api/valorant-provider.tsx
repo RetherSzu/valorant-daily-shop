@@ -98,7 +98,8 @@ const valorantProvider = {
                 return {
                     bundles: response.data.FeaturedBundle,
                     offers: response.data.SkinsPanelLayout,
-                    nightMarket: response.data?.BonusStore
+                    nightMarket: response.data?.BonusStore,
+                    plugins: response.data.PluginStores
                 };
             }
         } catch (error) {
