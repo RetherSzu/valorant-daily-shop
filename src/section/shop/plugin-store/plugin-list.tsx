@@ -1,5 +1,4 @@
 import { View } from "react-native";
-// component
 // context
 import { useAuthContext } from "@/context/hook/use-auth-context";
 // section

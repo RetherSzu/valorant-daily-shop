@@ -30,17 +30,17 @@ const Login = (): ReactElement => {
 
     const LoginSchema = Yup.object().shape({
         username: Yup.string().required("Username is required"),
-        password: Yup.string().required("Password is required")
+        password: Yup.string().required("Password is required"),
     });
 
     const defaultValues = {
         username: "",
-        password: ""
+        password: "",
     };
 
     const methods = useForm({
         resolver: yupResolver(LoginSchema),
-        defaultValues
+        defaultValues,
     });
 
     const {
@@ -48,7 +48,7 @@ const Login = (): ReactElement => {
         handleSubmit,
         formState: { isSubmitting, errors },
         control,
-        setValue
+        setValue,
     } = methods;
 
     const onSubmit = handleSubmit(async (data) => {

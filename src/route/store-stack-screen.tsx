@@ -9,18 +9,20 @@ const StoreStack = createNativeStackNavigator();
 
 const StoreStackScreen = (): ReactElement => {
     return (
-        <StoreStack.Navigator screenOptions={{
-            headerStyle: {
-                backgroundColor: "#1B1D21"
-            },
-            headerTintColor: "#fff",
-            headerShadowVisible: false,
-            contentStyle: {
-                backgroundColor: "#1B1D21"
-            },
-            title: "",
-            "header": () => <Header />
-        }}>
+        <StoreStack.Navigator
+            screenOptions={{
+                headerStyle: {
+                    backgroundColor: "#1B1D21"
+                },
+                headerTintColor: "#fff",
+                headerShadowVisible: false,
+                contentStyle: {
+                    backgroundColor: "#1B1D21"
+                },
+                title: "",
+                "header": () => <Header />
+            }}
+        >
             <StoreStack.Screen name="StoreStack" component={Store} />
         </StoreStack.Navigator>
     );

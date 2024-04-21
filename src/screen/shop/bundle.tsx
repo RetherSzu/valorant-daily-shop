@@ -11,12 +11,12 @@ import { useThemeContext } from "@/context/hook/use-theme-context";
 // section
 import SlideItem from "@/section/shop/bundle/slide-item";
 import BundleSkin from "@/section/shop/bundle/skin/bundle-skin";
-import BundleCard from "@/section/shop/bundle/bundle-card/bundle-card";
-import BundleSpray from "@/section/shop/bundle/bundle-spray/bundle-spray";
+import BundleCard from "@/section/shop/bundle/card/bundle-card";
 import Pagination from "@/section/shop/bundle/slider-pagination";
+import BundleSpray from "@/section/shop/bundle/spray/bundle-spray";
 import BundleGunBuddy from "@/section/shop/bundle/gun-buddy/bundle-gun-buddy";
-import BundlePlayerTitle from "@/section/shop/bundle/bundle-player-title-skeleton/bundle-player-title";
-// type
+import BundlePlayerTitle from "@/section/shop/bundle/player-title/bundle-player-title";
+// types
 import { BundlesData } from "@/type/api/shop/bundle";
 
 const BundleView = () => {
@@ -39,14 +39,14 @@ const BundleView = () => {
                 {
                     nativeEvent: {
                         contentOffset: {
-                            x: scrollX
-                        }
-                    }
-                }
+                            x: scrollX,
+                        },
+                    },
+                },
             ],
             {
-                useNativeDriver: false
-            }
+                useNativeDriver: false,
+            },
         )(event);
     };
 
@@ -78,7 +78,7 @@ const BundleView = () => {
                     backgroundColor: colors.background,
                     flex: 1,
                     justifyContent: "center",
-                    alignItems: "center"
+                    alignItems: "center",
                 }}
             >
                 <Loading />

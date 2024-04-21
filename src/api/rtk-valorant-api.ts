@@ -15,11 +15,11 @@ export const rtkValorantApi = createApi({
         prepareHeaders: async (headers) => {
             headers.set("Content-Type", "application/json");
             return headers;
-        }
+        },
     }),
     endpoints: (builder) => ({
         getBundleById: builder.query<Response<any>, string>({
-            query: (id: string) => `/bundles/${id}`
+            query: (id: string) => `/bundles/${id}`,
         }),
         getWeaponByLevelId: builder.query<Response<WeaponSkin>, string>({
             query: (_id) => `/weapons/skins`,
@@ -33,19 +33,19 @@ export const rtkValorantApi = createApi({
                     }
                 }
                 return { status: 404, data: undefined };
-            }
+            },
         }),
         getThemeById: builder.query<Response<WeaponTheme>, string>({
-            query: (id) => `/themes/${id}`
+            query: (id) => `/themes/${id}`,
         }),
         getPlayerCardId: builder.query<Response<PlayerCard>, string>({
-            query: (id) => `/playercards/${id}`
+            query: (id) => `/playercards/${id}`,
         }),
         getSprayById: builder.query<Response<Spray>, string>({
-            query: (id) => `/sprays/${id}`
+            query: (id) => `/sprays/${id}`,
         }),
         getTitleById: builder.query<Response<PlayerTitle>, string>({
-            query: (id) => `/playertitles/${id}`
+            query: (id) => `/playertitles/${id}`,
         }),
         getGunBuddyById: builder.query<Response<Buddy>, string>({
             query: (_id) => "/buddies",
@@ -59,10 +59,10 @@ export const rtkValorantApi = createApi({
                     }
                 }
                 return { status: 404, data: undefined };
-            }
-        })
+            },
+        }),
     }),
-    reducerPath: "valorantApi"
+    reducerPath: "valorantApi",
 });
 
 export const {
@@ -72,5 +72,5 @@ export const {
     useGetPlayerCardIdQuery,
     useGetSprayByIdQuery,
     useGetTitleByIdQuery,
-    useGetGunBuddyByIdQuery
+    useGetGunBuddyByIdQuery,
 } = rtkValorantApi;

@@ -6,6 +6,7 @@ import valorantProvider from "@/api/valorant-provider";
 import authLogic from "@/auth/auth-logic";
 import { useNavigation } from "@react-navigation/native";
 // type
+import { NavigationProp } from "@/type/router/navigation";
 import { EAuthContextType, IAuthAction, IAuthContext } from "@/type/context/auth";
 //
 import { AuthContext, initialAuthState } from "./auth-context";
@@ -20,7 +21,7 @@ const reducer = (state: IAuthContext, action: IAuthAction<EAuthContextType>) => 
             return {
                 ...state,
                 ...ac.payload,
-                isInitialized: true
+                isInitialized: true,
             };
         case EAuthContextType.SET_TOKEN:
             ac = action as IAuthAction<EAuthContextType.SET_TOKEN>;
@@ -28,27 +29,27 @@ const reducer = (state: IAuthContext, action: IAuthAction<EAuthContextType>) => 
             return {
                 ...state,
                 accessToken: ac.payload.accessToken,
-                entitlementsToken: ac.payload.entitlementsToken
+                entitlementsToken: ac.payload.entitlementsToken,
             };
         case EAuthContextType.LOGOUT:
             return {
                 ...state,
                 accessToken: null,
-                entitlementsToken: null
+                entitlementsToken: null,
             };
         case EAuthContextType.SET_BALANCE:
             ac = action as IAuthAction<EAuthContextType.SET_BALANCE>;
 
             return {
                 ...state,
-                balance: ac.payload
+                balance: ac.payload,
             };
         case EAuthContextType.SET_SHOP:
             ac = action as IAuthAction<EAuthContextType.SET_SHOP>;
 
             return {
                 ...state,
-                shop: ac.payload
+                shop: ac.payload,
             };
         case EAuthContextType.DECREMENT_TIMER:
             return {
@@ -57,22 +58,22 @@ const reducer = (state: IAuthContext, action: IAuthAction<EAuthContextType>) => 
                     ...state.shop,
                     offers: {
                         ...state.shop.offers,
-                        SingleItemOffersRemainingDurationInSeconds: state.shop.offers.SingleItemOffersRemainingDurationInSeconds - 1
+                        SingleItemOffersRemainingDurationInSeconds: state.shop.offers.SingleItemOffersRemainingDurationInSeconds - 1,
                     },
                     bundles: {
                         ...state.shop.bundles,
                         Bundles: state.shop.bundles.Bundles.map((bundle) => {
                             return {
                                 ...bundle,
-                                DurationRemainingInSeconds: bundle.DurationRemainingInSeconds - 1
+                                DurationRemainingInSeconds: bundle.DurationRemainingInSeconds - 1,
                             };
-                        })
+                        }),
                     },
                     nightMarket: {
                         ...state.shop.nightMarket,
-                        BonusStoreRemainingDurationInSeconds: state.shop.nightMarket?.BonusStoreRemainingDurationInSeconds ? state.shop.nightMarket.BonusStoreRemainingDurationInSeconds - 1 : 0
-                    }
-                }
+                        BonusStoreRemainingDurationInSeconds: state.shop.nightMarket?.BonusStoreRemainingDurationInSeconds ? state.shop.nightMarket.BonusStoreRemainingDurationInSeconds - 1 : 0,
+                    },
+                },
             };
         default:
             return state;
@@ -88,7 +89,7 @@ type Props = {
 export function AuthProvider({ children }: Props) {
     const [state, dispatch] = useReducer(reducer, initialAuthState);
 
-    const navigation = useNavigation();
+    const navigation = useNavigation<NavigationProp>();
 
     const initialize = useCallback(async () => {
 
@@ -97,13 +98,13 @@ export function AuthProvider({ children }: Props) {
             entitlementsToken,
             radianitePoint,
             valorantPoint,
-            kingdomCredit
+            kingdomCredit,
         ] = await Promise.all([
             SecureStore.getItemAsync("access_token"),
             SecureStore.getItemAsync("entitlements_token"),
             SecureStore.getItemAsync("radianite_point"),
             SecureStore.getItemAsync("valorant_point"),
-            SecureStore.getItemAsync("kingdom_credit")
+            SecureStore.getItemAsync("kingdom_credit"),
         ]);
 
         try {
@@ -117,10 +118,10 @@ export function AuthProvider({ children }: Props) {
                     balance: {
                         radianitePoint,
                         valorantPoint,
-                        kingdomCredit
+                        kingdomCredit,
                     },
-                    shop
-                }
+                    shop,
+                },
             });
 
         } catch (error) {
@@ -159,11 +160,13 @@ export function AuthProvider({ children }: Props) {
                 type: EAuthContextType.SET_TOKEN,
                 payload: {
                     accessToken,
-                    entitlementsToken
-                }
+                    entitlementsToken,
+                },
             });
 
             await valorantProvider.getUserInfo();
+
+            await valorantProvider.getRiotVersion();
 
             const balance = await valorantProvider.getUserBalance();
 
@@ -222,13 +225,13 @@ export function AuthProvider({ children }: Props) {
             shop: state.shop,
             //
             login,
-            logout
+            logout,
         }),
         [
             state,
             state.isLoading,
-            state.isSignout
-        ]
+            state.isSignout,
+        ],
     );
 
     return (

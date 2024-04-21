@@ -1,6 +1,5 @@
 import { View } from "react-native";
 // component
-import Text from "@/component/typography/text";
 import Loading from "@/component/loading/loading";
 // context
 import { useAuthContext } from "@/context/hook/use-auth-context";
@@ -18,7 +17,6 @@ const PluginStore = () => {
 
     return (
         <View style={{ backgroundColor: colors.background, flex: 1, paddingHorizontal: 16, paddingVertical: 8 }}>
-            <Text variant="headlineLarge">Plugin Store</Text>
             <PluginList />
         </View>
     );

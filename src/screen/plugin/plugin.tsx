@@ -9,12 +9,14 @@ import Text from "@/component/typography/text";
 import { useThemeContext } from "@/context/hook/use-theme-context";
 // section
 import BundleSkin from "@/section/shop/bundle/skin/bundle-skin";
-import BundleCard from "@/section/shop/bundle/bundle-card/bundle-card";
-import BundleSpray from "@/section/shop/bundle/bundle-spray/bundle-spray";
+import BundleCard from "@/section/shop/bundle/card/bundle-card";
+import BundleSpray from "@/section/shop/bundle/spray/bundle-spray";
 import BundleGunBuddy from "@/section/shop/bundle/gun-buddy/bundle-gun-buddy";
-import BundlePlayerTitle from "@/section/shop/bundle/bundle-player-title-skeleton/bundle-player-title";
+import BundlePlayerTitle from "@/section/shop/bundle/player-title/bundle-player-title";
+// types
+import { PluginDetailScreenProps } from "@/type/router/navigation";
 
-const Plugin = ({ route, navigation }) => {
+const Plugin = ({ route, navigation }: PluginDetailScreenProps) => {
 
     const { colors } = useThemeContext();
 
@@ -31,8 +33,14 @@ const Plugin = ({ route, navigation }) => {
     const offerData = data.data;
 
     return (
-        <View style={{ backgroundColor: colors.background, flex: 1, padding: 16, gap: 16 }}>
-            <IconButton icon="arrow-left" iconColor="#fff" size={32} onPress={goBack} />
+        <View style={{ backgroundColor: colors.background, flex: 1, padding: 16 }}>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <IconButton icon="arrow-left" iconColor="#fff" size={32} onPress={goBack} />
+                <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+                    <Text variant="titleLarge">{offerData.displayName}</Text>
+                </View>
+                <View style={{ width: 72, height: 72 }}></View>
+            </View>
             <View style={{ overflow: "hidden", width: "100%", height: 200, borderRadius: 16 }}>
                 <Image
                     source={{ uri: offerData.displayIcon }}
@@ -44,6 +52,7 @@ const Plugin = ({ route, navigation }) => {
                 overScrollMode="never"
                 snapToAlignment="center"
                 contentContainerStyle={{ gap: 16 }}
+                style={{ marginTop: 16 }}
                 showsVerticalScrollIndicator={false}
                 data={plugin.SubOffers}
                 renderItem={({ item, index }) => {

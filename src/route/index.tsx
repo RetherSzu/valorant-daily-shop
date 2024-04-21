@@ -6,12 +6,14 @@ import { useAuthContext } from "@/context/hook/use-auth-context";
 import { useThemeContext } from "@/context/hook/use-theme-context";
 // screens
 import Login from "@/screen/auth/login";
+import Plugin from "@/screen/plugin/plugin";
 import UnsupportedMultifactor from "@/screen/auth/unsupported-multifactor";
 // route
 import StoreTab from "@/route/store-tab";
-import Plugin from "@/screen/plugin/plugin";
+// type
+import { RootStackParamList } from "@/type/router/navigation";
 
-const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const Router = () => {
 

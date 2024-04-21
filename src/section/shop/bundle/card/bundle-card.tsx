@@ -6,7 +6,7 @@ import Error from "@/component/error/error";
 import Text from "@/component/typography/text";
 // section
 import CostPoint from "@/section/shop/cost-point";
-import BundleCardSkeleton from "@/section/shop/bundle/bundle-card/bundle-card-skeleton";
+import BundleCardSkeleton from "@/section/shop/bundle/card/bundle-card-skeleton";
 // type
 import { Offer } from "@/type/api/shop";
 

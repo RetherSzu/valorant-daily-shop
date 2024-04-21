@@ -8,7 +8,7 @@ import Text from "@/component/typography/text";
 import { useThemeContext } from "@/context/hook/use-theme-context";
 // section
 import CostPoint from "@/section/shop/cost-point";
-import BundlePlayerTitleSkeleton from "@/section/shop/bundle/bundle-player-title-skeleton/bundle-player-title-skeleton";
+import BundlePlayerTitleSkeleton from "@/section/shop/bundle/player-title/bundle-player-title-skeleton";
 // type
 import { Offer } from "@/type/api/shop";
 
