@@ -66,11 +66,11 @@ export const rtkValorantApi = createApi({
 });
 
 export const {
-    useGetBundleByIdQuery,
-    useGetWeaponByLevelIdQuery,
     useGetThemeByIdQuery,
-    useGetPlayerCardIdQuery,
-    useGetSprayByIdQuery,
     useGetTitleByIdQuery,
+    useGetSprayByIdQuery,
+    useGetBundleByIdQuery,
+    useGetPlayerCardIdQuery,
     useGetGunBuddyByIdQuery,
+    useGetWeaponByLevelIdQuery,
 } = rtkValorantApi;
