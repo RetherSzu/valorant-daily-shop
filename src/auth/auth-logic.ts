@@ -21,7 +21,7 @@ const authLogic = {
             "tdid": "",
             "asid": "",
             "clid": "",
-            "ssid": ""
+            "ssid": "",
         };
 
         try {
@@ -29,15 +29,15 @@ const authLogic = {
                 method: "POST",
                 url: "https://auth.riotgames.com/api/v1/authorization",
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
                 },
                 data: {
                     client_id: "play-valorant-web-prod",
                     nonce: "1",
                     redirect_uri: "https://playvalorant.com/opt_in",
                     response_type: "token id_token",
-                    scope: "account openid"
-                }
+                    scope: "account openid",
+                },
             };
 
             const response = await axiosInstance.request(options);
@@ -69,7 +69,7 @@ const authLogic = {
         const [tdid, asid, clid] = await Promise.all([
             SecureStore.getItemAsync("tdid"),
             SecureStore.getItemAsync("asid"),
-            SecureStore.getItemAsync("clid")
+            SecureStore.getItemAsync("clid"),
         ]);
 
         const options = {
@@ -77,15 +77,15 @@ const authLogic = {
             url: "https://auth.riotgames.com/api/v1/authorization",
             headers: {
                 cookie: `${tdid};${asid};${clid}`,
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
             },
             data: {
                 type: "auth",
                 username: username,
                 password: password,
                 remember: false,
-                language: "en_US"
-            }
+                language: "en_US",
+            },
         };
 
         try {
@@ -96,11 +96,15 @@ const authLogic = {
                 return true;
             }
 
-            // Get access token in url
-            const tokenMatch = response.data.response.parameters.uri.match(/access_token=([^&]*)/);
+            const hash = response.data.response.parameters.uri.split("#")[1];
+            const params = new URLSearchParams(hash);
 
-            if (tokenMatch) {
-                SecureStore.setItem("access_token", tokenMatch[1]);
+            const access_token = params.get("access_token");
+            const id_token = params.get("id_token");
+
+            if (access_token && id_token) {
+                SecureStore.setItem("access_token", access_token);
+                SecureStore.setItem("id_token", id_token);
             }
         } catch (error) {
             throw new AxiosError("Invalid username or password");
@@ -121,11 +125,11 @@ const authLogic = {
                 nonce: "1",
                 redirect_uri: "https://playvalorant.com/opt_in",
                 response_type: "token id_token",
-                scope: "account openid"
+                scope: "account openid",
             },
             headers: {
-                cookie: ssid
-            }
+                cookie: ssid,
+            },
         };
 
         try {
@@ -133,10 +137,16 @@ const authLogic = {
         } catch (err) {
             const error = err as AxiosError;
             // Get access token in url
-            const tokenMatch = error.response?.request["responseURL"].match(/access_token=([^&]*)/);
-            if (tokenMatch) {
-                SecureStore.setItem("access_token", tokenMatch[1]);
-                return tokenMatch[1];
+            const hash = error.response?.request["responseURL"].split("#")[1];
+            const params = new URLSearchParams(hash);
+
+            const access_token = params.get("access_token");
+            const id_token = params.get("id_token");
+
+            if (access_token && id_token) {
+                SecureStore.setItem("access_token", access_token);
+                SecureStore.setItem("id_token", id_token);
+                return;
             }
             console.log("cookie reauth error", error);
             throw error;
@@ -153,9 +163,9 @@ const authLogic = {
             url: "https://entitlements.auth.riotgames.com/api/token/v1",
             headers: {
                 "Content-Type": "application/json; charset=utf-8",
-                Authorization: "Bearer " + accessToken
+                Authorization: "Bearer " + accessToken,
             },
-            data: {}
+            data: {},
         };
 
         try {
@@ -176,7 +186,7 @@ const authLogic = {
         const [tdid, asid, clid] = await Promise.all([
             SecureStore.getItemAsync("tdid"),
             SecureStore.getItemAsync("asid"),
-            SecureStore.getItemAsync("clid")
+            SecureStore.getItemAsync("clid"),
         ]);
 
         const options = {
@@ -184,13 +194,13 @@ const authLogic = {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json; charset=utf-8",
-                cookie: `${tdid};${asid};${clid}`
+                cookie: `${tdid};${asid};${clid}`,
             },
             data: {
                 type: "multifactor",
                 code: code,
-                rememberDevice: true
-            }
+                rememberDevice: true,
+            },
         };
 
         try {
@@ -206,7 +216,7 @@ const authLogic = {
             console.error(error);
         }
         return false;
-    }
+    },
 };
 
 export default authLogic;

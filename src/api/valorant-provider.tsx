@@ -36,10 +36,28 @@ const valorantProvider = {
         if (response.data.sub) {
             await SecureStore.setItemAsync("sub", response.data.sub);
         }
+    },
 
-        if (response.data.affinity["pp"]) {
-            await SecureStore.setItemAsync("pp", response.data.affinity["pp"]);
-        }
+    getRiotGeo: async (): Promise<void> => {
+        const [accessToken, idToken] = await Promise.all([
+            SecureStore.getItemAsync("access_token"),
+            SecureStore.getItemAsync("id_token"),
+        ]);
+
+        const options = {
+            method: "PUT",
+            url: "https://riot-geo.pas.si.riotgames.com/pas/v1/product/valorant",
+            data: {
+                id_token: idToken,
+            },
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+            },
+        };
+
+        const response = await requestWithHeaders(options);
+
+        await SecureStore.setItemAsync("pp", response.data.affinities.live);
     },
 
     getRiotVersion: async (): Promise<void> => {

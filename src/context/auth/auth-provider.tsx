@@ -166,6 +166,8 @@ export function AuthProvider({ children }: Props) {
 
             await valorantProvider.getUserInfo();
 
+            await valorantProvider.getRiotGeo();
+
             await valorantProvider.getRiotVersion();
 
             const balance = await valorantProvider.getUserBalance();
