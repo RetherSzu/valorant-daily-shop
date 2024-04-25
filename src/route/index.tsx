@@ -1,6 +1,8 @@
-import React from "react";
+import React, { ReactElement } from "react";
 import { StatusBar } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+// api
+import { useGetThemeByIdQuery } from "@/api/rtk-valorant-api";
 // context
 import { useAuthContext } from "@/context/hook/use-auth-context";
 import { useThemeContext } from "@/context/hook/use-theme-context";
@@ -15,13 +17,18 @@ import { RootStackParamList } from "@/type/router/navigation";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
-const Router = () => {
+const Router = (): ReactElement | null => {
+
+    // Call the useGetThemeByIdQuery hook to obtain theme data to improve performance.
+    const {
+        isLoading: isLoadingTheme,
+    } = useGetThemeByIdQuery("");
 
     const { accessToken, entitlementsToken, isInitialized } = useAuthContext();
 
     const { colors } = useThemeContext();
 
-    if (!isInitialized) return null;
+    if (!isInitialized && isLoadingTheme) return null;
 
     return (
         <>
