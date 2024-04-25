@@ -56,7 +56,7 @@ const Multifactor = () => {
                 flex: 1,
                 alignItems: "center",
                 justifyContent: "space-around",
-                backgroundColor: colors.background
+                backgroundColor: colors.background,
             }}
         >
             <Text variant="displaySmall" style={{ color: colors.text }}>Welcome back!</Text>
@@ -78,24 +78,24 @@ const styles = StyleSheet.create({
         alignItems: "center",
         backgroundColor: "#0f1923",
         gap: 32,
-        padding: 16
+        padding: 16,
     },
     inputsContainer: {
         flexDirection: "row",
         justifyContent: "center",
         flexWrap: "wrap",
         gap: 16,
-        alignItems: "center"
+        alignItems: "center",
     },
     input: {
         width: 14,
         height: 14,
         borderRadius: 50,
-        backgroundColor: "#494A4D"
+        backgroundColor: "#494A4D",
     },
     filledInput: {
-        backgroundColor: "#fff"
-    }
+        backgroundColor: "#fff",
+    },
 });
 
 export default Multifactor;

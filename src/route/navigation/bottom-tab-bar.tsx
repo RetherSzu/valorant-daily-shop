@@ -1,12 +1,12 @@
 import * as React from "react";
 import { StyleSheet, View } from "react-native";
+import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 // context
 import { useThemeContext } from "@/context/hook/use-theme-context";
 // route
 import IconTabBar from "@/route/navigation/icon-tab-bar";
-import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 
-const BottomTabBar = ({ state, descriptors, navigation }: BottomTabBarProps) => {
+const BottomTabBar = ({ state, navigation }: BottomTabBarProps) => {
     const iconTabBarName = ["Shop", "Setting"];
 
     const { colors } = useThemeContext();
@@ -21,7 +21,7 @@ const BottomTabBar = ({ state, descriptors, navigation }: BottomTabBarProps) => 
                     const event = navigation.emit({
                         type: "tabPress",
                         target: route.key,
-                        canPreventDefault: true
+                        canPreventDefault: true,
                     });
 
                     if (!isFocused && !event.defaultPrevented) {
@@ -53,11 +53,11 @@ const styles = StyleSheet.create({
         gap: 16,
         padding: 16,
         marginTop: 0,
-        backgroundColor: "#1B1D21"
+        backgroundColor: "#1B1D21",
     },
     iconContainer: {
-        padding: 4
-    }
+        padding: 4,
+    },
 });
 
 export default BottomTabBar;

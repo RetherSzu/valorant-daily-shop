@@ -14,14 +14,16 @@ const Settings = (): ReactElement => {
     const { logout } = useAuthContext();
 
     return (
-        <View style={{
-            flex: 1,
-            backgroundColor: colors.primary,
-            justifyContent: "center",
-            alignItems: "center",
-            padding: 16,
-            gap: 16
-        }}>
+        <View
+            style={{
+                flex: 1,
+                backgroundColor: colors.primary,
+                justifyContent: "center",
+                alignItems: "center",
+                padding: 16,
+                gap: 16,
+            }}
+        >
             <View style={{ flexDirection: "row", alignItems: "flex-start" }}>
                 <TitleScreen name="SETTINGS" />
             </View>
@@ -30,11 +32,11 @@ const Settings = (): ReactElement => {
                     backgroundColor: "#1F2326",
                     padding: 16,
                     borderRadius: 20,
-                    width: "100%"
+                    width: "100%",
                 }}
                 contentContainerStyle={{
                     gap: 16,
-                    justifyContent: "space-between"
+                    justifyContent: "space-between",
                 }}
                 showsVerticalScrollIndicator={false}
             >

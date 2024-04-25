@@ -88,7 +88,7 @@ const valorantProvider = {
             url: `https://pd.${pp}.a.pvp.net/store/v1/wallet/${sub}`,
             headers: {
                 Authorization: `Bearer ${accessToken}`,
-                "X-Riot-Entitlements-JWT": ` ${entitlementsToken}`,
+                "X-Riot-Entitlements-JWT": `${entitlementsToken}`,
                 "X-Riot-ClientPlatform": X_Riot_ClientPlatform,
                 "X-Riot-ClientVersion": riotVersion,
             },
@@ -123,7 +123,7 @@ const valorantProvider = {
             url: `https://pd.${pp}.a.pvp.net/store/v2/storefront/${sub}`,
             headers: {
                 Authorization: `Bearer ${accessToken}`,
-                "X-Riot-Entitlements-JWT": ` ${entitlementsToken}`,
+                "X-Riot-Entitlements-JWT": `${entitlementsToken}`,
                 "X-Riot-ClientPlatform": X_Riot_ClientPlatform,
                 "X-Riot-ClientVersion": riotVersion,
             },
