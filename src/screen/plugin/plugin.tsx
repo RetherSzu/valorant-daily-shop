@@ -41,13 +41,6 @@ const Plugin = ({ route, navigation }: PluginDetailScreenProps) => {
                 </View>
                 <View style={{ width: 72, height: 72 }}></View>
             </View>
-            <View style={{ overflow: "hidden", width: "100%", height: 200, borderRadius: 16 }}>
-                <Image
-                    source={{ uri: offerData.displayIcon }}
-                    resizeMode="cover"
-                    style={{ width: "100%", height: "100%" }}
-                />
-            </View>
             <FlatList
                 overScrollMode="never"
                 snapToAlignment="center"
