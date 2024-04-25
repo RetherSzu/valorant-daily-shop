@@ -1,39 +1,44 @@
 {
-    "expo": {
-        "name": "valorant-daily-shop",
-        "slug": "valorant-daily-shop",
-        "version": "1.0.0",
-        "orientation": "portrait",
-        "icon": "./assets/icon.png",
-        "userInterfaceStyle": "dark",
-        "splash": {
-            "image": "./assets/splash.png",
-            "resizeMode": "contain",
-            "backgroundColor": "#1B1D21"
-        },
-        "assetBundlePatterns": [
-            "**/*"
-        ],
-        "ios": {
-            "supportsTablet": true
-        },
-        "android": {
-            "adaptiveIcon": {
-                "foregroundImage": "./assets/adaptive-icon.png",
-                "backgroundColor": "#1B1D21"
-            },
-            "package": "valorant.daily.shop"
-        },
-        "web": {
-            "favicon": "./assets/favicon.png"
-        },
-        "androidStatusBar": {
-            "barStyle": "light-content",
-            "backgroundColor": "#1B1D21"
-        },
-        "plugins": [
-            "expo-font",
-            "expo-secure-store"
-        ]
+  "expo": {
+    "name": "valorant-daily-shop",
+    "slug": "valorant-daily-shop",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "dark",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#1B1D21"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#1B1D21"
+      },
+      "package": "valorant.daily.shop"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "androidStatusBar": {
+      "barStyle": "light-content",
+      "backgroundColor": "#1B1D21"
+    },
+    "plugins": [
+      "expo-font",
+      "expo-secure-store"
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "accc6c60-4be4-47ca-833b-b3682e328dc8"
+      }
     }
+  }
 }
