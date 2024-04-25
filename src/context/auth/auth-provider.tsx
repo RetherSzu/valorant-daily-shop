@@ -1,10 +1,10 @@
 import * as SecureStore from "expo-secure-store";
+import { useNavigation } from "@react-navigation/native";
 import { ReactNode, useCallback, useEffect, useMemo, useReducer } from "react";
 // api
 import valorantProvider from "@/api/valorant-provider";
 // auth
 import authLogic from "@/auth/auth-logic";
-import { useNavigation } from "@react-navigation/native";
 // type
 import { NavigationProp } from "@/type/router/navigation";
 import { EAuthContextType, IAuthAction, IAuthContext } from "@/type/context/auth";
@@ -34,8 +34,7 @@ const reducer = (state: IAuthContext, action: IAuthAction<EAuthContextType>) => 
         case EAuthContextType.LOGOUT:
             return {
                 ...state,
-                accessToken: null,
-                entitlementsToken: null,
+                ...initialAuthState,
             };
         case EAuthContextType.SET_BALANCE:
             ac = action as IAuthAction<EAuthContextType.SET_BALANCE>;
