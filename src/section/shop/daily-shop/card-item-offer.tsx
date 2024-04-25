@@ -1,5 +1,5 @@
-import { ReactElement } from "react";
 import { Text } from "react-native-paper";
+import { ReactElement, useMemo } from "react";
 import { Dimensions, Image, ImageBackground, View } from "react-native";
 // api
 import { useGetThemeByIdQuery, useGetWeaponByLevelIdQuery } from "@/api/rtk-valorant-api";
@@ -15,48 +15,53 @@ import { Offer } from "@/type/api/shop";
 // util
 import { getContentTierIcon } from "@/util/content-tier-icon";
 
+const WIDTH = Dimensions.get("window").width;
+const GUN_NAMES = [
+    "Classic", "Shorty", "Frenzy", "Ghost", "Sheriff",
+    "Stinger", "Spectre", "Bucky", "Judge", "Bulldog",
+    "Guardian", "Phantom", "Vandal", "Marshal", "Operator",
+    "Ares", "Odin",
+];
+
 type Props = {
     item: Offer;
-}
-
-const width = Dimensions.get("window").width;
+};
 
 const CardItemOffer = ({ item }: Props): ReactElement => {
-
     const { colors } = useThemeContext();
 
     const {
         data: weaponSkinData,
         error: weaponSkinError,
-        isLoading: isLoadingWeapon
+        isLoading: isLoadingWeapon,
     } = useGetWeaponByLevelIdQuery(item.Rewards[0].ItemID);
-
-    const skinData = weaponSkinData?.data;
 
     const {
         data: themeData,
         error: themeError,
-        isLoading: isLoadingTheme
-    } = useGetThemeByIdQuery(skinData?.themeUuid ?? "");
+        isLoading: isLoadingTheme,
+    } = useGetThemeByIdQuery(weaponSkinData?.data?.themeUuid ?? "");
 
-    if (isLoadingWeapon || isLoadingTheme) {
-        return <CardOfferSkeleton />;
-    }
+    const skinData = weaponSkinData?.data;
 
+    const filteredDisplayName = useMemo(() => {
+        if (!weaponSkinData?.data?.displayName) return { main: "", gun: "" };
+
+        const displayNameWords = weaponSkinData.data.displayName.split(" ");
+        return {
+            main: displayNameWords.filter(word => !GUN_NAMES.includes(word)).join(" "),
+            gun: displayNameWords.filter(word => GUN_NAMES.includes(word)).join(" "),
+        };
+    }, [weaponSkinData?.data?.displayName]);
+
+    if (isLoadingWeapon || isLoadingTheme) return <CardOfferSkeleton />;
     if (weaponSkinError || !skinData || themeError || !themeData) return <Error />;
-
-    const theme = themeData.data;
 
     return (
         <ImageBackground
             style={{
-                flex: 1,
-                padding: 8,
-                position: "relative",
-                overflow: "hidden",
-                borderRadius: 16,
-                maxWidth: width / 2 - 24,
-                backgroundColor: colors.card
+                flex: 1, padding: 8, position: "relative", overflow: "hidden",
+                borderRadius: 16, maxWidth: WIDTH / 2 - 24, backgroundColor: colors.card,
             }}
             source={{ uri: skinData.wallpaper }}
         >
@@ -64,23 +69,16 @@ const CardItemOffer = ({ item }: Props): ReactElement => {
                 <Image
                     source={getContentTierIcon(skinData.contentTierUuid)}
                     blurRadius={2}
-                    style={{
-                        position: "absolute",
-                        top: 0,
-                        left: 0,
-                        right: 0,
-                        bottom: 0,
-                        opacity: .1
-                    }}
+                    style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0, opacity: .1 }}
                 />
             )}
-            <Text variant="titleLarge" style={{ color: colors.text, fontWeight: "bold" }} numberOfLines={1}>
-                {skinData.displayName.replace(theme.displayName, "").replace(/\s/g, "")}
+            <Text variant="titleLarge" style={{ color: colors.text, fontWeight: "bold" }}>
+                {filteredDisplayName.main}
             </Text>
             <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
-                <Image source={{ uri: theme.displayIcon }} style={{ width: 24, height: 24 }} />
-                <Text variant="labelLarge" style={{ flex: 1, color: colors.text, opacity: .5 }} numberOfLines={1}>
-                    {theme.displayName}
+                <Image source={{ uri: themeData.data.displayIcon }} style={{ width: 16, height: 16 }} />
+                <Text variant="bodyLarge" style={{ flex: 1, color: colors.text, opacity: .5 }} numberOfLines={1}>
+                    {filteredDisplayName.gun}
                 </Text>
             </View>
             <Image
