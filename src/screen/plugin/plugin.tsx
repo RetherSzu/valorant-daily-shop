@@ -1,6 +1,6 @@
 import React from "react";
 import { IconButton } from "react-native-paper";
-import { FlatList, Image, View } from "react-native";
+import { FlatList, View } from "react-native";
 // api
 import { useGetBundleByIdQuery } from "@/api/rtk-valorant-api";
 // component
