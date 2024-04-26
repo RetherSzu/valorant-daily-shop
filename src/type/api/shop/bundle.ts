@@ -71,8 +71,6 @@ export type BundleInfo = {
     displayNameSubText: string | null;
 }
 
-export type BundleInfos = BundleInfo[];
-
 export type BundleData = {
     bundle: Bundle;
     bundleInfo: BundleInfo;

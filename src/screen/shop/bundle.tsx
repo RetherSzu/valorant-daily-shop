@@ -130,7 +130,7 @@ const BundleView = () => {
                 {bundlesInfos.length > 1 && <Pagination data={bundlesInfos} scrollX={scrollX} />}
             </View>
 
-            <Text variant="titleLarge" style={{ fontFamily: "DrukWide" }}>COLLECTION</Text>
+            <Text variant="headlineMedium" style={{ fontFamily: "Nota" }}>COLLECTION</Text>
 
             {renderOfferList}
         </View>

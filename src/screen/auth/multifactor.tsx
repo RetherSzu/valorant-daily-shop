@@ -1,9 +1,9 @@
 import { StyleSheet, View } from "react-native";
-import { Text } from "react-native-paper";
 import { useEffect, useState } from "react";
 // auth
 import authLogic from "@/auth/auth-logic";
 // component
+import Text from "@/component/typography/text";
 import NumericKeyboard from "@/component/input/numeric-keyboard";
 // context
 import { useThemeContext } from "@/context/hook/use-theme-context";
@@ -59,7 +59,7 @@ const Multifactor = () => {
                 backgroundColor: colors.background,
             }}
         >
-            <Text variant="displaySmall" style={{ color: colors.text }}>Welcome back!</Text>
+            <Text variant="displaySmall">Welcome back!</Text>
             <View style={styles.inputsContainer}>
                 {inputs.map((input, index) => (
                     // @ts-ignore

@@ -8,7 +8,7 @@ const Text = ({ children, style, ...props }: TextProps<string>): ReactElement =>
 
     const { colors } = useThemeContext();
 
-    let customStyle: StyleProp<TextStyle> = { color: colors.text };
+    let customStyle: StyleProp<TextStyle> = { color: colors.text, fontFamily: "Nota" };
 
     if (style) customStyle = [customStyle, style];
 

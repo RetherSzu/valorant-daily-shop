@@ -1,7 +1,8 @@
-import { View } from "react-native";
-import { Text } from "react-native-paper";
 import { ReactNode } from "react";
+import { View } from "react-native";
 import { Iconify } from "react-native-iconify";
+// component
+import Text from "@/component/typography/text";
 
 type Props = {
     severity: "error" | "warning";

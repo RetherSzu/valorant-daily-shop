@@ -1,5 +1,6 @@
 import { View } from "react-native";
-import { Text } from "react-native-paper";
+// component
+import Text from "@/component/typography/text";
 // context
 import { useThemeContext } from "@/context/hook/use-theme-context";
 
@@ -38,7 +39,6 @@ const TitleScreen = ({ name = "" }: Props) => {
             <Text
                 variant="displaySmall"
                 style={{
-                    color: colors.text,
                     fontFamily: "DrukWide"
                 }}
             >

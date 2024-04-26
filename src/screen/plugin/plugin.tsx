@@ -43,11 +43,11 @@ const Plugin = ({ route, navigation }: PluginDetailScreenProps) => {
             </View>
             <FlatList
                 overScrollMode="never"
-                snapToAlignment="center"
-                contentContainerStyle={{ gap: 16 }}
-                style={{ marginTop: 16 }}
-                showsVerticalScrollIndicator={false}
                 data={plugin.SubOffers}
+                snapToAlignment="center"
+                style={{ marginTop: 16 }}
+                contentContainerStyle={{ gap: 16 }}
+                showsVerticalScrollIndicator={false}
                 renderItem={({ item, index }) => {
                     switch (item.PurchaseInformation.Rewards[0].ItemTypeID) {
                         case "d5f120f8-ff8c-4aac-92ea-f2b5acbe9475": // Sprays

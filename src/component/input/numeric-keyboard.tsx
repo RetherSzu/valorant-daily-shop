@@ -1,5 +1,7 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
+// component
+import Text from "@/component/typography/text";
 // context
 import { useThemeContext } from "@/context/hook/use-theme-context";
 import { TouchableRipple } from "react-native-paper";
@@ -12,12 +14,12 @@ const NumericKeyboard = ({ onNumberPress }: Props) => {
 
     const { colors } = useThemeContext();
 
-    const textStyle = { fontSize: 24, color: colors.text };
+    const textStyle = { fontSize: 24 };
 
     const renderButtons = (numbers: (string | number)[]) => (
         <View style={{
             flexDirection: "row",
-            gap: 8
+            gap: 8,
         }}>
             {numbers.map((number) => (
                 <View style={{ borderRadius: 50 }} key={number}>
@@ -49,7 +51,7 @@ const styles = StyleSheet.create({
     numericKeyboard: {
         flexDirection: "column",
         alignItems: "center",
-        gap: 8
+        gap: 8,
     },
     button: {
         justifyContent: "center",
@@ -57,7 +59,7 @@ const styles = StyleSheet.create({
         width: 80,
         height: 80,
         borderRadius: 50,
-    }
+    },
 });
 
 export default NumericKeyboard;

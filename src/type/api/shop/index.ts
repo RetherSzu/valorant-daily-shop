@@ -115,4 +115,3 @@ export type PlayerTitle = {
     displayName: string;
 }
 
-export type PlayerTitles = PlayerTitle[];

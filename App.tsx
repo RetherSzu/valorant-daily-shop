@@ -21,8 +21,9 @@ export default function App(): ReactElement | null {
     }, [isInitialized]);
 
     const [fontsLoaded, fontError] = useFonts({
-        Inter: require("./assets/fonts/Inter.ttf"),
-        DrukWide: require("./assets/fonts/Druk-Wide-Bold.ttf")
+        DrukWide: require("./assets/fonts/Druk-Wide-Bold.ttf"),
+        Vandchrome: require("./assets/fonts/vanchrome-regular.otf"),
+        Nota: require("./assets/fonts/nota-bold.ttf")
     });
 
     if (!fontsLoaded && !fontError) return null;

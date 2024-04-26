@@ -20,24 +20,25 @@ const Store = () => {
     const { shop: { nightMarket, plugins } } = useAuthContext();
 
     const tabNavigatorOptions = {
-        initialRouteName: "Offers",
+        initialRouteName: "Daily shop",
         screenOptions: {
             swipeEnabled: false,
             tabBarGap: 8,
             tabBarItemStyle: {
                 width: "auto",
-                minWidth: 100,
-                paddingHorizontal: 0
+                minWidth: 110,
+                paddingHorizontal: 4,
             },
             tabBarStyle: {
                 backgroundColor: "#1B1D21",
-                paddingHorizontal: 8
+                paddingHorizontal: 8,
             },
             tabBarLabelStyle: {
                 fontSize: 16,
                 letterSpacing: .5,
                 lineHeight: 24,
-                marginHorizontal: 0
+                marginHorizontal: 0,
+                fontFamily: "Nota",
             },
             tabBarScrollEnabled: true,
             tabBarActiveTintColor: colors.text,
@@ -45,23 +46,23 @@ const Store = () => {
             tabBarIndicatorStyle: {
                 backgroundColor: colors.primary,
                 borderTopLeftRadius: 50,
-                borderTopRightRadius: 50
+                borderTopRightRadius: 50,
             },
             tabBarIndicatorContainerStyle: {
-                marginLeft: 8
-            }
-        }
+                marginLeft: 8,
+            },
+        },
     };
 
     return (
-        <View style={{ flex: 1, gap: 8 }}>
-            <Text variant="displaySmall" style={{ fontFamily: "DrukWide", paddingHorizontal: 16 }}>STORE</Text>
+        <View style={{ flex: 1 }}>
+            <Text variant="displayLarge" style={{ fontFamily: "Vandchrome", paddingHorizontal: 16 }}>STORE</Text>
             {/* @ts-ignore */}
             <Tab.Navigator {...tabNavigatorOptions}>
-                <Tab.Screen name="Featured collection" component={BundleView} />
-                <Tab.Screen name="Offers" component={DailyShop} />
+                <Tab.Screen name="Bundles" component={BundleView} />
+                <Tab.Screen name="Daily shop" component={DailyShop} />
                 {nightMarket?.BonusStoreOffers && <Tab.Screen name="Night market" component={NightMarket} />}
-                {plugins && <Tab.Screen name="Plugins" component={PluginStore} />}
+                {plugins && <Tab.Screen name="E-sport" component={PluginStore} />}
             </Tab.Navigator>
         </View>
     );

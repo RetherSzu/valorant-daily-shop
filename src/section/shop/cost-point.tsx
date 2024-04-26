@@ -19,7 +19,7 @@ const CostPoint = ({ currencyId, cost, textVariant = "titleMedium" }: Props) => 
                 resizeMode="contain"
                 style={{ width: 24, height: 24 }}
             />
-            <Text variant={textVariant}>
+            <Text variant={textVariant} style={{ fontFamily: "Nota" }}>
                 {cost}
             </Text>
         </View>

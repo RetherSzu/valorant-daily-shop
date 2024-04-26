@@ -25,4 +25,5 @@ export type WeaponLevel = {
     displayName: string;
     displayIcon: string;
     streamedVideo: string;
+    levelItem?: string;
 }
