@@ -51,20 +51,19 @@ const CardItemOffer = ({ item }: Props): ReactElement => {
     const skinData = weaponSkinData?.data;
 
     const filteredDisplayName = useMemo(() => {
-        if (!weaponSkinData?.data?.displayName) return { main: "", gun: "" };
+        if (!weaponSkinData?.data?.displayName) return "";
 
         const displayNameWords = weaponSkinData.data.displayName.split(" ");
-        return {
-            main: displayNameWords.filter(word => !GUN_NAMES.includes(word)).join(" "),
-            gun: displayNameWords.filter(word => GUN_NAMES.includes(word)).join(" "),
-        };
+        const skinName = displayNameWords.filter(word => GUN_NAMES.includes(word)).join(" ");
+        if (skinName === "") return "Knife";
+        return skinName;
     }, [weaponSkinData?.data?.displayName]);
 
     const onCardPress = () => {
         if (!weaponSkinData || !themeData) return;
         navigate.navigate("SkinDetails", {
             skin: weaponSkinData.data,
-            skinType: filteredDisplayName.gun,
+            skinType: filteredDisplayName,
             theme: themeData.data,
         });
     };
@@ -91,18 +90,20 @@ const CardItemOffer = ({ item }: Props): ReactElement => {
                     />
                 )}
                 <Text variant="titleLarge">
-                    {filteredDisplayName.main}
+                    {themeData.data.displayName}
                 </Text>
-                <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
-                    <Image source={{ uri: themeData.data.displayIcon }} style={{ width: 16, height: 16 }} />
-                    <Text
-                        variant="titleMedium"
-                        style={{ flex: 1, opacity: .5, textTransform: "uppercase" }}
-                        numberOfLines={1}
-                    >
-                        {filteredDisplayName.gun}
-                    </Text>
-                </View>
+                {filteredDisplayName !== "" && (
+                    <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
+                        <Image source={{ uri: themeData.data.displayIcon }} style={{ width: 16, height: 16 }} />
+                        <Text
+                            variant="titleMedium"
+                            style={{ flex: 1, opacity: .5, textTransform: "uppercase" }}
+                            numberOfLines={1}
+                        >
+                            {filteredDisplayName}
+                        </Text>
+                    </View>
+                )}
                 <Image
                     resizeMode="center"
                     style={{ flex: 1, transform: [{ rotate: "22.5deg" }] }}
