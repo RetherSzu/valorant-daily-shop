@@ -7,7 +7,6 @@ import * as SecureStore from "expo-secure-store";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ReactElement, useEffect, useState } from "react";
 // component
-import Alert from "@/component/alert/alert";
 import Button from "@/component/button/button";
 import Text from "@/component/typography/text";
 import RHFTextField from "@/component/hook-form/rhf-text-field";
@@ -15,8 +14,11 @@ import EyePasswordButton from "@/component/button/eye-password-button";
 // context
 import { useAuthContext } from "@/context/hook/use-auth-context";
 import { useThemeContext } from "@/context/hook/use-theme-context";
+import { useSnackbarContext } from "@/context/hook/use-theme-snackbar";
 
 const Login = (): ReactElement => {
+
+    const { showSnackbar } = useSnackbarContext();
 
     const { colors } = useThemeContext();
 
@@ -90,6 +92,16 @@ const Login = (): ReactElement => {
         (async () => getStoredCredentials())();
     }, []);
 
+    useEffect(() => {
+        if (errors.username) {
+            showSnackbar(errors.username.message || "", "warning");
+        } else if (errors.password) {
+            showSnackbar(errors.password.message || "", "warning");
+        } else if (errorMsg) {
+            showSnackbar(errorMsg, "error");
+        }
+    }, [errors, errorMsg]);
+
     return (
         <View style={{ flex: 1, justifyContent: "center", padding: 16, gap: 32, backgroundColor: colors.background }}>
             <View style={{ alignItems: "center", justifyContent: "center" }}>
@@ -125,9 +137,6 @@ const Login = (): ReactElement => {
                     />
                     <Text variant="bodyMedium">Stay sign in ?</Text>
                 </View>
-                {!!errorMsg && <Alert severity="error">{errorMsg}</Alert>}
-                {!!errors.username && <Alert severity="warning">{errors.username.message}</Alert>}
-                {!!errors.password && <Alert severity="warning">{errors.password.message}</Alert>}
                 <View style={{ flex: 1, justifyContent: "flex-end" }}>
                     <Button
                         text="Login in"
