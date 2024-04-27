@@ -36,6 +36,14 @@ const valorantProvider = {
         if (response.data.sub) {
             await SecureStore.setItemAsync("sub", response.data.sub);
         }
+
+        if (response.data.acct.game_name) {
+            await SecureStore.setItemAsync("game_name", response.data.acct.game_name);
+        }
+
+        if (response.data.acct.tag_line) {
+            await SecureStore.setItemAsync("tag_line", response.data.acct.tag_line);
+        }
     },
 
     getRiotGeo: async (): Promise<void> => {

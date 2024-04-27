@@ -10,6 +10,7 @@ import { NavigationProp } from "@/type/router/navigation";
 import { EAuthContextType, IAuthAction, IAuthContext } from "@/type/context/auth";
 //
 import { AuthContext, initialAuthState } from "./auth-context";
+import { clearSecureStore } from "@/util/secure-store";
 
 const reducer = (state: IAuthContext, action: IAuthAction<EAuthContextType>) => {
     let ac;
@@ -187,16 +188,8 @@ export function AuthProvider({ children }: Props) {
     };
 
     const logout = async () => {
-        await SecureStore.deleteItemAsync("username");
-        await SecureStore.deleteItemAsync("password");
-        await SecureStore.deleteItemAsync("stay_sign_in");
-        await SecureStore.deleteItemAsync("access_token");
-        await SecureStore.deleteItemAsync("entitlements_token");
-        await SecureStore.deleteItemAsync("sub");
-        await SecureStore.deleteItemAsync("tdid");
-        await SecureStore.deleteItemAsync("asid");
-        await SecureStore.deleteItemAsync("clid");
-        await SecureStore.deleteItemAsync("ssid");
+
+        await clearSecureStore();
 
         dispatch({ type: EAuthContextType.LOGOUT, payload: {} });
     };
