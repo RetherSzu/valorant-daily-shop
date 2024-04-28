@@ -1,16 +1,11 @@
-import React, { ReactElement, useCallback, useEffect, useState } from "react";
+import React, { ReactElement } from "react";
 import { StatusBar } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 // api
-import valorantProvider from "@/api/valorant-provider";
 import { useGetThemeByIdQuery } from "@/api/rtk-valorant-api";
 // context
 import useAuthContext from "@/context/hook/use-auth-context";
 import useThemeContext from "@/context/hook/use-theme-context";
-import useBundleContext from "@/context/hook/use-bundle-context";
-import usePluginContext from "@/context/hook/use-plugin-context";
-import useDailyShopContext from "@/context/hook/use-daily-shop-context";
-import useNightMarketContext from "@/context/hook/use-night-market-context";
 // screens
 import Login from "@/screen/auth/login";
 import Plugin from "@/screen/plugin/plugin";
@@ -19,7 +14,6 @@ import UnsupportedMultifactor from "@/screen/auth/unsupported-multifactor";
 import StoreTab from "@/route/store-tab";
 // type
 import { RootStackParamList } from "@/type/router/navigation";
-import useUserContext from "@/context/hook/use-user-context";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -33,7 +27,6 @@ const Router = (): ReactElement | null => {
     const { accessToken, entitlementsToken, isInitialized, isSignout } = useAuthContext();
 
     const { colors } = useThemeContext();
-
 
     if (!isInitialized || isLoadingTheme) return null;
 
