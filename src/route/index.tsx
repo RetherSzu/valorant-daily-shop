@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import React, { ReactElement, useEffect } from "react";
 import { StatusBar } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 // api
@@ -24,11 +24,19 @@ const Router = (): ReactElement | null => {
         isLoading: isLoadingTheme,
     } = useGetThemeByIdQuery("");
 
-    const { accessToken, entitlementsToken, isInitialized, isSignout } = useAuthContext();
+    const { accessToken, entitlementsToken, isInitialized } = useAuthContext();
 
     const { colors } = useThemeContext();
 
+    useEffect(() => {
+        console.log("accessToken", accessToken);
+        console.log("entitlementsToken", entitlementsToken);
+    }, [accessToken, entitlementsToken]);
+
     if (!isInitialized || isLoadingTheme) return null;
+
+    console.log("accessToken", accessToken);
+    console.log("entitlementsToken", entitlementsToken);
 
     return (
         <>

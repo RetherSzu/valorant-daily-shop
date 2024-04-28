@@ -131,6 +131,8 @@ const valorantProvider = {
             },
         };
 
+        console.log(JSON.stringify(options, null, 4));
+
         const response: AxiosResponse<StorefrontResponse> = await axios.request(options);
 
         if (response.data.SkinsPanelLayout.SingleItemStoreOffers) {

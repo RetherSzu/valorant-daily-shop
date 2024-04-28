@@ -35,8 +35,9 @@ const reducer = (state: IAuthContext, action: IAuthAction<EAuthContextType>) => 
             };
         case EAuthContextType.LOGOUT:
             return {
-                ...state,
                 ...initialAuthState,
+                isSignout: true,
+                isInitialized: true,
             };
         default:
             return state;
@@ -92,6 +93,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
 
     const login = async (username: string, password: string) => {
         try {
+
             const cookies = await authLogic.authCookie();
 
             if (cookies["ssid"] != "") {
@@ -105,7 +107,20 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
                 }
             }
 
+            // Get entitlement token
             await authLogic.getEntitlement();
+
+            // Get user info
+            await valorantProvider.getUserInfo();
+
+            // Get riot geo: PP
+            await valorantProvider.getRiotGeo();
+
+            // Get riot version
+            await valorantProvider.getRiotVersion();
+
+            // Get user balance
+            await valorantProvider.getUserBalance();
 
             const accessToken = SecureStore.getItem("access_token");
             const entitlementsToken = SecureStore.getItem("entitlements_token");
@@ -118,14 +133,6 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
                 },
             });
 
-            await valorantProvider.getUserInfo();
-
-            await valorantProvider.getRiotGeo();
-
-            await valorantProvider.getRiotVersion();
-
-            await valorantProvider.getUserBalance();
-
             return Promise.resolve();
         } catch (error) {
             dispatch({ type: EAuthContextType.LOGOUT, payload: {} });
@@ -135,9 +142,11 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
 
     const logout = async () => {
 
+        dispatch({ type: EAuthContextType.LOGOUT, payload: {} });
+
         await clearSecureStore();
 
-        dispatch({ type: EAuthContextType.LOGOUT, payload: {} });
+        console.log("Logout success!");
     };
 
     useEffect(() => {
