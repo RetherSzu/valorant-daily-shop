@@ -6,7 +6,7 @@ import { useGetBundleByIdQuery } from "@/api/rtk-valorant-api";
 // component
 import Text from "@/component/typography/text";
 // context
-import { useThemeContext } from "@/context/hook/use-theme-context";
+import useThemeContext from "@/context/hook/use-theme-context";
 // section
 import BundleSkin from "@/section/shop/bundle/skin/bundle-skin";
 import BundleCard from "@/section/shop/bundle/card/bundle-card";

@@ -1,7 +1,7 @@
 import { ReactElement } from "react";
 import { ActivityIndicator, View } from "react-native";
 // context
-import { useThemeContext } from "@/context/hook/use-theme-context";
+import useThemeContext from "@/context/hook/use-theme-context";
 
 const Loading = (): ReactElement => {
 

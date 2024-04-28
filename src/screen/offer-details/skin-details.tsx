@@ -6,7 +6,7 @@ import { Dimensions, FlatList, Image, View } from "react-native";
 import Player from "@/component/player";
 import Text from "@/component/typography/text";
 // context
-import { useThemeContext } from "@/context/hook/use-theme-context";
+import useThemeContext from "@/context/hook/use-theme-context";
 // type
 import { SkinDetailScreenProps } from "@/type/router/navigation";
 // util
@@ -156,7 +156,7 @@ const SkinDetails = ({ route }: SkinDetailScreenProps) => {
                                 marginHorizontal: 16,
                                 transform: [{ rotate: "22.5deg" }],
                             }}
-                            resizeMode="contain"
+                            resizeMode="center"
                         />
                     )}
                 </View>

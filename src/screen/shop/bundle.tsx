@@ -6,8 +6,8 @@ import valorantProvider from "@/api/valorant-provider";
 import Text from "@/component/typography/text";
 import Loading from "@/component/loading/loading";
 // context
-import { useAuthContext } from "@/context/hook/use-auth-context";
-import { useThemeContext } from "@/context/hook/use-theme-context";
+import useBundleContext from "@/context/hook/use-bundle-context";
+import useThemeContext from "@/context/hook/use-theme-context";
 // section
 import SlideItem from "@/section/shop/bundle/slide-item";
 import BundleSkin from "@/section/shop/bundle/skin/bundle-skin";
@@ -23,7 +23,7 @@ const BundleView = () => {
 
     const { colors } = useThemeContext();
 
-    const { shop: { bundles: featuredBundle } } = useAuthContext();
+    const { bundles: featuredBundle } = useBundleContext();
 
     const [bundleIndex, setBundleIndex] = useState(0);
 

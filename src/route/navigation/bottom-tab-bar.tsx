@@ -2,7 +2,7 @@ import * as React from "react";
 import { StyleSheet, View } from "react-native";
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 // context
-import { useThemeContext } from "@/context/hook/use-theme-context";
+import useThemeContext from "@/context/hook/use-theme-context";
 // route
 import IconTabBar from "@/route/navigation/icon-tab-bar";
 

@@ -5,7 +5,7 @@ import { useGetSprayByIdQuery } from "@/api/rtk-valorant-api";
 import Error from "@/component/error/error";
 import Text from "@/component/typography/text";
 // context
-import { useThemeContext } from "@/context/hook/use-theme-context";
+import useThemeContext from "@/context/hook/use-theme-context";
 // section
 import CostPoint from "@/section/shop/cost-point";
 import BundleSpraySkeleton from "@/section/shop/bundle/spray/bundle-spray-skeleton";

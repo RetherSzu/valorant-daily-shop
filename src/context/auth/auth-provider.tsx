@@ -8,9 +8,10 @@ import authLogic from "@/auth/auth-logic";
 // type
 import { NavigationProp } from "@/type/router/navigation";
 import { EAuthContextType, IAuthAction, IAuthContext } from "@/type/context/auth";
+// util
+import { clearSecureStore } from "@/util/secure-store";
 //
 import { AuthContext, initialAuthState } from "./auth-context";
-import { clearSecureStore } from "@/util/secure-store";
 
 const reducer = (state: IAuthContext, action: IAuthAction<EAuthContextType>) => {
     let ac;
@@ -37,44 +38,6 @@ const reducer = (state: IAuthContext, action: IAuthAction<EAuthContextType>) => 
                 ...state,
                 ...initialAuthState,
             };
-        case EAuthContextType.SET_BALANCE:
-            ac = action as IAuthAction<EAuthContextType.SET_BALANCE>;
-
-            return {
-                ...state,
-                balance: ac.payload,
-            };
-        case EAuthContextType.SET_SHOP:
-            ac = action as IAuthAction<EAuthContextType.SET_SHOP>;
-
-            return {
-                ...state,
-                shop: ac.payload,
-            };
-        case EAuthContextType.DECREMENT_TIMER:
-            return {
-                ...state,
-                shop: {
-                    ...state.shop,
-                    offers: {
-                        ...state.shop.offers,
-                        SingleItemOffersRemainingDurationInSeconds: state.shop.offers.SingleItemOffersRemainingDurationInSeconds - 1,
-                    },
-                    bundles: {
-                        ...state.shop.bundles,
-                        Bundles: state.shop.bundles.Bundles.map((bundle) => {
-                            return {
-                                ...bundle,
-                                DurationRemainingInSeconds: bundle.DurationRemainingInSeconds - 1,
-                            };
-                        }),
-                    },
-                    nightMarket: {
-                        ...state.shop.nightMarket,
-                        BonusStoreRemainingDurationInSeconds: state.shop.nightMarket?.BonusStoreRemainingDurationInSeconds ? state.shop.nightMarket.BonusStoreRemainingDurationInSeconds - 1 : 0,
-                    },
-                },
-            };
         default:
             return state;
     }
@@ -82,11 +45,11 @@ const reducer = (state: IAuthContext, action: IAuthAction<EAuthContextType>) => 
 
 // ----------------------------------------------------------------------
 
-type Props = {
+type AuthProviderProps = {
     children: ReactNode;
 };
 
-export function AuthProvider({ children }: Props) {
+const AuthProvider = ({ children }: AuthProviderProps) => {
     const [state, dispatch] = useReducer(reducer, initialAuthState);
 
     const navigation = useNavigation<NavigationProp>();
@@ -96,36 +59,27 @@ export function AuthProvider({ children }: Props) {
         const [
             accessToken,
             entitlementsToken,
-            radianitePoint,
-            valorantPoint,
-            kingdomCredit,
         ] = await Promise.all([
             SecureStore.getItemAsync("access_token"),
             SecureStore.getItemAsync("entitlements_token"),
-            SecureStore.getItemAsync("radianite_point"),
-            SecureStore.getItemAsync("valorant_point"),
-            SecureStore.getItemAsync("kingdom_credit"),
         ]);
 
         try {
-            const shop = await valorantProvider.getFrontShop();
-
             dispatch({
                 type: EAuthContextType.INITIAL,
                 payload: {
                     accessToken,
                     entitlementsToken,
-                    balance: {
-                        radianitePoint,
-                        valorantPoint,
-                        kingdomCredit,
-                    },
-                    shop,
                 },
             });
 
         } catch (error) {
-            dispatch({ type: EAuthContextType.INITIAL, payload: {} });
+            dispatch({
+                type: EAuthContextType.INITIAL, payload: {
+                    accessToken: null,
+                    entitlementsToken: null,
+                },
+            });
 
             const username = await SecureStore.getItemAsync("username");
             const password = await SecureStore.getItemAsync("password");
@@ -170,15 +124,7 @@ export function AuthProvider({ children }: Props) {
 
             await valorantProvider.getRiotVersion();
 
-            const balance = await valorantProvider.getUserBalance();
-
-            dispatch({ type: EAuthContextType.SET_BALANCE, payload: balance });
-
-            const shop = await valorantProvider.getFrontShop();
-
-            if (!shop) return;
-
-            dispatch({ type: EAuthContextType.SET_SHOP, payload: shop });
+            await valorantProvider.getUserBalance();
 
             return Promise.resolve();
         } catch (error) {
@@ -198,14 +144,6 @@ export function AuthProvider({ children }: Props) {
         (async () => initialize())();
     }, []);
 
-    useEffect(() => {
-        const timer = setInterval(() => {
-            dispatch({ type: EAuthContextType.DECREMENT_TIMER, payload: {} });
-        }, 1000);
-
-        return () => clearInterval(timer); // cleanup on component unmount
-    }, [dispatch]);
-
     const memoizedValue = useMemo(
         () => ({
             isLoading: state.isLoading,
@@ -213,16 +151,14 @@ export function AuthProvider({ children }: Props) {
             accessToken: state.accessToken,
             entitlementsToken: state.entitlementsToken,
             isInitialized: state.isInitialized,
-            // user info
-            balance: state.balance,
-            // shop
-            shop: state.shop,
             //
             login,
             logout,
         }),
         [
             state,
+            state.accessToken,
+            state.entitlementsToken,
             state.isLoading,
             state.isSignout,
         ],
@@ -233,4 +169,6 @@ export function AuthProvider({ children }: Props) {
             {children}
         </AuthContext.Provider>
     );
-}
+};
+
+export default AuthProvider;

@@ -6,7 +6,7 @@ import { useGetThemeByIdQuery, useGetWeaponByLevelIdQuery } from "@/api/rtk-valo
 import Error from "@/component/error/error";
 import Text from "@/component/typography/text";
 // context
-import { useThemeContext } from "@/context/hook/use-theme-context";
+import useThemeContext from "@/context/hook/use-theme-context";
 // section
 import CostPoint from "@/section/shop/cost-point";
 import DiscountBadge from "@/section/shop/night-market/discount-badge";

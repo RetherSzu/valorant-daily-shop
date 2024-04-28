@@ -6,10 +6,12 @@ type Props = {
     children: ReactElement
 }
 
-export const ThemeProvider = ({ children }: Props) => {
+const ThemeProvider = ({ children }: Props) => {
     return (
         <ThemeContext.Provider value={initialThemeState}>
             {children}
         </ThemeContext.Provider>
     );
 };
+
+export default ThemeProvider;

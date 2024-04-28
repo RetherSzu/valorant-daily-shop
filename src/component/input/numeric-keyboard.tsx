@@ -1,10 +1,10 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
+import { TouchableRipple } from "react-native-paper";
 // component
 import Text from "@/component/typography/text";
 // context
-import { useThemeContext } from "@/context/hook/use-theme-context";
-import { TouchableRipple } from "react-native-paper";
+import useThemeContext from "@/context/hook/use-theme-context";
 
 type Props = {
     onNumberPress: (number: string | number) => void;

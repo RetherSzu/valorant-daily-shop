@@ -4,8 +4,8 @@ import { ScrollView, View } from "react-native";
 import Button from "@/component/button/button";
 import TitleScreen from "@/component/typography/title-screen";
 // context
-import { useAuthContext } from "@/context/hook/use-auth-context";
-import { useThemeContext } from "@/context/hook/use-theme-context";
+import useAuthContext from "@/context/hook/use-auth-context";
+import useThemeContext from "@/context/hook/use-theme-context";
 
 const Settings = (): ReactElement => {
 

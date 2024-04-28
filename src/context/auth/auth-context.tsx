@@ -14,27 +14,6 @@ export const initialAuthState: IAuthContext = {
     accessToken: null,
     entitlementsToken: null,
     isInitialized: false,
-    // user info
-    balance: {
-        radianitePoint: "0",
-        valorantPoint: "0",
-        kingdomCredit: "0"
-    },
-    // shop
-    shop: {
-        offers: {
-            SingleItemOffers: [],
-            SingleItemStoreOffers: [],
-            SingleItemOffersRemainingDurationInSeconds: 0
-        },
-        bundles: {
-            Bundles: [],
-            Bundle: undefined,
-            BundleRemainingDurationInSeconds: 0
-        },
-        nightMarket: undefined,
-        plugins: []
-    }
 };
 
 export const AuthContext = createContext<IAuthContext>(initialAuthState);

@@ -1,12 +1,12 @@
 import { View } from "react-native";
 // context
-import { useAuthContext } from "@/context/hook/use-auth-context";
+import usePluginContext from "@/context/hook/use-plugin-context";
 // section
 import PluginItem from "@/section/shop/plugin-store/plugin-item";
 
 const PluginList = () => {
 
-    const { shop: { plugins } } = useAuthContext();
+    const { plugins } = usePluginContext();
 
     if (!plugins) return;
 

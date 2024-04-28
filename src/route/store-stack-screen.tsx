@@ -1,7 +1,15 @@
-import React, { ReactElement } from "react";
+import React, { ReactElement, useCallback, useEffect, useState } from "react";
 import { IconButton } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+// api
+import valorantProvider from "@/api/valorant-provider";
+// context
+import useUserContext from "@/context/hook/use-user-context";
+import useBundleContext from "@/context/hook/use-bundle-context";
+import usePluginContext from "@/context/hook/use-plugin-context";
+import useDailyShopContext from "@/context/hook/use-daily-shop-context";
+import useNightMarketContext from "@/context/hook/use-night-market-context";
 // route
 import Header from "@/route/navigation/header";
 // screen
@@ -12,9 +20,48 @@ import { NavigationStoreProp, StoreStackParamList } from "@/type/router/navigati
 
 const StoreStack = createNativeStackNavigator<StoreStackParamList>();
 
-const StoreStackScreen = (): ReactElement => {
+const StoreStackScreen = (): ReactElement | null => {
+
+    const { initialize } = useUserContext();
+
+    const { setDailyShop } = useDailyShopContext();
+
+    const { setNightMarket } = useNightMarketContext();
+
+    const { setBundles } = useBundleContext();
+
+    const { setPlugins } = usePluginContext();
+
+    const [fetchShop, setFetchShop] = useState(false);
+
+    const getShopData = useCallback(async () => {
+        setFetchShop(true);
+        try {
+            const shopData = await valorantProvider.getFrontShop();
+
+            if (!shopData) return;
+
+            // Dispatch the shop data to the context.
+            setDailyShop(shopData.offers);
+            setNightMarket(shopData.nightMarket);
+            setBundles(shopData.bundles);
+            setPlugins(shopData.plugins);
+        } catch (error) {
+            console.error("Failed to fetch shop data", error);
+        }
+        setFetchShop(false);
+    }, []);
+
+    useEffect(() => {
+        // Initialize user data
+        initialize();
+        // Fetch shop data
+        (() => getShopData())();
+    }, []);
 
     const navigation = useNavigation<NavigationStoreProp>();
+
+    if (fetchShop) return null;
 
     return (
         <StoreStack.Navigator

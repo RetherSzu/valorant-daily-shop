@@ -4,10 +4,15 @@ import { ReactElement, useEffect } from "react";
 import * as SplashScreen from "expo-splash-screen";
 import { DefaultTheme, NavigationContainer } from "@react-navigation/native";
 // context
-import { AuthProvider } from "@/context/auth/auth-provider";
-import { ThemeProvider } from "@/context/theme/theme-provider";
-import { useAuthContext } from "@/context/hook/use-auth-context";
-import { SnackbarProvider } from "@/context/snackbar/snackbar-provider";
+import AuthProvider from "@/context/auth/auth-provider";
+import UserProvider from "@/context/user/user-provider";
+import ThemeProvider from "@/context/theme/theme-provider";
+import useAuthContext from "@/context/hook/use-auth-context";
+import BundleProvider from "@/context/bundle/bundle-provider";
+import PluginProvider from "@/context/plugin/plugin-provider";
+import SnackbarProvider from "@/context/snackbar/snackbar-provider";
+import DailyShopProvider from "@/context/daily-shop/daily-shop-provider";
+import NightMarketProvider from "@/context/night-market/night-market-provider";
 // controller
 import { store } from "@/controller/store";
 // route
@@ -43,7 +48,17 @@ export default function App(): ReactElement | null {
                 <ThemeProvider>
                     <SnackbarProvider>
                         <AuthProvider>
-                            <Router />
+                            <UserProvider>
+                                <DailyShopProvider>
+                                    <BundleProvider>
+                                        <NightMarketProvider>
+                                            <PluginProvider>
+                                                <Router />
+                                            </PluginProvider>
+                                        </NightMarketProvider>
+                                    </BundleProvider>
+                                </DailyShopProvider>
+                            </UserProvider>
                         </AuthProvider>
                     </SnackbarProvider>
                 </ThemeProvider>

@@ -3,7 +3,7 @@ import { ReactElement } from "react";
 // component
 import Text from "@/component/typography/text";
 // context
-import { useThemeContext } from "@/context/hook/use-theme-context";
+import useThemeContext from "@/context/hook/use-theme-context";
 
 type Props = {
     discount: number;

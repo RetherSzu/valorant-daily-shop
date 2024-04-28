@@ -9,7 +9,7 @@ type SnackbarProviderProps = {
     children: React.ReactNode;
 };
 
-export const SnackbarProvider = ({ children }: SnackbarProviderProps) => {
+const SnackbarProvider = ({ children }: SnackbarProviderProps) => {
     const [snackbar, setSnackbar] = useState<SnackbarState>({
         message: "",
         type: "info",
@@ -28,3 +28,5 @@ export const SnackbarProvider = ({ children }: SnackbarProviderProps) => {
         </SnackbarContext.Provider>
     );
 };
+
+export default SnackbarProvider;

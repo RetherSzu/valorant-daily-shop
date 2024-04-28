@@ -21,7 +21,7 @@ axiosInstance.interceptors.response.use(
             await SecureStore.deleteItemAsync("clid");
             await SecureStore.deleteItemAsync("ssid");
         }
-        Promise.reject((error.response && error.response.data) || "Something went wrong");
+        await Promise.reject((error.response && error.response.data) || "Something went wrong");
     }
 );
 export default axiosInstance;

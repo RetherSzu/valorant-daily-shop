@@ -1,7 +1,7 @@
 import { ScrollView, View } from "react-native";
 // context
-import { useAuthContext } from "@/context/hook/use-auth-context";
-import { useThemeContext } from "@/context/hook/use-theme-context";
+import useThemeContext from "@/context/hook/use-theme-context";
+import useNightMarketContext from "@/context/hook/use-night-market-context";
 // component
 import Text from "@/component/typography/text";
 import Loading from "@/component/loading/loading";
@@ -14,7 +14,7 @@ const NightMarket = () => {
 
     const { colors } = useThemeContext();
 
-    const { shop: { nightMarket } } = useAuthContext();
+    const { nightMarket } = useNightMarketContext();
 
     if (!nightMarket || !nightMarket.BonusStoreOffers) {
         return <Loading />;
@@ -22,7 +22,7 @@ const NightMarket = () => {
 
     const nightMarketOffers = (
         <ScrollView style={{ paddingHorizontal: 16 }} contentContainerStyle={{ rowGap: 16 }} overScrollMode="never">
-            {nightMarket?.BonusStoreOffers.map((offer, index) => {
+            {nightMarket.BonusStoreOffers.map((offer, index) => {
                 return <NightMarketCardItem item={offer} key={index} />;
             })}
         </ScrollView>

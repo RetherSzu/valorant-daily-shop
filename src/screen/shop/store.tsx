@@ -3,8 +3,9 @@ import { createMaterialTopTabNavigator } from "@react-navigation/material-top-ta
 // component
 import Text from "@/component/typography/text";
 // context
-import { useAuthContext } from "@/context/hook/use-auth-context";
-import { useThemeContext } from "@/context/hook/use-theme-context";
+import useThemeContext from "@/context/hook/use-theme-context";
+import usePluginContext from "@/context/hook/use-plugin-context";
+import useNightMarketContext from "@/context/hook/use-night-market-context";
 // screen
 import BundleView from "@/screen/shop/bundle";
 import DailyShop from "@/screen/shop/daily-shop";
@@ -17,7 +18,9 @@ const Store = () => {
 
     const { colors } = useThemeContext();
 
-    const { shop: { nightMarket, plugins } } = useAuthContext();
+    const { plugins } = usePluginContext();
+
+    const { nightMarket } = useNightMarketContext();
 
     const tabNavigatorOptions = {
         initialRouteName: "Daily shop",

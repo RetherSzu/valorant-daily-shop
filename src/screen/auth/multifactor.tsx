@@ -6,7 +6,7 @@ import authLogic from "@/auth/auth-logic";
 import Text from "@/component/typography/text";
 import NumericKeyboard from "@/component/input/numeric-keyboard";
 // context
-import { useThemeContext } from "@/context/hook/use-theme-context";
+import useThemeContext from "@/context/hook/use-theme-context";
 
 const INPUT_COUNT = 6;
 

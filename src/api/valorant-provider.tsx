@@ -78,11 +78,7 @@ const valorantProvider = {
         await SecureStore.setItemAsync("riot_version", response.data.data.riotClientVersion);
     },
 
-    getUserBalance: async (): Promise<{
-        radianitePoint: string,
-        valorantPoint: string,
-        kingdomCredit: string,
-    }> => {
+    getUserBalance: async (): Promise<void> => {
         const [accessToken, entitlementsToken, sub, pp, riotVersion] = await Promise.all([
             SecureStore.getItemAsync("access_token"),
             SecureStore.getItemAsync("entitlements_token"),
@@ -113,8 +109,6 @@ const valorantProvider = {
         await SecureStore.setItemAsync("radianite_point", balance.radianitePoint);
         await SecureStore.setItemAsync("valorant_point", balance.valorantPoint);
         await SecureStore.setItemAsync("kingdom_credit", balance.kingdomCredit);
-
-        return balance;
     },
 
     getFrontShop: async () => {

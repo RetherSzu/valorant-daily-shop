@@ -2,7 +2,7 @@ import { Image, View } from "react-native";
 // component
 import Text from "@/component/typography/text";
 // context
-import { useThemeContext } from "@/context/hook/use-theme-context";
+import useThemeContext from "@/context/hook/use-theme-context";
 
 const Error = () => {
 

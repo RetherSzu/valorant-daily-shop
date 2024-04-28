@@ -3,7 +3,7 @@ import { ActivityIndicator, StyleProp, TextStyle, TouchableHighlight, ViewStyle 
 // component
 import Text from "@/component/typography/text";
 // context
-import { useThemeContext } from "@/context/hook/use-theme-context";
+import useThemeContext from "@/context/hook/use-theme-context";
 
 type ButtonProps = {
     text: string,

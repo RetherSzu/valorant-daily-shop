@@ -1,8 +1,11 @@
+import { useMemo } from "react";
 import { Dimensions, ImageBackground, View } from "react-native";
 // component
 import Text from "@/component/typography/text";
 // context
-import { useAuthContext } from "@/context/hook/use-auth-context";
+import useBundleContext from "@/context/hook/use-bundle-context";
+// section
+import CostPoint from "@/section/shop/cost-point";
 // type
 import { BundleData } from "@/type/api/shop/bundle";
 // util
@@ -17,7 +20,16 @@ const { width } = Dimensions.get("screen");
 
 const SlideItem = ({ bundle, bundleIndex }: Props) => {
 
-    const { shop: { bundles: featuredBundle } } = useAuthContext();
+    const { bundles: featuredBundle } = useBundleContext();
+
+    const cost = useMemo(() => {
+        const costs = featuredBundle.Bundles[bundleIndex]?.TotalBaseCost;
+        if (!costs || Object.keys(costs).length === 0) {
+            return 0;
+        }
+        const firstKey = Object.keys(costs)[0];
+        return costs[firstKey];
+    }, [featuredBundle, bundleIndex]);
 
     return (
         <ImageBackground
@@ -28,15 +40,18 @@ const SlideItem = ({ bundle, bundleIndex }: Props) => {
             }}
             borderRadius={16}
         >
-            <View style={{ padding: 8 }}>
-                <View style={{ flexDirection: "row" }}>
-                    <Text>
-                        FEATURED | {secondsToDhms(featuredBundle.Bundles[bundleIndex].DurationRemainingInSeconds)}
+            <View style={{ padding: 8, justifyContent: "space-between", flex: 1 }}>
+                <View style={{ display: "flex" }}>
+                    <View style={{ flexDirection: "row" }}>
+                        <Text variant="bodyLarge">
+                            FEATURED | {secondsToDhms(featuredBundle.Bundles[bundleIndex].DurationRemainingInSeconds)}
+                        </Text>
+                    </View>
+                    <Text variant="headlineLarge" style={{ fontFamily: "Vandchrome" }}>
+                        {bundle.bundleInfo.displayName}
                     </Text>
                 </View>
-                <Text variant="headlineLarge" style={{ lineHeight: 40, fontWeight: "900" }}>
-                    {bundle.bundleInfo.displayName}
-                </Text>
+                <CostPoint currencyId="vp" cost={cost} />
             </View>
         </ImageBackground>
     );

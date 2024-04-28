@@ -1,7 +1,7 @@
 import React from "react";
 import { Animated, Dimensions, View } from "react-native";
 // context
-import { useThemeContext } from "@/context/hook/use-theme-context";
+import useThemeContext from "@/context/hook/use-theme-context";
 // type
 import { BundleData, BundlesData } from "@/type/api/shop/bundle";
 

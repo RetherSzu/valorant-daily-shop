@@ -4,7 +4,7 @@ import { ActivityIndicator, LayoutChangeEvent, View } from "react-native";
 import { VideoProps } from "expo-av/src/Video.types";
 import { IconButton, TouchableRipple } from "react-native-paper";
 // context
-import { useThemeContext } from "@/context/hook/use-theme-context";
+import useThemeContext from "@/context/hook/use-theme-context";
 
 type PlayerProps = VideoProps & {
     onClose: () => void;

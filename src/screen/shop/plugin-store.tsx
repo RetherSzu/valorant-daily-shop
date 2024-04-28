@@ -2,8 +2,8 @@ import { View } from "react-native";
 // component
 import Loading from "@/component/loading/loading";
 // context
-import { useAuthContext } from "@/context/hook/use-auth-context";
-import { useThemeContext } from "@/context/hook/use-theme-context";
+import useThemeContext from "@/context/hook/use-theme-context";
+import usePluginContext from "@/context/hook/use-plugin-context";
 // section
 import PluginList from "@/section/shop/plugin-store/plugin-list";
 
@@ -11,7 +11,7 @@ const PluginStore = () => {
 
     const { colors } = useThemeContext();
 
-    const { shop: { plugins } } = useAuthContext();
+    const { plugins } = usePluginContext();
 
     if (!plugins) return <Loading />;
 

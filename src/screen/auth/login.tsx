@@ -12,9 +12,9 @@ import Text from "@/component/typography/text";
 import RHFTextField from "@/component/hook-form/rhf-text-field";
 import EyePasswordButton from "@/component/button/eye-password-button";
 // context
-import { useAuthContext } from "@/context/hook/use-auth-context";
-import { useThemeContext } from "@/context/hook/use-theme-context";
-import { useSnackbarContext } from "@/context/hook/use-theme-snackbar";
+import useAuthContext from "@/context/hook/use-auth-context";
+import useThemeContext from "@/context/hook/use-theme-context";
+import useSnackbarContext from "@/context/hook/use-snackbar-context";
 
 const Login = (): ReactElement => {
 

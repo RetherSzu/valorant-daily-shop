@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleProp, TextInput as DefaultTextInput, TextStyle, View, ViewStyle } from "react-native";
 // context
-import { useThemeContext } from "@/context/hook/use-theme-context";
+import useThemeContext from "@/context/hook/use-theme-context";
 
 export type TextInputProps = {
     placeholder?: string,

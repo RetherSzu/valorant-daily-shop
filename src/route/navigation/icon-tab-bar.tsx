@@ -4,7 +4,7 @@ import * as React from "react";
 import SvgShop from "@/component/icon/shop";
 import SvgSetting from "@/component/icon/setting";
 // context
-import { useThemeContext } from "@/context/hook/use-theme-context";
+import useThemeContext from "@/context/hook/use-theme-context";
 
 const ICONS: { [key: string]: React.FC<{ color: string }>; } = {
     Shop: SvgShop,

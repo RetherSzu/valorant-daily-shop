@@ -4,7 +4,7 @@ import { TouchableOpacity } from "react-native";
 import SvgEye from "@/component/icon/eye";
 import SvgEyeSlash from "@/component/icon/eye-slash";
 // context
-import { useThemeContext } from "@/context/hook/use-theme-context";
+import useThemeContext from "@/context/hook/use-theme-context";
 
 const EyePasswordButton = (props: { show: boolean, onPress: any }): ReactElement => {
 
