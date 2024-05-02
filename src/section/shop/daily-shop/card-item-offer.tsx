@@ -1,6 +1,6 @@
 import { ReactElement, useMemo } from "react";
-import { useNavigation } from "@react-navigation/native";
 import { TouchableRipple } from "react-native-paper";
+import { useNavigation } from "@react-navigation/native";
 import { Dimensions, Image, ImageBackground, View } from "react-native";
 // api
 import { useGetThemeByIdQuery, useGetWeaponByLevelIdQuery } from "@/api/rtk-valorant-api";
@@ -14,17 +14,12 @@ import CostPoint from "@/section/shop/cost-point";
 import CardOfferSkeleton from "@/section/shop/daily-shop/card-offer-skeleton";
 // type
 import { Offer } from "@/type/api/shop";
-import { NavigationStoreProp } from "@/type/router/navigation";
+import { NavigationProp } from "@/type/router/navigation";
 // util
+import { getWeaponName } from "@/util/format-string";
 import { getContentTierIcon } from "@/util/content-tier-icon";
 
 const WIDTH = Dimensions.get("window").width;
-const GUN_NAMES = [
-    "Classic", "Shorty", "Frenzy", "Ghost", "Sheriff",
-    "Stinger", "Spectre", "Bucky", "Judge", "Bulldog",
-    "Guardian", "Phantom", "Vandal", "Marshal", "Operator",
-    "Ares", "Odin",
-];
 
 type Props = {
     item: Offer;
@@ -34,7 +29,7 @@ const CardItemOffer = ({ item }: Props): ReactElement => {
 
     const { colors } = useThemeContext();
 
-    const navigate = useNavigation<NavigationStoreProp>();
+    const navigate = useNavigation<NavigationProp>();
 
     const {
         data: weaponSkinData,
@@ -53,10 +48,7 @@ const CardItemOffer = ({ item }: Props): ReactElement => {
     const filteredDisplayName = useMemo(() => {
         if (!weaponSkinData?.data?.displayName) return "";
 
-        const displayNameWords = weaponSkinData.data.displayName.split(" ");
-        const skinName = displayNameWords.filter(word => GUN_NAMES.includes(word)).join(" ");
-        if (skinName === "") return "Knife";
-        return skinName;
+        return getWeaponName(weaponSkinData.data.displayName, themeData?.data?.displayName);
     }, [weaponSkinData?.data?.displayName]);
 
     const onCardPress = () => {
@@ -89,7 +81,7 @@ const CardItemOffer = ({ item }: Props): ReactElement => {
                         style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0, opacity: .1 }}
                     />
                 )}
-                <Text variant="titleLarge">
+                <Text variant="titleLarge" numberOfLines={1}>
                     {themeData.data.displayName}
                 </Text>
                 {filteredDisplayName !== "" && (

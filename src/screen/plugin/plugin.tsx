@@ -51,17 +51,17 @@ const Plugin = ({ route, navigation }: PluginDetailScreenProps) => {
                 renderItem={({ item, index }) => {
                     switch (item.PurchaseInformation.Rewards[0].ItemTypeID) {
                         case "d5f120f8-ff8c-4aac-92ea-f2b5acbe9475": // Sprays
-                            return <BundleSpray offer={item.PurchaseInformation} key={index} />;
+                            return <BundleSpray theme={offerData} offer={item.PurchaseInformation} key={index} />;
                         case "dd3bf334-87f3-40bd-b043-682a57a8dc3a": // Gun Buddies
-                            return <BundleGunBuddy offer={item.PurchaseInformation} key={index} />;
+                            return <BundleGunBuddy theme={offerData} offer={item.PurchaseInformation} key={index} />;
                         case "3f296c07-64c3-494c-923b-fe692a4fa1bd": // Cards
-                            return <BundleCard offer={item.PurchaseInformation} key={index} />;
+                            return <BundleCard theme={offerData} offer={item.PurchaseInformation} key={index} />;
                         case "e7c63390-eda7-46e0-bb7a-a6abdacd2433": // Skins
-                            return <BundleSkin offer={item.PurchaseInformation} key={index} />;
+                            return <BundleSkin theme={offerData} offer={item.PurchaseInformation} key={index} />;
                         case "de7caa6b-adf7-4588-bbd1-143831e786c6": // Titles
                             return <BundlePlayerTitle offer={item.PurchaseInformation} key={index} />;
                         default:
-                            return <BundleSkin offer={item.PurchaseInformation} key={index} />;
+                            return <BundleSkin theme={offerData} offer={item.PurchaseInformation} key={index} />;
                     }
                 }}
             />

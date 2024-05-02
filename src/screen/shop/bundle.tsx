@@ -97,11 +97,29 @@ const BundleView = () => {
             renderItem={(item) => {
                 switch (bundlesInfos[bundleIndex].bundle.Items[item.index].Item.ItemTypeID) {
                     case "d5f120f8-ff8c-4aac-92ea-f2b5acbe9475": // Sprays
-                        return <BundleSpray offer={item.item.Offer} key={item.index} />;
+                        return (
+                            <BundleSpray
+                                key={item.index}
+                                offer={item.item.Offer}
+                                theme={bundlesInfos[bundleIndex].bundleInfo}
+                            />
+                        );
                     case "dd3bf334-87f3-40bd-b043-682a57a8dc3a": // Gun Buddies
-                        return <BundleGunBuddy offer={item.item.Offer} key={item.index} />;
+                        return (
+                            <BundleGunBuddy
+                                key={item.index}
+                                offer={item.item.Offer}
+                                theme={bundlesInfos[bundleIndex].bundleInfo}
+                            />
+                        );
                     case "3f296c07-64c3-494c-923b-fe692a4fa1bd": // Cards
-                        return <BundleCard offer={item.item.Offer} key={item.index} />;
+                        return (
+                            <BundleCard
+                                key={item.index}
+                                offer={item.item.Offer}
+                                theme={bundlesInfos[bundleIndex].bundleInfo}
+                            />
+                        );
                     case "e7c63390-eda7-46e0-bb7a-a6abdacd2433": // Skins
                         return <BundleSkin offer={item.item.Offer} key={item.index} />;
                     case "de7caa6b-adf7-4588-bbd1-143831e786c6": // Titles

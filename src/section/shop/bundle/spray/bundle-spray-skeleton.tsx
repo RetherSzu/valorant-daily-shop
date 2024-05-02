@@ -30,24 +30,24 @@ const styles = StyleSheet.create({
         backgroundColor: "#222429",
         borderRadius: 16,
         width: "100%",
-        height: 220
+        height: 220,
     },
     container: {
         padding: 8,
         flex: 1,
-        gap: 16
+        gap: 16,
     },
     iconRow: {
         flexDirection: "row",
         justifyContent: "space-around",
-        alignItems: "center"
+        alignItems: "center",
     },
     actionRow: {
         flexDirection: "row",
         gap: 8,
         flex: 1,
-        alignItems: "flex-end"
-    }
+        alignItems: "flex-end",
+    },
 });
 
 export default BundleSpraySkeleton;

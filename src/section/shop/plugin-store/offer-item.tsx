@@ -45,7 +45,7 @@ const OfferItem = ({ offer }: Props) => {
             >
                 <Image
                     resizeMode="contain"
-                    source={{ uri: offerData.logoIcon }}
+                    source={{ uri: offerData?.logoIcon ?? "" }}
                     style={{ width: 150, height: 100, borderRadius: 16, flex: 1 }}
                 />
                 <View

@@ -1,5 +1,7 @@
-import React, { ReactElement, useEffect } from "react";
 import { StatusBar } from "react-native";
+import React, { ReactElement } from "react";
+import { IconButton } from "react-native-paper";
+import { useNavigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 // api
 import { useGetThemeByIdQuery } from "@/api/rtk-valorant-api";
@@ -9,9 +11,14 @@ import useThemeContext from "@/context/hook/use-theme-context";
 // screens
 import Login from "@/screen/auth/login";
 import Plugin from "@/screen/plugin/plugin";
+import SkinDetails from "@/screen/offer-details/skin-details";
+import CardDetails from "@/screen/offer-details/card-details";
+import BuddyDetails from "@/screen/offer-details/buddy-details";
+import SprayDetails from "@/screen/offer-details/spray-details";
 import UnsupportedMultifactor from "@/screen/auth/unsupported-multifactor";
 // route
 import StoreTab from "@/route/store-tab";
+import Header from "@/route/navigation/header";
 // type
 import { RootStackParamList } from "@/type/router/navigation";
 
@@ -28,15 +35,30 @@ const Router = (): ReactElement | null => {
 
     const { colors } = useThemeContext();
 
-    useEffect(() => {
-        console.log("accessToken", accessToken);
-        console.log("entitlementsToken", entitlementsToken);
-    }, [accessToken, entitlementsToken]);
+    const navigation = useNavigation();
 
     if (!isInitialized || isLoadingTheme) return null;
 
-    console.log("accessToken", accessToken);
-    console.log("entitlementsToken", entitlementsToken);
+    const optionsDetailsScreen: {
+        animation: "ios";
+        headerShown: boolean;
+        header: () => ReactElement;
+        animationTypeForReplace: "pop";
+    } = {
+        headerShown: true,
+        header: () => (
+            <Header leftComponent={
+                <IconButton
+                    size={32}
+                    iconColor="#fff"
+                    icon="arrow-left"
+                    onPress={() => navigation.goBack()}
+                />
+            } />
+        ),
+        animation: "ios",
+        animationTypeForReplace: "pop",
+    };
 
     return (
         <>
@@ -50,7 +72,31 @@ const Router = (): ReactElement | null => {
                 ) : (
                     <>
                         <Stack.Screen name="Home" component={StoreTab} />
-                        <Stack.Screen name="Plugin" component={Plugin} />
+                        <Stack.Screen name="Plugin" component={Plugin} options={{
+                            animationTypeForReplace: "pop",
+                            animation: "ios",
+                        }} />
+                        <Stack.Screen
+                            name="SkinDetails"
+                            component={SkinDetails}
+                            options={optionsDetailsScreen}
+                        />
+                        <Stack.Screen
+                            name="CardDetails"
+                            component={CardDetails}
+                            options={optionsDetailsScreen}
+                        />
+                        <Stack.Screen
+                            name="BuddyDetails"
+                            component={BuddyDetails}
+                            options={optionsDetailsScreen}
+                        />
+
+                        <Stack.Screen
+                            name="SprayDetails"
+                            component={SprayDetails}
+                            options={optionsDetailsScreen}
+                        />
                     </>
                 )}
             </Stack.Navigator>

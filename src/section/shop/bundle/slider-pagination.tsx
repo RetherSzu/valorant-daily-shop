@@ -24,7 +24,7 @@ const Pagination = ({ data, scrollX }: Props) => {
                 flexDirection: "row",
                 width: "100%",
                 alignItems: "center",
-                justifyContent: "center"
+                justifyContent: "center",
             }}
         >
             {data.map((_: BundleData, idx: number) => {
@@ -33,13 +33,13 @@ const Pagination = ({ data, scrollX }: Props) => {
                 const dotWidth = scrollX.interpolate({
                     inputRange,
                     outputRange: [12, 30, 12],
-                    extrapolate: "clamp"
+                    extrapolate: "clamp",
                 });
 
                 const backgroundColor = scrollX.interpolate({
                     inputRange,
                     outputRange: [colors.text + "1A", colors.primary, colors.text + "1A"],
-                    extrapolate: "clamp"
+                    extrapolate: "clamp",
                 });
 
                 return (
@@ -51,9 +51,9 @@ const Pagination = ({ data, scrollX }: Props) => {
                                 height: 12,
                                 borderRadius: 6,
                                 marginHorizontal: 3,
-                                backgroundColor: "#ccc"
+                                backgroundColor: "#ccc",
                             },
-                            { width: dotWidth, backgroundColor }
+                            { width: dotWidth, backgroundColor },
                         ]}
                     />
                 );

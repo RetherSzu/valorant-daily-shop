@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 // type
+import { BundleInfo } from "@/type/api/shop/bundle";
 import { WeaponTheme } from "@/type/api/shop/weapon-theme";
 import { WeaponSkin, WeaponSkins } from "@/type/api/shop/weapon-skin";
 import { Buddies, Buddy, PlayerCard, PlayerTitle, Spray } from "@/type/api/shop";
@@ -18,7 +19,7 @@ export const rtkValorantApi = createApi({
         },
     }),
     endpoints: (builder) => ({
-        getBundleById: builder.query<Response<any>, string>({
+        getBundleById: builder.query<Response<BundleInfo>, string>({
             query: (id: string) => `/bundles/${id}`,
         }),
         getWeaponByLevelId: builder.query<Response<WeaponSkin>, string>({

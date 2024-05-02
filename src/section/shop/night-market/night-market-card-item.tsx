@@ -1,5 +1,5 @@
-import { Image, View } from "react-native";
-import { ReactElement } from "react";
+import { Dimensions, Image, View } from "react-native";
+import { ReactElement, useMemo } from "react";
 // api
 import { useGetThemeByIdQuery, useGetWeaponByLevelIdQuery } from "@/api/rtk-valorant-api";
 // component
@@ -15,6 +15,9 @@ import NightMarketCardSkeleton from "@/section/shop/night-market/night-market-ca
 import { BonusStoreOffer } from "@/type/api/shop/night-market";
 // util
 import { getContentTierColor, getContentTierIcon } from "@/util/content-tier-icon";
+import { getWeaponName } from "@/util/format-string";
+
+const WIDTH = Dimensions.get("window").width;
 
 type Props = {
     item: BonusStoreOffer;
@@ -27,7 +30,7 @@ const NightMarketCardItem = ({ item }: Props): ReactElement => {
     const {
         data: weaponSkinData,
         error: weaponSkinError,
-        isLoading: isLoadingWeapon
+        isLoading: isLoadingWeapon,
     } = useGetWeaponByLevelIdQuery(item.Offer.Rewards[0].ItemID);
 
     const skinData = weaponSkinData?.data;
@@ -35,8 +38,14 @@ const NightMarketCardItem = ({ item }: Props): ReactElement => {
     const {
         data: themeData,
         error: themeError,
-        isLoading: isLoadingTheme
+        isLoading: isLoadingTheme,
     } = useGetThemeByIdQuery(skinData?.themeUuid ?? "");
+
+    const filteredDisplayName = useMemo(() => {
+        if (!weaponSkinData?.data?.displayName) return "";
+
+        return getWeaponName(weaponSkinData.data.displayName);
+    }, [weaponSkinData?.data?.displayName]);
 
     if (isLoadingWeapon || isLoadingTheme) return <NightMarketCardSkeleton />;
 
@@ -47,11 +56,12 @@ const NightMarketCardItem = ({ item }: Props): ReactElement => {
     return (
         <View
             style={{
+                maxWidth: WIDTH - 32,
                 padding: 8,
                 borderRadius: 16,
                 overflow: "hidden",
                 position: "relative",
-                backgroundColor: getContentTierColor(skinData.contentTierUuid)
+                backgroundColor: getContentTierColor(skinData.contentTierUuid),
             }}
         >
             <Image
@@ -64,7 +74,7 @@ const NightMarketCardItem = ({ item }: Props): ReactElement => {
                     top: "30%",
                     left: "50%",
                     opacity: .1,
-                    position: "absolute"
+                    position: "absolute",
                 }}
             />
             <Image
@@ -77,22 +87,30 @@ const NightMarketCardItem = ({ item }: Props): ReactElement => {
                     left: 0,
                     right: "60%",
                     bottom: "30%",
-                    opacity: .05
+                    opacity: .05,
                 }}
             />
             <DiscountBadge discount={item.DiscountPercent} />
-            <Text variant="titleLarge" style={{ color: colors.text, fontWeight: "bold" }} numberOfLines={1}>
-                {skinData.displayName.replace(theme.displayName, "").replace(/\s/g, "")}
+            <Text variant="titleLarge">
+                {themeData.data.displayName}
             </Text>
             <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
-                <Text variant="labelLarge" style={{ flex: 1, color: colors.text, opacity: .5 }} numberOfLines={1}>
-                    {theme.displayName}
+                <Text
+                    variant="titleMedium"
+                    style={{ flex: 1, opacity: .5, textTransform: "uppercase" }}
+                    numberOfLines={1}
+                >
+                    {filteredDisplayName}
                 </Text>
             </View>
             <Image
                 source={{ uri: skinData.displayIcon ?? skinData.chromas[0].displayIcon }}
-                style={{ height: 65, flex: 1, transform: [{ scale: 1.25 }], marginTop: 16 }}
-                resizeMode="center"
+                style={{
+                    height: 65,
+                    maxWidth: WIDTH - 32,
+                    marginTop: 16,
+                }}
+                resizeMode="contain"
             />
             <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "flex-end" }}>
                 <View style={{ gap: 4 }}>

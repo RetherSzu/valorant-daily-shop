@@ -20,17 +20,21 @@ const BundlePlayerTitle = ({ offer }: Props) => {
 
     const { colors } = useThemeContext();
 
-    const { data, error, isLoading } = useGetTitleByIdQuery(offer.Rewards[0].ItemID);
+    const {
+        data: titleData,
+        error: titleError,
+        isLoading: isLoadingTitle,
+    } = useGetTitleByIdQuery(offer.Rewards[0].ItemID);
 
-    if (isLoading) {
+    if (isLoadingTitle) {
         return <BundlePlayerTitleSkeleton />;
     }
 
-    if (error || !data) {
+    if (titleError || !titleData) {
         return <Error />;
     }
 
-    const playerTitle = data.data;
+    const playerTitle = titleData.data;
 
     return (
         <ImageBackground
@@ -41,7 +45,7 @@ const BundlePlayerTitle = ({ offer }: Props) => {
                 borderRadius: 16,
                 overflow: "hidden",
                 flexDirection: "column",
-                backgroundColor: colors.card
+                backgroundColor: colors.card,
             }}
             blurRadius={150}
         >
@@ -51,11 +55,10 @@ const BundlePlayerTitle = ({ offer }: Props) => {
             <Text
                 variant="titleLarge"
                 style={{
-                    fontWeight: "bold",
-                    backgroundColor: "rgba(0,0,0,0.1)",
-                    textAlign: "center",
                     padding: 8,
-                    borderRadius: 8
+                    borderRadius: 8,
+                    textAlign: "center",
+                    backgroundColor: "rgba(0,0,0,0.1)",
                 }}
                 numberOfLines={1}
             >

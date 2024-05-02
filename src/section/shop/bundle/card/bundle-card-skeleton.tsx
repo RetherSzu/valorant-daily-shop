@@ -3,7 +3,6 @@ import { StyleSheet, View } from "react-native";
 // component
 import DarkSkeleton from "@/component/skeleton/dark-skeleton";
 
-
 const BundleCardSkeleton = () => (
     <MotiView
         transition={{ type: "timing" }}
@@ -31,26 +30,26 @@ const styles = StyleSheet.create({
         backgroundColor: "#222429",
         borderRadius: 16,
         width: "100%",
-        height: 220
+        height: 220,
     },
     row: {
         flexDirection: "row",
-        flex: 1
+        flex: 1,
     },
     leftColumn: {
         padding: 8,
-        flex: 1
+        flex: 1,
     },
     rowJustifySpaceBetween: {
         flexDirection: "row",
         justifyContent: "space-between",
-        marginBottom: 8
+        marginBottom: 8,
     },
     bottomRow: {
         flexDirection: "row",
         alignItems: "flex-end",
-        marginTop: 8
-    }
+        marginTop: 8,
+    },
 });
 
 export default BundleCardSkeleton;

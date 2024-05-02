@@ -1,26 +1,24 @@
-import React, { ReactElement, useCallback, useEffect, useState } from "react";
-import { IconButton } from "react-native-paper";
-import { useNavigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import React, { ReactElement, useCallback, useEffect, useState } from "react";
 // api
 import valorantProvider from "@/api/valorant-provider";
 // context
 import useUserContext from "@/context/hook/use-user-context";
+import useAuthContext from "@/context/hook/use-auth-context";
 import useBundleContext from "@/context/hook/use-bundle-context";
 import usePluginContext from "@/context/hook/use-plugin-context";
 import useDailyShopContext from "@/context/hook/use-daily-shop-context";
 import useNightMarketContext from "@/context/hook/use-night-market-context";
-// route
-import Header from "@/route/navigation/header";
 // screen
 import Store from "@/screen/shop/store";
-import SkinDetails from "@/screen/offer-details/skin-details";
 // type
-import { NavigationStoreProp, StoreStackParamList } from "@/type/router/navigation";
+import { StoreStackParamList } from "@/type/router/navigation";
 
 const StoreStack = createNativeStackNavigator<StoreStackParamList>();
 
 const StoreStackScreen = (): ReactElement | null => {
+
+    const { logout } = useAuthContext();
 
     const { initialize } = useUserContext();
 
@@ -47,6 +45,13 @@ const StoreStackScreen = (): ReactElement | null => {
             setBundles(shopData.bundles);
             setPlugins(shopData.plugins);
         } catch (error) {
+            // const e: AxiosError<{
+            //     "httpStatus": number,
+            //     "errorCode": string,
+            //     "message": string
+            // }, Record<any, any>> = error as AxiosError;
+
+            await logout();
             console.error("Failed to fetch shop data", error);
         }
         setFetchShop(false);
@@ -54,47 +59,16 @@ const StoreStackScreen = (): ReactElement | null => {
 
     useEffect(() => {
         // Initialize user data
-        initialize();
+        (() => initialize())();
         // Fetch shop data
         (() => getShopData())();
     }, []);
 
-    const navigation = useNavigation<NavigationStoreProp>();
-
     if (fetchShop) return null;
 
     return (
-        <StoreStack.Navigator
-            screenOptions={{
-                headerStyle: {
-                    backgroundColor: "#1B1D21",
-                },
-                headerTintColor: "#fff",
-                headerShadowVisible: false,
-                contentStyle: {
-                    backgroundColor: "#1B1D21",
-                },
-                title: "",
-                "header": () => <Header />,
-            }}
-        >
+        <StoreStack.Navigator screenOptions={{ headerShown: false }}>
             <StoreStack.Screen name="StoreStack" component={Store} />
-            <StoreStack.Screen
-                name="SkinDetails"
-                component={SkinDetails}
-                options={{
-                    header: () => <Header
-                        leftComponent={
-                            <IconButton
-                                size={32}
-                                iconColor="#fff"
-                                icon="arrow-left"
-                                onPress={() => navigation.goBack()}
-                            />
-                        }
-                    />,
-                }}
-            />
         </StoreStack.Navigator>
     );
 };

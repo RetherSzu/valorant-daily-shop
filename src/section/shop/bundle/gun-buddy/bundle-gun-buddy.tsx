@@ -1,65 +1,101 @@
+import { useMemo } from "react";
+import { TouchableRipple } from "react-native-paper";
+import { useNavigation } from "@react-navigation/native";
 import { Image, ImageBackground, View } from "react-native";
 // api
 import { useGetGunBuddyByIdQuery } from "@/api/rtk-valorant-api";
 // component
 import Error from "@/component/error/error";
 import Text from "@/component/typography/text";
+// context
+import useThemeContext from "@/context/hook/use-theme-context";
 // section
 import CostPoint from "@/section/shop/cost-point";
 import BundleGunBuddySkeleton from "@/section/shop/bundle/gun-buddy/bundle-gun-buddy-skeleton";
 // type
 import { Offer } from "@/type/api/shop";
+import { BundleInfo } from "@/type/api/shop/bundle";
+import { NavigationProp } from "@/type/router/navigation";
+// util
+import { getWeaponName } from "@/util/format-string";
 
 type Props = {
     offer: Offer;
+    theme: BundleInfo;
 };
 
-export const BundleGunBuddy = ({ offer }: Props) => {
+export const BundleGunBuddy = ({ offer, theme }: Props) => {
 
-    const { data, error, isLoading } = useGetGunBuddyByIdQuery(offer.Rewards[0].ItemID);
+    const navigate = useNavigation<NavigationProp>();
 
-    if (isLoading) {
+    const { colors } = useThemeContext();
+
+    const {
+        data: buddyData,
+        error: buddyError,
+        isLoading: isLoadingBuddy,
+    } = useGetGunBuddyByIdQuery(offer.Rewards[0].ItemID);
+
+    const filteredDisplayName = useMemo(() => {
+        if (!buddyData?.data?.displayName) return "";
+
+        return getWeaponName(buddyData.data.displayName, theme.displayName);
+    }, [buddyData?.data?.displayName]);
+
+    if (isLoadingBuddy) {
         return <BundleGunBuddySkeleton />;
     }
 
-
-    if (error || !data) {
+    if (buddyError || !buddyData) {
         return <Error />;
     }
 
-    const buddy = data.data;
+    const buddy = buddyData.data;
+
+    const onCardPress = () => navigate.navigate("BuddyDetails", { buddy, offer, theme });
 
     return (
-        <ImageBackground
-            source={{ uri: buddy.displayIcon }}
+        <TouchableRipple
+            borderless
+            onPress={onCardPress}
+            rippleColor="rgba(255, 70, 86, .20)"
             style={{
-                backgroundColor: "#1F2326",
-                borderRadius: 20,
-                flexDirection: "row",
-                overflow: "hidden"
+                flex: 1,
+                borderRadius: 16,
+                overflow: "hidden",
+                backgroundColor: colors.card,
             }}
-            blurRadius={20}
         >
-            <View
-                style={{
-                    gap: 16,
-                    flex: 1,
-                    padding: 8,
-                    flexDirection: "column",
-                    justifyContent: "space-between"
-                }}
-            >
-                <Text variant="titleLarge" style={{ color: "white" }}>
-                    {buddy.displayName}
-                </Text>
-                <CostPoint currencyId={Object.keys(offer.Cost)[0]} cost={offer.Cost[Object.keys(offer.Cost)[0]]} />
-            </View>
-            <Image
+            <ImageBackground
                 source={{ uri: buddy.displayIcon }}
-                resizeMode="center"
-                style={{ width: 100, height: 100, transform: [{ scale: 1.5 }] }}
-            />
-        </ImageBackground>
+                style={{
+                    borderRadius: 20,
+                    overflow: "hidden",
+                    flexDirection: "row",
+                }}
+                blurRadius={20}
+            >
+                <View
+                    style={{
+                        gap: 16,
+                        flex: 1,
+                        padding: 8,
+                        flexDirection: "column",
+                        justifyContent: "space-between",
+                    }}
+                >
+                    <Text variant="titleLarge">
+                        {filteredDisplayName}
+                    </Text>
+                    <CostPoint currencyId={Object.keys(offer.Cost)[0]} cost={offer.Cost[Object.keys(offer.Cost)[0]]} />
+                </View>
+                <Image
+                    resizeMode="center"
+                    source={{ uri: buddy.displayIcon }}
+                    style={{ width: 100, height: 100, transform: [{ scale: 1.5 }] }}
+                />
+            </ImageBackground>
+        </TouchableRipple>
     );
 };
 

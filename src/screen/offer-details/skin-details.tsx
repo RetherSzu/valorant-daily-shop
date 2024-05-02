@@ -1,7 +1,7 @@
-import { useState } from "react";
 import { ResizeMode } from "expo-av";
+import React, { useState } from "react";
 import { TouchableRipple } from "react-native-paper";
-import { Dimensions, FlatList, Image, View } from "react-native";
+import { Dimensions, FlatList, Image, ImageBackground, View } from "react-native";
 // component
 import Player from "@/component/player";
 import Text from "@/component/typography/text";
@@ -30,7 +30,7 @@ const SkinDetails = ({ route }: SkinDetailScreenProps) => {
     const [currentChromaIndex, setCurrentChromaIndex] = useState<number>(0);
 
     const renderListChroma = (
-        <View style={{ display: "flex", justifyContent: "space-between", flexDirection: "row" }}>
+        <View style={{ display: "flex", gap: 16, flexDirection: "row" }}>
             {skin.chromas.map((chroma, index) => (
                 <TouchableRipple
                     key={index}
@@ -64,7 +64,7 @@ const SkinDetails = ({ route }: SkinDetailScreenProps) => {
             data={skin.levels}
             style={{ flex: 1 }}
             overScrollMode="never"
-            contentContainerStyle={{ gap: 8 }}
+            contentContainerStyle={{ gap: 8, paddingBottom: 16 }}
             showsVerticalScrollIndicator={false}
             renderItem={({ item, index }) => (
                 <TouchableRipple
@@ -104,9 +104,10 @@ const SkinDetails = ({ route }: SkinDetailScreenProps) => {
                 gap: 16,
             }}
         >
-            <View style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
-                <View>
-                    <Text variant="displayLarge" style={{ color: colors.text, fontFamily: "Vandchrome" }}>
+            <View style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", gap: 16 }}>
+                <View style={{ flex: 1 }}>
+                    <Text variant="displayLarge" style={{ fontFamily: "Vandchrome" }} adjustsFontSizeToFit
+                          numberOfLines={2}>
                         {theme.displayName}
                     </Text>
                     <Text
@@ -134,31 +135,33 @@ const SkinDetails = ({ route }: SkinDetailScreenProps) => {
                     overflow: "hidden",
                 }}
             >
-                <View style={{ flex: 1 }}>
-                    {currentVideo ? (
-                        <Player
-                            onClose={() => {
-                                setCurrentVideo(null);
-                                setCurrentIndex(undefined);
-                            }}
-                            shouldPlay
-                            useNativeControls={false}
-                            source={{ uri: currentVideo }}
-                            resizeMode={ResizeMode.COVER}
-                            style={{ minHeight: 200, maxWidth: WIDTH }}
-                        />
-                    ) : (
-                        <Image
-                            source={{ uri: currentImage }}
-                            style={{
-                                height: "100%",
-                                maxWidth: WIDTH,
-                                marginHorizontal: 16,
-                                transform: [{ rotate: "22.5deg" }],
-                            }}
-                            resizeMode="center"
-                        />
-                    )}
+                <View style={{ flex: 1, borderRadius: 16, overflow: "hidden" }}>
+                    <ImageBackground source={{ uri: skin.wallpaper }} style={{ borderRadius: 16 }}>
+                        {currentVideo ? (
+                            <Player
+                                onClose={() => {
+                                    setCurrentVideo(null);
+                                    setCurrentIndex(undefined);
+                                }}
+                                shouldPlay
+                                useNativeControls={false}
+                                source={{ uri: currentVideo }}
+                                resizeMode={ResizeMode.COVER}
+                                style={{ minHeight: 200, maxWidth: WIDTH }}
+                            />
+                        ) : (
+                            <Image
+                                source={{ uri: currentImage }}
+                                style={{
+                                    height: "100%",
+                                    maxWidth: WIDTH,
+                                    marginHorizontal: 16,
+                                    // transform: [{ rotate: "22.5deg" }],
+                                }}
+                                resizeMode={skin.levels.length > 1 ? "contain" : "contain"}
+                            />
+                        )}
+                    </ImageBackground>
                 </View>
 
                 {skin.chromas.length > 1 && renderListChroma}

@@ -64,6 +64,7 @@ export type BundleInfo = {
     description: string;
     displayIcon: string;
     displayIcon2: string;
+    logoIcon: string | null;
     verticalPromoImage: string;
     useAdditionalContext: boolean;
     extraDescription: string | null;

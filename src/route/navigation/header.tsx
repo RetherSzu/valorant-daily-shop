@@ -23,11 +23,12 @@ const Header = ({ leftComponent }: HeaderProps): ReactElement => {
     return (
         <View
             style={{
-                backgroundColor: colors.background,
-                paddingHorizontal: 16,
                 flexDirection: "row",
-                justifyContent: "space-between",
                 alignItems: "center",
+                paddingHorizontal: 16,
+                justifyContent: "space-between",
+                backgroundColor: colors.background,
+                height: 80,
             }}
         >
             {leftComponent ? leftComponent : (
@@ -39,7 +40,9 @@ const Header = ({ leftComponent }: HeaderProps): ReactElement => {
                     />
                 </View>
             )}
+
             {gameName && tagLine && <Text variant="titleSmall" style={{ opacity: .5 }}>{gameName} #{tagLine}</Text>}
+
             <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", gap: 16 }}>
                 <CostPoint currencyId="vp" cost={balance.valorantPoint ?? 0} textVariant="bodyMedium" />
                 <CostPoint currencyId="rp" cost={balance.radianitePoint ?? 0} textVariant="bodyMedium" />

@@ -1,3 +1,5 @@
+import { TouchableRipple } from "react-native-paper";
+import { useNavigation } from "@react-navigation/native";
 import { Image, ImageBackground, View } from "react-native";
 // api
 import { useGetSprayByIdQuery } from "@/api/rtk-valorant-api";
@@ -11,26 +13,43 @@ import CostPoint from "@/section/shop/cost-point";
 import BundleSpraySkeleton from "@/section/shop/bundle/spray/bundle-spray-skeleton";
 // type
 import { Offer } from "@/type/api/shop";
+import { BundleInfo } from "@/type/api/shop/bundle";
+import { NavigationProp } from "@/type/router/navigation";
 
 type Props = {
     offer: Offer;
+    theme: BundleInfo;
 }
 
-const BundleSpray = ({ offer }: Props) => {
+const BundleSpray = ({ offer, theme }: Props) => {
+
+    const navigate = useNavigation<NavigationProp>();
 
     const { colors } = useThemeContext();
 
-    const { data, error, isLoading } = useGetSprayByIdQuery(offer.Rewards[0].ItemID);
+    const {
+        data: sprayData,
+        error: sprayError,
+        isLoading: isLoadingSpray,
+    } = useGetSprayByIdQuery(offer.Rewards[0].ItemID);
 
-    if (isLoading) {
+    if (isLoadingSpray) {
         return <BundleSpraySkeleton />;
     }
 
-    if (error || !data) {
+    if (sprayError || !sprayData) {
         return <Error />;
     }
 
-    const skinData = data.data;
+    const onCardPress = () => {
+        navigate.navigate("SprayDetails", {
+            spray: sprayData.data,
+            offer,
+            theme,
+        });
+    };
+
+    const skinData = sprayData.data;
 
     const renderSprays = [skinData.fullIcon, skinData.fullTransparentIcon, skinData.displayIcon].map((iconUrl, index) => {
         return (
@@ -45,32 +64,43 @@ const BundleSpray = ({ offer }: Props) => {
     });
 
     return (
-        <ImageBackground
-            source={{ uri: skinData.fullIcon, scale: 10 }}
-            blurRadius={50}
+        <TouchableRipple
+            borderless
+            onPress={onCardPress}
+            rippleColor="rgba(255, 70, 86, .20)"
             style={{
-                gap: 16,
-                padding: 8,
+                flex: 1,
                 borderRadius: 16,
                 overflow: "hidden",
-                flexDirection: "column",
-                backgroundColor: colors.card
+                backgroundColor: colors.card,
             }}
         >
-            <Text variant="titleLarge" style={{ fontWeight: "bold" }} numberOfLines={1}>
-                {skinData.displayName}
-            </Text>
-            <View
+            <ImageBackground
+                blurRadius={50}
                 style={{
-                    flexDirection: "row",
-                    justifyContent: "space-around",
-                    alignItems: "center"
+                    gap: 16,
+                    padding: 8,
+                    borderRadius: 16,
+                    overflow: "hidden",
+                    flexDirection: "column",
+                    backgroundColor: colors.card,
                 }}
             >
-                {renderSprays}
-            </View>
-            <CostPoint currencyId={Object.keys(offer.Cost)[0]} cost={offer.Cost[Object.keys(offer.Cost)[0]]} />
-        </ImageBackground>
+                <Text variant="titleLarge" numberOfLines={1}>
+                    {skinData.displayName}
+                </Text>
+                <View
+                    style={{
+                        alignItems: "center",
+                        flexDirection: "row",
+                        justifyContent: "space-around",
+                    }}
+                >
+                    {renderSprays}
+                </View>
+                <CostPoint currencyId={Object.keys(offer.Cost)[0]} cost={offer.Cost[Object.keys(offer.Cost)[0]]} />
+            </ImageBackground>
+        </TouchableRipple>
     );
 };
 

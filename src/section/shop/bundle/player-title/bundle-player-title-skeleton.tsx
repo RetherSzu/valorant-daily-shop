@@ -25,19 +25,19 @@ const styles = StyleSheet.create({
         borderRadius: 16,
         width: "100%",
         padding: 8,
-        height: 204
+        height: 204,
     },
     centerAligned: {
         gap: 16,
         flex: 1,
-        alignItems: "center"
+        alignItems: "center",
     },
     rowAligned: {
         flexDirection: "row",
         gap: 8,
         flex: 1,
-        alignItems: "flex-end"
-    }
+        alignItems: "flex-end",
+    },
 });
 
 export default BundlePlayerTitleSkeleton;

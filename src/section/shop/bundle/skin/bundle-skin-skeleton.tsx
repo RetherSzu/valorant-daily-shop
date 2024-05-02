@@ -31,29 +31,29 @@ const styles = StyleSheet.create({
         borderRadius: 16,
         width: "100%",
         padding: 8,
-        height: 174
+        height: 174,
     },
     mainContainer: {
         gap: 8,
-        flex: 1
+        flex: 1,
     },
     spacer: {
-        height: 70
+        height: 70,
     },
     footerContainer: {
         flexDirection: "row",
         justifyContent: "space-between",
-        flex: 1
+        flex: 1,
     },
     actionLeftContainer: {
         flexDirection: "row",
         gap: 8,
         flex: 1,
-        alignItems: "flex-end"
+        alignItems: "flex-end",
     },
     actionRightContainer: {
-        justifyContent: "flex-end"
-    }
+        justifyContent: "flex-end",
+    },
 });
 
 export default BundleSkinSkeleton;
