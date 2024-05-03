@@ -53,8 +53,10 @@ const BundleCard = ({ offer, theme }: BundleCardProps) => {
             borderless
             onPress={onCardPress}
             style={{
-                flex: 1, borderRadius: 16,
-                backgroundColor: colors.card, overflow: "hidden",
+                flex: 1,
+                borderRadius: 16,
+                overflow: "hidden",
+                backgroundColor: colors.card,
             }}
             rippleColor="rgba(255, 70, 86, .20)"
         >
@@ -67,23 +69,24 @@ const BundleCard = ({ offer, theme }: BundleCardProps) => {
                     style={{
                         gap: 16,
                         flex: 1,
-                        padding: 8,
+                        padding: 16,
                         flexDirection: "column",
                         justifyContent: "space-between",
                     }}
                 >
                     <Text variant="titleLarge" numberOfLines={1}>{playercard.displayName}</Text>
                     <View style={{ flexDirection: "row", justifyContent: "space-around" }}>
-                        <Image source={{ uri: playercard.wideArt }} style={{ width: 100, height: 100 }}
-                               borderRadius={16} />
-                        <Image source={{ uri: playercard.smallArt }} style={{ width: 100, height: 100 }}
-                               borderRadius={16} />
+                        <Image
+                            borderRadius={8}
+                            source={{ uri: playercard.wideArt }}
+                            style={{ width: "100%", height: 100 }}
+                        />
                     </View>
                     <CostPoint currencyId={Object.keys(offer.Cost)[0]} cost={offer.Cost[Object.keys(offer.Cost)[0]]} />
                 </View>
                 <Image
-                    source={{ uri: playercard.largeArt }}
                     resizeMode="center"
+                    source={{ uri: playercard.largeArt }}
                     style={{ width: 92, height: 220 }}
                 />
             </ImageBackground>
