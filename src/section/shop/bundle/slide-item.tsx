@@ -35,8 +35,8 @@ const SlideItem = ({ bundle, bundleIndex }: Props) => {
         <ImageBackground
             source={{ uri: bundle.bundleInfo.displayIcon }}
             style={{
-                width: width - 32,
                 height: 200,
+                width: width - 32,
             }}
             borderRadius={16}
         >

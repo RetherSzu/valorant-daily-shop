@@ -1,5 +1,5 @@
-import { Animated, FlatList, View, ViewToken } from "react-native";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { Animated, FlatList, ScrollView, View, ViewToken } from "react-native";
 // api
 import valorantProvider from "@/api/valorant-provider";
 // component
@@ -54,7 +54,6 @@ const BundleView = () => {
     }, [featuredBundle.Bundles.length]);
 
     const renderOffer = useCallback(({ item, index }: { item: ItemOffer, index: number }) => {
-        console.log(bundlesInfos[bundleIndex]);
         const itemTypeID = bundlesInfos[bundleIndex].bundle.Items[index].Item.ItemTypeID;
         const { Offer } = item;
         const theme = bundlesInfos[bundleIndex].bundleInfo;
@@ -76,15 +75,9 @@ const BundleView = () => {
     }, [bundleIndex, bundlesInfos]);
 
     const offerList = useMemo(() => (
-        <FlatList
-            key={bundleIndex}
-            overScrollMode="never"
-            snapToAlignment="center"
-            contentContainerStyle={{ gap: 16 }}
-            showsVerticalScrollIndicator={false}
-            data={bundlesInfos[bundleIndex]?.bundle?.ItemOffers ?? []}
-            renderItem={renderOffer}
-        />
+        <>
+            {bundlesInfos[bundleIndex]?.bundle?.ItemOffers?.map((item, index) => renderOffer({ item, index }))}
+        </>
     ), [bundleIndex, bundlesInfos, renderOffer]);
 
     if (bundleLoading || !bundlesInfos.length) {
@@ -103,7 +96,14 @@ const BundleView = () => {
     }
 
     return (
-        <View style={{ backgroundColor: colors.background, flex: 1, paddingHorizontal: 16, gap: 16, paddingTop: 16 }}>
+        <ScrollView
+            contentContainerStyle={{
+                gap: 16,
+                paddingTop: 16,
+                paddingHorizontal: 16,
+                backgroundColor: colors.background,
+            }}
+        >
             <View style={{ position: "relative" }}>
                 <FlatList
                     horizontal
@@ -120,8 +120,10 @@ const BundleView = () => {
             </View>
 
             <Text variant="headlineMedium" style={{ fontFamily: "Nota" }}>COLLECTION</Text>
+
             {offerList}
-        </View>
+
+        </ScrollView>
     );
 };
 
