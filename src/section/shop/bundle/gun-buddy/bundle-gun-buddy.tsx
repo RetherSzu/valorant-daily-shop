@@ -1,4 +1,3 @@
-import { useMemo } from "react";
 import { TouchableRipple } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { Image, ImageBackground, View } from "react-native";
@@ -16,8 +15,6 @@ import BundleGunBuddySkeleton from "@/section/shop/bundle/gun-buddy/bundle-gun-b
 import { Offer } from "@/type/api/shop";
 import { BundleInfo } from "@/type/api/shop/bundle";
 import { NavigationProp } from "@/type/router/navigation";
-// util
-import { getWeaponName } from "@/util/format-string";
 
 type Props = {
     offer: Offer;
@@ -35,12 +32,6 @@ export const BundleGunBuddy = ({ offer, theme }: Props) => {
         error: buddyError,
         isLoading: isLoadingBuddy,
     } = useGetGunBuddyByIdQuery(offer.Rewards[0].ItemID);
-
-    const filteredDisplayName = useMemo(() => {
-        if (!buddyData?.data?.displayName) return "";
-
-        return getWeaponName(buddyData.data.displayName, theme.displayName);
-    }, [buddyData?.data?.displayName]);
 
     if (isLoadingBuddy) {
         return <BundleGunBuddySkeleton />;
@@ -67,13 +58,13 @@ export const BundleGunBuddy = ({ offer, theme }: Props) => {
             }}
         >
             <ImageBackground
-                source={{ uri: buddy.displayIcon }}
+                blurRadius={20}
                 style={{
                     borderRadius: 20,
                     overflow: "hidden",
                     flexDirection: "row",
                 }}
-                blurRadius={20}
+                source={{ uri: buddy.displayIcon }}
             >
                 <View
                     style={{
@@ -84,9 +75,7 @@ export const BundleGunBuddy = ({ offer, theme }: Props) => {
                         justifyContent: "space-between",
                     }}
                 >
-                    <Text variant="titleLarge">
-                        {filteredDisplayName}
-                    </Text>
+                    <Text variant="titleLarge">Buddy</Text>
                     <CostPoint currencyId={Object.keys(offer.Cost)[0]} cost={offer.Cost[Object.keys(offer.Cost)[0]]} />
                 </View>
                 <Image

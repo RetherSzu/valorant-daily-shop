@@ -86,9 +86,7 @@ const BundleSpray = ({ offer, theme }: Props) => {
                     backgroundColor: colors.card,
                 }}
             >
-                <Text variant="titleLarge" numberOfLines={1}>
-                    {skinData.displayName}
-                </Text>
+                <Text variant="titleLarge" numberOfLines={1}>Spray</Text>
                 <View
                     style={{
                         alignItems: "center",

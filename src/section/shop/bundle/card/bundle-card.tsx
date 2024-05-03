@@ -25,22 +25,26 @@ const BundleCard = ({ offer, theme }: BundleCardProps) => {
 
     const { colors } = useThemeContext();
 
-    const { data, error, isLoading } = useGetPlayerCardIdQuery(offer.Rewards[0].ItemID);
+    const {
+        data: cardData,
+        error: cardError,
+        isLoading: isLoadingCard,
+    } = useGetPlayerCardIdQuery(offer.Rewards[0].ItemID);
 
     const navigate = useNavigation<NavigationProp>();
 
-    if (isLoading) {
+    if (isLoadingCard) {
         return <BundleCardSkeleton />;
     }
 
-    if (error || !data) {
+    if (cardError || !cardData) {
         return <Error />;
     }
 
-    const playercard = data.data;
+    const playercard = cardData.data;
 
     const onCardPress = () => {
-        if (!data) return;
+        if (!cardData) return;
         navigate.navigate("CardDetails", {
             playercard,
             offer,
@@ -74,7 +78,7 @@ const BundleCard = ({ offer, theme }: BundleCardProps) => {
                         justifyContent: "space-between",
                     }}
                 >
-                    <Text variant="titleLarge" numberOfLines={1}>{playercard.displayName}</Text>
+                    <Text variant="titleLarge" numberOfLines={1}>Card</Text>
                     <View style={{ flexDirection: "row", justifyContent: "space-around" }}>
                         <Image
                             borderRadius={8}
