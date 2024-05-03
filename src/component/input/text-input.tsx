@@ -30,17 +30,19 @@ const TextInput = (
     const { colors } = useThemeContext();
 
     return (
-        <View style={[{
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "center",
-            width: "100%",
-            height: 56,
-            borderRadius: 16,
-            backgroundColor: backgroundColor,
-            padding: 16,
-            gap: 16
-        }, style]}>
+        <View
+            style={[{
+                gap: 16,
+                height: 56,
+                padding: 16,
+                width: "100%",
+                borderRadius: 16,
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "center",
+                backgroundColor: backgroundColor,
+            }, style]}
+        >
             {icon ? icon : null}
             <DefaultTextInput
                 placeholder={placeholder}
@@ -50,7 +52,7 @@ const TextInput = (
                 style={[{
                     flex: 1,
                     height: 56,
-                    color: colors.text
+                    color: colors.text,
                 }, textStyle]}
                 placeholderTextColor="#ffffff80"
                 {...other}

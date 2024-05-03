@@ -7,7 +7,7 @@ import { IThemeContext } from "@/type/context/theme";
 export const initialThemeState: IThemeContext = {
     dark: true,
     colors: {
-        primary: "#FF4656",
+        primary: "#DC3D4B",
         background: "#1B1D21",
         card: "#222429",
         text: "#FFFFFF",

@@ -135,11 +135,11 @@ const Login = (): ReactElement => {
                         onPress={() => setStaySignIn(!staySignIn)}
                         status={staySignIn ? "checked" : "unchecked"}
                     />
-                    <Text variant="bodyMedium">Stay sign in ?</Text>
+                    <Text variant="bodyLarge">Stay sign in ?</Text>
                 </View>
                 <View style={{ flex: 1, justifyContent: "flex-end" }}>
                     <Button
-                        text="Login in"
+                        text="Log in"
                         onPress={onSubmit}
                         loading={isSubmitting}
                         underlayColor="#222429"
