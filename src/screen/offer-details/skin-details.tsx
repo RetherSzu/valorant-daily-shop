@@ -30,7 +30,14 @@ const SkinDetails = ({ route }: SkinDetailScreenProps) => {
     const [currentChromaIndex, setCurrentChromaIndex] = useState<number>(0);
 
     const renderListChroma = (
-        <View style={{ display: "flex", gap: 16, flexDirection: "row" }}>
+        <View
+            style={{
+                gap: 16,
+                display: "flex",
+                flexDirection: "row",
+                marginBottom: skin.levels.length <= 1 ? 16 : 0,
+            }}
+        >
             {skin.chromas.map((chroma, index) => (
                 <TouchableRipple
                     key={index}
