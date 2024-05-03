@@ -11,6 +11,7 @@ import BundleView from "@/screen/shop/bundle";
 import DailyShop from "@/screen/shop/daily-shop";
 import NightMarket from "@/screen/shop/night-market";
 import PluginStore from "@/screen/shop/plugin-store";
+import useUserContext from "@/context/hook/use-user-context";
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -21,6 +22,8 @@ const Store = () => {
     const { plugins } = usePluginContext();
 
     const { nightMarket } = useNightMarketContext();
+
+    const { gameName, tagLine } = useUserContext();
 
     const tabNavigatorOptions = {
         initialRouteName: "Daily shop",
@@ -59,7 +62,10 @@ const Store = () => {
 
     return (
         <View style={{ flex: 1 }}>
-            <Text variant="displayLarge" style={{ fontFamily: "Vandchrome", paddingHorizontal: 16 }}>STORE</Text>
+            <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 16 }}>
+                <Text variant="displayMedium" style={{ fontFamily: "Vandchrome" }}>STORE</Text>
+                {gameName && tagLine && <Text variant="titleSmall" style={{ opacity: .5 }}>{gameName} #{tagLine}</Text>}
+            </View>
             {/* @ts-ignore */}
             <Tab.Navigator {...tabNavigatorOptions}>
                 <Tab.Screen name="Bundles" component={BundleView} />
