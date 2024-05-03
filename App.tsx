@@ -1,3 +1,4 @@
+//
 import { useFonts } from "expo-font";
 import { Provider } from "react-redux";
 import { ReactElement, useEffect } from "react";
@@ -15,6 +16,8 @@ import DailyShopProvider from "@/context/daily-shop/daily-shop-provider";
 import NightMarketProvider from "@/context/night-market/night-market-provider";
 // controller
 import { store } from "@/controller/store";
+// moti
+import "react-native-reanimated";
 // route
 import Router from "@/route/index";
 
