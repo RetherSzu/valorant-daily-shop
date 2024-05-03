@@ -1,5 +1,5 @@
 import React, { ReactElement } from "react";
-import { ScrollView, View } from "react-native";
+import { View } from "react-native";
 // component
 import Button from "@/component/button/button";
 import TitleScreen from "@/component/typography/title-screen";
@@ -16,29 +16,27 @@ const Settings = (): ReactElement => {
     return (
         <View
             style={{
-                flex: 1,
-                backgroundColor: colors.primary,
-                justifyContent: "center",
-                alignItems: "center",
-                padding: 16,
                 gap: 16,
+                flex: 1,
+                padding: 16,
+                alignItems: "center",
+                justifyContent: "center",
+                backgroundColor: colors.primary,
             }}
         >
             <View style={{ flexDirection: "row", alignItems: "flex-start" }}>
                 <TitleScreen name="SETTINGS" />
             </View>
-            <ScrollView
+            <View
                 style={{
-                    backgroundColor: "#1F2326",
-                    padding: 16,
-                    borderRadius: 20,
-                    width: "100%",
-                }}
-                contentContainerStyle={{
                     gap: 16,
-                    justifyContent: "space-between",
+                    flex: 1,
+                    padding: 16,
+                    width: "100%",
+                    borderRadius: 32,
+                    backgroundColor: "#1F2326",
+                    flexDirection: "column-reverse",
                 }}
-                showsVerticalScrollIndicator={false}
             >
                 <Button
                     text="Logout"
@@ -46,7 +44,7 @@ const Settings = (): ReactElement => {
                     backgroundColor={colors.primary}
                     underlayColor="#222429"
                 />
-            </ScrollView>
+            </View>
         </View>
     );
 };
