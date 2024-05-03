@@ -68,12 +68,15 @@ const CardItemOffer = ({ item }: Props): ReactElement => {
             borderless
             onPress={onCardPress}
             style={{
-                flex: 1, maxWidth: WIDTH / 2 - 24, borderRadius: 16,
-                backgroundColor: colors.card, overflow: "hidden",
+                flex: 1,
+                borderRadius: 16,
+                overflow: "hidden",
+                maxWidth: WIDTH / 2 - 20,
+                backgroundColor: colors.card,
             }}
             rippleColor="rgba(255, 70, 86, .20)"
         >
-            <ImageBackground style={{ flex: 1, padding: 8, position: "relative" }} source={{ uri: skinData.wallpaper }}>
+            <ImageBackground style={{ flex: 1, padding: 16, position: "relative" }} source={{ uri: skinData.wallpaper }}>
                 {!skinData.wallpaper && (
                     <Image
                         source={getContentTierIcon(skinData.contentTierUuid)}
