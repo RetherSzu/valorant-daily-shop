@@ -13,15 +13,20 @@ type Props = {
 
 const CostPoint = ({ currencyId, cost, textVariant = "titleMedium" }: Props) => {
     return (
-        <View style={{ flexDirection: "row", gap: 8, alignItems: "center" }}>
+        <View
+            style={{
+                gap: 8,
+                borderRadius: 50,
+                alignItems: "center",
+                flexDirection: "row",
+            }}
+        >
             <Image
-                source={getCurrencyByUuid(currencyId)}
                 resizeMode="contain"
                 style={{ width: 24, height: 24 }}
+                source={getCurrencyByUuid(currencyId)}
             />
-            <Text variant={textVariant} style={{ fontFamily: "Nota" }}>
-                {cost}
-            </Text>
+            <Text variant={textVariant} style={{ fontFamily: "Nota" }}>{cost}</Text>
         </View>
     );
 };
