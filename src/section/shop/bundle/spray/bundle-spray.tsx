@@ -53,8 +53,9 @@ const BundleSpray = ({ offer, theme }: Props) => {
 
     const renderSprays = [skinData.fullIcon, skinData.fullTransparentIcon, skinData.displayIcon].map((iconUrl, index) => {
         return (
-            <View key={index} style={{ overflow: "hidden", width: 92, height: 92, borderRadius: 16 }}>
+            <View key={index} style={{ width: 92, height: 92 }}>
                 <Image
+                    borderRadius={8}
                     source={{ uri: iconUrl }}
                     style={{ flex: 1, height: 70 }}
                     resizeMode="contain"
@@ -79,11 +80,7 @@ const BundleSpray = ({ offer, theme }: Props) => {
                 blurRadius={50}
                 style={{
                     gap: 16,
-                    padding: 8,
-                    borderRadius: 16,
-                    overflow: "hidden",
-                    flexDirection: "column",
-                    backgroundColor: colors.card,
+                    padding: 16,
                 }}
             >
                 <Text variant="titleLarge" numberOfLines={1}>Spray</Text>
@@ -91,7 +88,7 @@ const BundleSpray = ({ offer, theme }: Props) => {
                     style={{
                         alignItems: "center",
                         flexDirection: "row",
-                        justifyContent: "space-around",
+                        justifyContent: "space-between",
                     }}
                 >
                     {renderSprays}

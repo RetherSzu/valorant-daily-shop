@@ -18,7 +18,7 @@ const BundleSkinSkeleton = () => (
                     <DarkSkeleton width={100} height={24} />
                 </View>
                 <View style={styles.actionRightContainer}>
-                    <DarkSkeleton radius="round" width={32} height={32} />
+                    <DarkSkeleton radius={8} width={32} height={32} />
                 </View>
             </View>
         </View>
@@ -27,11 +27,11 @@ const BundleSkinSkeleton = () => (
 
 const styles = StyleSheet.create({
     motiViewAnimate: {
-        backgroundColor: "#222429",
-        borderRadius: 16,
+        height: 182,
+        padding: 16,
         width: "100%",
-        padding: 8,
-        height: 174,
+        borderRadius: 16,
+        backgroundColor: "#222429",
     },
     mainContainer: {
         gap: 8,
@@ -41,14 +41,14 @@ const styles = StyleSheet.create({
         height: 70,
     },
     footerContainer: {
+        flex: 1,
         flexDirection: "row",
         justifyContent: "space-between",
-        flex: 1,
     },
     actionLeftContainer: {
-        flexDirection: "row",
         gap: 8,
         flex: 1,
+        flexDirection: "row",
         alignItems: "flex-end",
     },
     actionRightContainer: {

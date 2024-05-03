@@ -53,15 +53,13 @@ export const BundleGunBuddy = ({ offer, theme }: Props) => {
             style={{
                 flex: 1,
                 borderRadius: 16,
-                overflow: "hidden",
                 backgroundColor: colors.card,
             }}
         >
             <ImageBackground
                 blurRadius={20}
                 style={{
-                    borderRadius: 20,
-                    overflow: "hidden",
+                    padding: 16,
                     flexDirection: "row",
                 }}
                 source={{ uri: buddy.displayIcon }}
@@ -70,7 +68,6 @@ export const BundleGunBuddy = ({ offer, theme }: Props) => {
                     style={{
                         gap: 16,
                         flex: 1,
-                        padding: 8,
                         flexDirection: "column",
                         justifyContent: "space-between",
                     }}
@@ -81,7 +78,7 @@ export const BundleGunBuddy = ({ offer, theme }: Props) => {
                 <Image
                     resizeMode="center"
                     source={{ uri: buddy.displayIcon }}
-                    style={{ width: 100, height: 100, transform: [{ scale: 1.5 }] }}
+                    style={{ width: 100, height: 100, transform: [{ scale: 1.75 }] }}
                 />
             </ImageBackground>
         </TouchableRipple>

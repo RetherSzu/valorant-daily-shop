@@ -32,7 +32,7 @@ const SprayDetails = ({ route }: SprayDetailScreenProps) => {
                 style={{ flex: 1 }}
                 contentContainerStyle={{ gap: 16, justifyContent: "center", alignItems: "center" }}
             >
-                {[spray.fullIcon, spray.fullTransparentIcon].map((icon, index) => (
+                {[spray.fullTransparentIcon, spray.fullIcon].map((icon, index) => (
                     <View key={index} style={{ backgroundColor: colors.card, borderRadius: 32, padding: 16 }}>
                         <Image
                             borderRadius={16}

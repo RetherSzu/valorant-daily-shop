@@ -11,10 +11,7 @@ const BundleCardSkeleton = () => (
         <View style={styles.row}>
             <View style={styles.leftColumn}>
                 <DarkSkeleton width={100} />
-                <View style={styles.rowJustifySpaceBetween}>
-                    <DarkSkeleton radius={16} width={100} height={100} />
-                    <DarkSkeleton radius={16} width={100} height={100} />
-                </View>
+                <DarkSkeleton radius={8} width="100%" height={100} />
                 <View style={styles.bottomRow}>
                     <DarkSkeleton radius="round" width={24} height={24} />
                     <DarkSkeleton width={100} height={24} />
@@ -27,28 +24,29 @@ const BundleCardSkeleton = () => (
 
 const styles = StyleSheet.create({
     motiViewAnimate: {
-        backgroundColor: "#222429",
-        borderRadius: 16,
-        width: "100%",
         height: 220,
+        width: "100%",
+        borderRadius: 16,
+        backgroundColor: "#222429",
     },
     row: {
-        flexDirection: "row",
         flex: 1,
+        flexDirection: "row",
     },
     leftColumn: {
-        padding: 8,
         flex: 1,
+        gap: 16,
+        padding: 16,
     },
     rowJustifySpaceBetween: {
+        marginBottom: 8,
         flexDirection: "row",
         justifyContent: "space-between",
-        marginBottom: 8,
     },
     bottomRow: {
+        gap: 8,
         flexDirection: "row",
         alignItems: "flex-end",
-        marginTop: 8,
     },
 });
 

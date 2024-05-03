@@ -13,7 +13,7 @@ const BundleSpraySkeleton = () => {
                 <DarkSkeleton width={100} />
                 <View style={styles.iconRow}>
                     {Array.from({ length: 3 }).map((_, index) => (
-                        <DarkSkeleton key={index} radius={16} width={92} height={92} />
+                        <DarkSkeleton key={index} radius={8} width={92} height={92} />
                     ))}
                 </View>
                 <View style={styles.actionRow}>
@@ -27,25 +27,25 @@ const BundleSpraySkeleton = () => {
 
 const styles = StyleSheet.create({
     motiViewAnimate: {
-        backgroundColor: "#222429",
-        borderRadius: 16,
+        height: 208,
         width: "100%",
-        height: 220,
+        borderRadius: 16,
+        backgroundColor: "#222429",
     },
     container: {
-        padding: 8,
-        flex: 1,
         gap: 16,
+        flex: 1,
+        padding: 16,
     },
     iconRow: {
         flexDirection: "row",
-        justifyContent: "space-around",
         alignItems: "center",
+        justifyContent: "space-between",
     },
     actionRow: {
-        flexDirection: "row",
         gap: 8,
         flex: 1,
+        flexDirection: "row",
         alignItems: "flex-end",
     },
 });

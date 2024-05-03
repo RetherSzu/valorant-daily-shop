@@ -16,7 +16,7 @@ const BundleGunBuddySkeleton = () => (
                     <DarkSkeleton width={100} height={24} />
                 </View>
                 <View style={styles.endIcon}>
-                    <DarkSkeleton radius={16} width={100} height={100} />
+                    <DarkSkeleton radius={8} width={100} height={100} />
                 </View>
             </View>
         </View>
@@ -28,8 +28,8 @@ const styles = StyleSheet.create({
         backgroundColor: "#222429",
         borderRadius: 16,
         width: "100%",
-        padding: 8,
-        height: 116
+        padding: 16,
+        height: 132
     },
     container: {
         gap: 8,

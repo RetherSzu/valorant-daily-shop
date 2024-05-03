@@ -56,21 +56,25 @@ const BundleSkin = ({ offer, theme }: Props) => {
         });
     };
 
-    if (isLoadingWeapon) return <BundleSkinSkeleton />;
+    if (isLoadingWeapon) {
+        return <BundleSkinSkeleton />;
+    }
 
-    if (weaponSkinError || !skinData) return <Error />;
+    if (weaponSkinError || !skinData) {
+        return <Error />;
+    }
 
     return (
         <TouchableRipple
             borderless
             onPress={onCardPress}
             rippleColor="rgba(255, 70, 86, .20)"
-            style={{ flex: 1, borderRadius: 16, backgroundColor: colors.card, overflow: "hidden" }}
+            style={{ flex: 1, borderRadius: 16, backgroundColor: colors.card }}
         >
             <ImageBackground
                 resizeMode="cover"
                 source={{ uri: skinData.wallpaper }}
-                style={{ gap: 16, padding: 8, borderRadius: 16, overflow: "hidden", position: "relative" }}
+                style={{ gap: 16, padding: 16 }}
             >
                 <Text variant="titleLarge" numberOfLines={1}>{filteredDisplayName}</Text>
                 <Image
