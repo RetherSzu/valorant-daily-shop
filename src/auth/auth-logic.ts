@@ -1,7 +1,7 @@
 import * as SecureStore from "expo-secure-store";
 import axios, { AxiosError, AxiosResponse } from "axios";
-// util
-import axiosInstance from "@/util/axios";
+// utils
+import axiosInstance from "@/utils/axios";
 
 const authLogic = {
     authCookie: async (): Promise<{
@@ -217,6 +217,32 @@ const authLogic = {
         }
         return false;
     },
+
+    async logout(): Promise<void> {
+        console.log(SecureStore.getItem("asid"));
+
+        const options = {
+            method: "POST",
+            url: "https://auth.riotgames.com/api/v1/authorization",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            data: {
+                client_id: "play-valorant-web-prod",
+                nonce: "1",
+                redirect_uri: "https://playvalorant.com/opt_in",
+                response_type: "token id_token",
+                scope: "account openid",
+            },
+        };
+
+        try {
+            const response = await axiosInstance.request(options);
+            console.log(JSON.stringify(response.data, null, 4))
+        } catch (err) {
+            console.log(err)
+        }
+    }
 };
 
 export default authLogic;

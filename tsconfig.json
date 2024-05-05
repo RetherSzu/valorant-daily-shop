@@ -8,15 +8,15 @@
             "@/api/*": ["./src/api/*"],
             "@/assets/*": ["./assets/*"],
             "@/auth/*": ["./src/auth/*"],
-            "@/type/*": ["./src/type/*"],
-            "@/util/*": ["./src/util/*"],
-            "@/route/*": ["./src/route/*"],
-            "@/screen/*": ["./src/screen/*"],
-            "@/context/*": ["./src/context/*"],
-            "@/factory/*": ["./src/factory/*"],
-            "@/section/*": ["./src/section/*"],
-            "@/component/*": ["./src/component/*"],
-            "@/controller/*": ["./src/controller/*"]
+            "@/types/*": ["./src/types/*"],
+            "@/utils/*": ["./src/utils/*"],
+            "@/routes/*": ["./src/routes/*"],
+            "@/screens/*": ["./src/screens/*"],
+            "@/contexts/*": ["./src/contexts/*"],
+            "@/sections/*": ["./src/sections/*"],
+            "@/factories/*": ["./src/factories/*"],
+            "@/components/*": ["./src/components/*"],
+            "@/controllers/*": ["./src/controllers/*"]
         }
     }
 }

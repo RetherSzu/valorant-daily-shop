@@ -4,23 +4,23 @@ import { Provider } from "react-redux";
 import { ReactElement, useEffect } from "react";
 import * as SplashScreen from "expo-splash-screen";
 import { DefaultTheme, NavigationContainer } from "@react-navigation/native";
-// context
-import AuthProvider from "@/context/auth/auth-provider";
-import UserProvider from "@/context/user/user-provider";
-import ThemeProvider from "@/context/theme/theme-provider";
-import useAuthContext from "@/context/hook/use-auth-context";
-import BundleProvider from "@/context/bundle/bundle-provider";
-import PluginProvider from "@/context/plugin/plugin-provider";
-import SnackbarProvider from "@/context/snackbar/snackbar-provider";
-import DailyShopProvider from "@/context/daily-shop/daily-shop-provider";
-import NightMarketProvider from "@/context/night-market/night-market-provider";
-import AccessoryStoreProvider from "@/context/accessory-store/accessory-store-provider";
-// controller
-import { store } from "@/controller/store";
+// contexts
+import AuthProvider from "@/contexts/auth/auth-provider";
+import UserProvider from "@/contexts/user/user-provider";
+import ThemeProvider from "@/contexts/theme/theme-provider";
+import useAuthContext from "@/contexts/hook/use-auth-context";
+import BundleProvider from "@/contexts/bundle/bundle-provider";
+import PluginProvider from "@/contexts/plugin/plugin-provider";
+import SnackbarProvider from "@/contexts/snackbar/snackbar-provider";
+import DailyShopProvider from "@/contexts/daily-shop/daily-shop-provider";
+import NightMarketProvider from "@/contexts/night-market/night-market-provider";
+import AccessoryStoreProvider from "@/contexts/accessory-store/accessory-store-provider";
+// controllers
+import { store } from "@/controllers/store";
 // moti
 import "react-native-reanimated";
-// route
-import Router from "@/route/index";
+// routes
+import Router from "@/routes/index";
 
 export default function App(): ReactElement | null {
 

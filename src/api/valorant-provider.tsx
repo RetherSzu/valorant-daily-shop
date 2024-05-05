@@ -1,9 +1,9 @@
 import * as SecureStore from "expo-secure-store";
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
-// type
-import { StorefrontResponse } from "@/type/api/shop";
-import { WalletResponse } from "@/type/api/user-balance";
-import { PlayerInfoResponse } from "@/type/api/auth/user-info";
+// types
+import { StorefrontResponse } from "@/types/api/shop";
+import { WalletResponse } from "@/types/api/user-balance";
+import { PlayerInfoResponse } from "@/types/api/auth/user-info";
 
 // ----------------------------------------------------------------------
 
