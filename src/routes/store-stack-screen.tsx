@@ -14,6 +14,7 @@ import Store from "@/screens/shop/store";
 // types
 import { StoreStackParamList } from "@/types/router/navigation";
 import useAccessoryStoreContext from "@/contexts/hook/use-accessory-store-context";
+import Loading from "@/components/loading/loading";
 
 const StoreStack = createNativeStackNavigator<StoreStackParamList>();
 
@@ -49,12 +50,6 @@ const StoreStackScreen = (): ReactElement | null => {
             setNightMarket(shopData.nightMarket);
             setAccessoryStore(shopData.accessoryStore);
         } catch (error) {
-            // const e: AxiosError<{
-            //     "httpStatus": number,
-            //     "errorCode": string,
-            //     "message": string
-            // }, Record<any, any>> = error as AxiosError;
-
             await logout();
             console.error("Failed to fetch shop data", error);
         }
@@ -68,7 +63,7 @@ const StoreStackScreen = (): ReactElement | null => {
         (() => getShopData())();
     }, []);
 
-    if (fetchShop) return null;
+    if (fetchShop) return <Loading />;
 
     return (
         <StoreStack.Navigator screenOptions={{ headerShown: false }}>

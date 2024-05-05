@@ -1,6 +1,8 @@
 import React from "react";
 import { Iconify } from "react-native-iconify";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
+// components
+import Text from "@/components/typography/text";
 
 type SnackbarProps = {
     message: string;
@@ -46,7 +48,7 @@ const Snackbar = ({ message, type, visible }: SnackbarProps) => {
     return (
         <View style={[styles.container, alertColor[type]]}>
             <Icon />
-            <Text style={{ color: alertColor[type].color, marginLeft: 16 }}>{message}</Text>
+            <Text variant="titleMedium" style={{ color: alertColor[type].color, marginLeft: 16 }}>{message}</Text>
         </View>
     );
 };

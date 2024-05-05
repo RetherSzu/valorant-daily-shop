@@ -12,9 +12,9 @@ import useThemeContext from "@/contexts/hook/use-theme-context";
 import Login from "@/screens/auth/login";
 import Plugin from "@/screens/plugin/plugin";
 import SkinDetails from "@/screens/offer-details/skin-details";
-import PlayerCardDetails from "@/screens/offer-details/player-card-details";
 import BuddyDetails from "@/screens/offer-details/buddy-details";
 import SprayDetails from "@/screens/offer-details/spray-details";
+import PlayerCardDetails from "@/screens/offer-details/player-card-details";
 import UnsupportedMultifactor from "@/screens/auth/unsupported-multifactor";
 // routes
 import StoreTab from "@/routes/store-tab";
@@ -72,20 +72,28 @@ const Router = (): ReactElement | null => {
                 ) : (
                     <>
                         <Stack.Screen name="Home" component={StoreTab} />
-                        <Stack.Screen name="Plugin" component={Plugin} options={{
-                            animationTypeForReplace: "pop",
-                            animation: "ios",
-                        }} />
+
+                        <Stack.Screen
+                            name="Plugin"
+                            component={Plugin}
+                            options={{
+                                animationTypeForReplace: "pop",
+                                animation: "ios",
+                            }}
+                        />
+
                         <Stack.Screen
                             name="SkinDetails"
                             component={SkinDetails}
                             options={optionsDetailsScreen}
                         />
+
                         <Stack.Screen
                             name="PlayerCardDetails"
                             component={PlayerCardDetails}
                             options={optionsDetailsScreen}
                         />
+
                         <Stack.Screen
                             name="BuddyDetails"
                             component={BuddyDetails}

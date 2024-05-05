@@ -8,7 +8,7 @@ const Loading = (): ReactElement => {
     const { colors } = useThemeContext();
 
     return (
-        <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: colors.background }}>
             <ActivityIndicator color={colors.text} size="large" />
         </View>
     );
