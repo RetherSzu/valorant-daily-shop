@@ -14,6 +14,7 @@ import PluginProvider from "@/context/plugin/plugin-provider";
 import SnackbarProvider from "@/context/snackbar/snackbar-provider";
 import DailyShopProvider from "@/context/daily-shop/daily-shop-provider";
 import NightMarketProvider from "@/context/night-market/night-market-provider";
+import AccessoryStoreProvider from "@/context/accessory-store/accessory-store-provider";
 // controller
 import { store } from "@/controller/store";
 // moti
@@ -54,11 +55,13 @@ export default function App(): ReactElement | null {
                             <UserProvider>
                                 <DailyShopProvider>
                                     <BundleProvider>
-                                        <NightMarketProvider>
-                                            <PluginProvider>
-                                                <Router />
-                                            </PluginProvider>
-                                        </NightMarketProvider>
+                                        <AccessoryStoreProvider>
+                                            <NightMarketProvider>
+                                                <PluginProvider>
+                                                    <Router />
+                                                </PluginProvider>
+                                            </NightMarketProvider>
+                                        </AccessoryStoreProvider>
                                     </BundleProvider>
                                 </DailyShopProvider>
                             </UserProvider>

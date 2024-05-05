@@ -1,4 +1,4 @@
-export type WeaponTheme = {
+export type Theme = {
     uuid: string;
     displayName: string;
     displayIcon: string;

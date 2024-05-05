@@ -1,7 +1,9 @@
+// type
 import { FeaturedBundle } from "@/type/api/shop/bundle";
 import { BonusStore } from "@/type/api/shop/night-market";
 import { PluginStores } from "@/type/api/shop/plugin-store";
 import { SkinsPanelLayout } from "@/type/api/shop/dayli-shop";
+import { AccessoryStore } from "@/type/api/shop/accessory-store";
 
 export type StorefrontResponse = {
     FeaturedBundle: FeaturedBundle;
@@ -16,16 +18,7 @@ export type StorefrontResponse = {
             DiscountedPercent: number;
         }[];
     };
-    AccessoryStore: {
-        AccessoryStoreOffers: {
-            Offer: Offer;
-            /** UUID */
-            ContractID: string;
-        }[];
-        AccessoryStoreRemainingDurationInSeconds: number;
-        /** UUID */
-        StorefrontID: string;
-    };
+    AccessoryStore: AccessoryStore;
     /** Night market */
     BonusStore?: BonusStore;
     PluginStores?: PluginStores;

@@ -1,14 +1,14 @@
 import { Dimensions, Image, View } from "react-native";
 // type
-import { CardDetailScreenProps } from "@/type/router/navigation";
+import { PlayerCardDetailScreenProps } from "@/type/router/navigation";
 import Text from "@/component/typography/text";
 import CostPoint from "@/section/shop/cost-point";
 
 const WIDTH = Dimensions.get("window").width;
 
-const CardDetails = ({ route }: CardDetailScreenProps) => {
+const PlayerCardDetails = ({ route }: PlayerCardDetailScreenProps) => {
 
-    const { playercard, offer, theme } = route.params;
+    const { playercard, offer } = route.params;
 
     return (
         <View style={{ flex: 1, padding: 16, gap: 16 }}>
@@ -29,7 +29,10 @@ const CardDetails = ({ route }: CardDetailScreenProps) => {
                 >
                     <View style={{ gap: 8, width: "100%", flex: 1, justifyContent: "flex-start" }}>
                         <Text variant="headlineLarge" style={{ fontFamily: "Vandchrome" }}>
-                            {theme.displayName}
+                            {playercard.displayName.toLowerCase().replace("card", "").trim()}
+                        </Text>
+                        <Text variant="titleLarge" style={{ opacity: .5, textTransform: "uppercase" }}>
+                            CARD
                         </Text>
                         <CostPoint
                             currencyId={Object.keys(offer.Cost)[0]}
@@ -56,4 +59,4 @@ const CardDetails = ({ route }: CardDetailScreenProps) => {
     );
 };
 
-export default CardDetails;
+export default PlayerCardDetails;

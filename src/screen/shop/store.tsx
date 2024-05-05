@@ -3,6 +3,7 @@ import { createMaterialTopTabNavigator } from "@react-navigation/material-top-ta
 // component
 import Text from "@/component/typography/text";
 // context
+import useUserContext from "@/context/hook/use-user-context";
 import useThemeContext from "@/context/hook/use-theme-context";
 import usePluginContext from "@/context/hook/use-plugin-context";
 import useNightMarketContext from "@/context/hook/use-night-market-context";
@@ -11,7 +12,7 @@ import BundleView from "@/screen/shop/bundle";
 import DailyShop from "@/screen/shop/daily-shop";
 import NightMarket from "@/screen/shop/night-market";
 import PluginStore from "@/screen/shop/plugin-store";
-import useUserContext from "@/context/hook/use-user-context";
+import AccessoryStore from "@/screen/shop/accessory-store";
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -62,7 +63,14 @@ const Store = () => {
 
     return (
         <View style={{ flex: 1 }}>
-            <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 16 }}>
+            <View
+                style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    paddingHorizontal: 16,
+                }}
+            >
                 <Text variant="displayMedium" style={{ fontFamily: "Vandchrome" }}>STORE</Text>
                 {gameName && tagLine && <Text variant="titleSmall" style={{ opacity: .5 }}>{gameName} #{tagLine}</Text>}
             </View>
@@ -70,6 +78,7 @@ const Store = () => {
             <Tab.Navigator {...tabNavigatorOptions}>
                 <Tab.Screen name="Bundles" component={BundleView} />
                 <Tab.Screen name="Daily shop" component={DailyShop} />
+                <Tab.Screen name="Accessory shop" component={AccessoryStore} />
                 {nightMarket?.BonusStoreOffers && <Tab.Screen name="Night market" component={NightMarket} />}
                 {plugins && <Tab.Screen name="E-sport" component={PluginStore} />}
             </Tab.Navigator>

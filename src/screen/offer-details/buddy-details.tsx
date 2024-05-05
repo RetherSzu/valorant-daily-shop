@@ -8,12 +8,12 @@ import { BuddyDetailScreenProps } from "@/type/router/navigation";
 
 const BuddyDetails = ({ route }: BuddyDetailScreenProps) => {
 
-    const { buddy, offer, theme } = route.params;
+    const { buddy, offer } = route.params;
 
     return (
         <View style={{ flex: 1, padding: 16, gap: 16 }}>
             <Text variant="displayLarge" style={{ fontFamily: "Vandchrome" }}>
-                {theme.displayName}
+                {buddy.displayName.toLowerCase().replace("buddy", "").trim()}
             </Text>
             <Text variant="titleLarge" style={{ opacity: .5, textTransform: "uppercase" }}>
                 BUDDY

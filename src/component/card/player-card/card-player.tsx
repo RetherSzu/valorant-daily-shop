@@ -1,55 +1,44 @@
-import { TouchableRipple } from "react-native-paper";
-import { useNavigation } from "@react-navigation/native";
-import { Image, ImageBackground, View } from "react-native";
-// api
-import { useGetPlayerCardIdQuery } from "@/api/rtk-valorant-api";
-// component
-import Error from "@/component/error/error";
-import Text from "@/component/typography/text";
-// context
 import useThemeContext from "@/context/hook/use-theme-context";
-// section
-import CostPoint from "@/section/shop/cost-point";
-import BundleCardSkeleton from "@/section/shop/bundle/card/bundle-card-skeleton";
-// type
-import { Offer } from "@/type/api/shop";
-import { BundleInfo } from "@/type/api/shop/bundle";
+import { useGetPlayerCardIdQuery } from "@/api/rtk-valorant-api";
+import { useNavigation } from "@react-navigation/native";
 import { NavigationProp } from "@/type/router/navigation";
+import CardPlayerSkeleton from "@/component/card/player-card/card-player-skeleton";
+import Error from "@/component/error/error";
+import { TouchableRipple } from "react-native-paper";
+import { Image, ImageBackground, View } from "react-native";
+import Text from "@/component/typography/text";
+import CostPoint from "@/section/shop/cost-point";
+import { Offer } from "@/type/api/shop";
 
-type BundleCardProps = {
+type CardPlayerProps = {
     offer: Offer;
-    theme: BundleInfo
 };
 
-const BundleCard = ({ offer, theme }: BundleCardProps) => {
+const CardPlayer = ({ offer }: CardPlayerProps) => {
 
     const { colors } = useThemeContext();
 
+    const navigate = useNavigation<NavigationProp>();
+
     const {
-        data: cardData,
-        error: cardError,
+        data: playerCardData,
+        error: playerCardError,
         isLoading: isLoadingCard,
     } = useGetPlayerCardIdQuery(offer.Rewards[0].ItemID);
 
-    const navigate = useNavigation<NavigationProp>();
-
     if (isLoadingCard) {
-        return <BundleCardSkeleton />;
+        return <CardPlayerSkeleton />;
     }
 
-    if (cardError || !cardData) {
+    if (playerCardError || !playerCardData) {
         return <Error />;
     }
 
-    const playercard = cardData.data;
+    const playercard = playerCardData.data;
 
     const onCardPress = () => {
-        if (!cardData) return;
-        navigate.navigate("CardDetails", {
-            playercard,
-            offer,
-            theme,
-        });
+        if (!playerCardData) return;
+        navigate.navigate("PlayerCardDetails", { playercard, offer });
     };
 
     return (
@@ -98,4 +87,4 @@ const BundleCard = ({ offer, theme }: BundleCardProps) => {
     );
 };
 
-export default BundleCard;
+export default CardPlayer;

@@ -8,7 +8,7 @@ import Text from "@/component/typography/text";
 import useThemeContext from "@/context/hook/use-theme-context";
 // section
 import CostPoint from "@/section/shop/cost-point";
-import BundlePlayerTitleSkeleton from "@/section/shop/bundle/player-title/bundle-player-title-skeleton";
+import CardTitleSkeleton from "@/component/card/player-title/card-title-skeleton";
 // type
 import { Offer } from "@/type/api/shop";
 
@@ -16,7 +16,7 @@ type Props = {
     offer: Offer;
 }
 
-const BundlePlayerTitle = ({ offer }: Props) => {
+const CardTitle = ({ offer }: Props) => {
 
     const { colors } = useThemeContext();
 
@@ -27,7 +27,7 @@ const BundlePlayerTitle = ({ offer }: Props) => {
     } = useGetTitleByIdQuery(offer.Rewards[0].ItemID);
 
     if (isLoadingTitle) {
-        return <BundlePlayerTitleSkeleton />;
+        return <CardTitleSkeleton />;
     }
 
     if (titleError || !titleData) {
@@ -69,4 +69,4 @@ const BundlePlayerTitle = ({ offer }: Props) => {
     );
 };
 
-export default BundlePlayerTitle;
+export default CardTitle;

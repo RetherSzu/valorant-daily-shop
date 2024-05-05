@@ -13,6 +13,7 @@ import useNightMarketContext from "@/context/hook/use-night-market-context";
 import Store from "@/screen/shop/store";
 // type
 import { StoreStackParamList } from "@/type/router/navigation";
+import useAccessoryStoreContext from "@/context/hook/use-accessory-store-context";
 
 const StoreStack = createNativeStackNavigator<StoreStackParamList>();
 
@@ -30,6 +31,8 @@ const StoreStackScreen = (): ReactElement | null => {
 
     const { setPlugins } = usePluginContext();
 
+    const { setAccessoryStore } = useAccessoryStoreContext();
+
     const [fetchShop, setFetchShop] = useState(false);
 
     const getShopData = useCallback(async () => {
@@ -40,10 +43,11 @@ const StoreStackScreen = (): ReactElement | null => {
             if (!shopData) return;
 
             // Dispatch the shop data to the context.
-            setDailyShop(shopData.offers);
-            setNightMarket(shopData.nightMarket);
             setBundles(shopData.bundles);
             setPlugins(shopData.plugins);
+            setDailyShop(shopData.offers);
+            setNightMarket(shopData.nightMarket);
+            setAccessoryStore(shopData.accessoryStore);
         } catch (error) {
             // const e: AxiosError<{
             //     "httpStatus": number,

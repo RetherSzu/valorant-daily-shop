@@ -12,7 +12,7 @@ const WIDTH = Dimensions.get("window").width;
 
 const SprayDetails = ({ route }: SprayDetailScreenProps) => {
 
-    const { spray, offer, theme } = route.params;
+    const { spray, offer } = route.params;
 
     const { colors } = useThemeContext();
 
@@ -20,7 +20,7 @@ const SprayDetails = ({ route }: SprayDetailScreenProps) => {
         <View style={{ flex: 1, padding: 16, gap: 16 }}>
             <View>
                 <Text variant="displayLarge" style={{ fontFamily: "Vandchrome" }}>
-                    {theme.displayName}
+                    {spray.displayName.toLowerCase().replace("spray", "").trim()}
                 </Text>
                 <Text variant="titleLarge" style={{ opacity: .5, textTransform: "uppercase" }}>
                     SPRAY

@@ -1,5 +1,5 @@
 import axios from "axios";
-import * as SecureStore from "expo-secure-store";
+import { clearSecureStore } from "@/util/secure-store";
 
 // ----------------------------------------------------------------------
 
@@ -10,18 +10,9 @@ axiosInstance.interceptors.response.use(
     async (error) => {
         if (error.response && error.response.status === 401) {
             console.log("401 error");
-            await SecureStore.deleteItemAsync("username");
-            await SecureStore.deleteItemAsync("password");
-            await SecureStore.deleteItemAsync("stay_sign_in");
-            await SecureStore.deleteItemAsync("access_token");
-            await SecureStore.deleteItemAsync("entitlements_token");
-            await SecureStore.deleteItemAsync("sub");
-            await SecureStore.deleteItemAsync("tdid");
-            await SecureStore.deleteItemAsync("asid");
-            await SecureStore.deleteItemAsync("clid");
-            await SecureStore.deleteItemAsync("ssid");
+            await clearSecureStore();
         }
         await Promise.reject((error.response && error.response.data) || "Something went wrong");
-    }
+    },
 );
 export default axiosInstance;

@@ -8,14 +8,11 @@ import Loading from "@/component/loading/loading";
 // context
 import useBundleContext from "@/context/hook/use-bundle-context";
 import useThemeContext from "@/context/hook/use-theme-context";
+// factory
+import CardFactory from "@/factory/card-factory";
 // section
 import SlideItem from "@/section/shop/bundle/slide-item";
-import BundleSkin from "@/section/shop/bundle/skin/bundle-skin";
-import BundleCard from "@/section/shop/bundle/card/bundle-card";
 import Pagination from "@/section/shop/bundle/slider-pagination";
-import BundleSpray from "@/section/shop/bundle/spray/bundle-spray";
-import BundleGunBuddy from "@/section/shop/bundle/gun-buddy/bundle-gun-buddy";
-import BundlePlayerTitle from "@/section/shop/bundle/player-title/bundle-player-title";
 // types
 import { BundlesData, ItemOffer } from "@/type/api/shop/bundle";
 
@@ -53,26 +50,9 @@ const BundleView = () => {
         getBundles();
     }, [featuredBundle.Bundles.length]);
 
-    const renderOffer = useCallback(({ item, index }: { item: ItemOffer, index: number }) => {
-        const itemTypeID = bundlesInfos[bundleIndex].bundle.Items[index].Item.ItemTypeID;
-        const { Offer } = item;
-        const theme = bundlesInfos[bundleIndex].bundleInfo;
-
-        switch (itemTypeID) {
-            case "d5f120f8-ff8c-4aac-92ea-f2b5acbe9475": // Sprays
-                return <BundleSpray key={index} offer={Offer} theme={theme} />;
-            case "dd3bf334-87f3-40bd-b043-682a57a8dc3a": // Gun Buddies
-                return <BundleGunBuddy key={index} offer={Offer} theme={theme} />;
-            case "3f296c07-64c3-494c-923b-fe692a4fa1bd": // Cards
-                return <BundleCard key={index} offer={Offer} theme={theme} />;
-            case "e7c63390-eda7-46e0-bb7a-a6abdacd2433": // Skins
-                return <BundleSkin key={index} offer={Offer} theme={theme} />;
-            case "de7caa6b-adf7-4588-bbd1-143831e786c6": // Titles
-                return <BundlePlayerTitle key={index} offer={Offer} />;
-            default:
-                return <BundleSkin key={index} offer={Offer} theme={theme} />;
-        }
-    }, [bundleIndex, bundlesInfos]);
+    const renderOffer = useCallback(({ item, index }: { item: ItemOffer, index: number }) => (
+        <CardFactory offer={item.Offer} key={index} />
+    ), [bundleIndex, bundlesInfos]);
 
     const offerList = useMemo(() => (
         <>

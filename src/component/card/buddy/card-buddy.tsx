@@ -10,18 +10,16 @@ import Text from "@/component/typography/text";
 import useThemeContext from "@/context/hook/use-theme-context";
 // section
 import CostPoint from "@/section/shop/cost-point";
-import BundleGunBuddySkeleton from "@/section/shop/bundle/gun-buddy/bundle-gun-buddy-skeleton";
+import CardBuddySkeleton from "@/component/card/buddy/card-buddy-skeleton";
 // type
 import { Offer } from "@/type/api/shop";
-import { BundleInfo } from "@/type/api/shop/bundle";
 import { NavigationProp } from "@/type/router/navigation";
 
 type Props = {
     offer: Offer;
-    theme: BundleInfo;
 };
 
-export const BundleGunBuddy = ({ offer, theme }: Props) => {
+const CardBuddy = ({ offer }: Props) => {
 
     const navigate = useNavigation<NavigationProp>();
 
@@ -34,7 +32,7 @@ export const BundleGunBuddy = ({ offer, theme }: Props) => {
     } = useGetGunBuddyByIdQuery(offer.Rewards[0].ItemID);
 
     if (isLoadingBuddy) {
-        return <BundleGunBuddySkeleton />;
+        return <CardBuddySkeleton />;
     }
 
     if (buddyError || !buddyData) {
@@ -43,7 +41,7 @@ export const BundleGunBuddy = ({ offer, theme }: Props) => {
 
     const buddy = buddyData.data;
 
-    const onCardPress = () => navigate.navigate("BuddyDetails", { buddy, offer, theme });
+    const onCardPress = () => navigate.navigate("BuddyDetails", { buddy, offer });
 
     return (
         <TouchableRipple
@@ -85,4 +83,4 @@ export const BundleGunBuddy = ({ offer, theme }: Props) => {
     );
 };
 
-export default BundleGunBuddy;
+export default CardBuddy;

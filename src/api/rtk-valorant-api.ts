@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 // type
+import { Theme } from "@/type/api/shop/theme";
 import { BundleInfo } from "@/type/api/shop/bundle";
-import { WeaponTheme } from "@/type/api/shop/weapon-theme";
 import { WeaponSkin, WeaponSkins } from "@/type/api/shop/weapon-skin";
 import { Buddies, Buddy, PlayerCard, PlayerTitle, Spray } from "@/type/api/shop";
 
@@ -36,7 +36,7 @@ export const rtkValorantApi = createApi({
                 return { status: 404, data: undefined };
             },
         }),
-        getThemeById: builder.query<Response<WeaponTheme>, string>({
+        getThemeById: builder.query<Response<Theme>, string>({
             query: (id) => `/themes/${id}`,
         }),
         getPlayerCardId: builder.query<Response<PlayerCard>, string>({

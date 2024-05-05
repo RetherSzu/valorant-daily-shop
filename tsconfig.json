@@ -13,6 +13,7 @@
             "@/route/*": ["./src/route/*"],
             "@/screen/*": ["./src/screen/*"],
             "@/context/*": ["./src/context/*"],
+            "@/factory/*": ["./src/factory/*"],
             "@/section/*": ["./src/section/*"],
             "@/component/*": ["./src/component/*"],
             "@/controller/*": ["./src/controller/*"]

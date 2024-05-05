@@ -3,51 +3,51 @@ import { StyleSheet, View } from "react-native";
 // component
 import DarkSkeleton from "@/component/skeleton/dark-skeleton";
 
-const BundleCardSkeleton = () => (
-    <MotiView
-        transition={{ type: "timing" }}
-        animate={styles.motiViewAnimate}
-    >
-        <View style={styles.row}>
-            <View style={styles.leftColumn}>
+const CardSpraySkeleton = () => {
+    return (
+        <MotiView
+            transition={{ type: "timing" }}
+            animate={{ ...styles.motiViewAnimate }}
+        >
+            <View style={styles.container}>
                 <DarkSkeleton width={100} />
-                <DarkSkeleton radius={8} width="100%" height={100} />
-                <View style={styles.bottomRow}>
+                <View style={styles.iconRow}>
+                    {Array.from({ length: 3 }).map((_, index) => (
+                        <DarkSkeleton key={index} radius={8} width={92} height={92} />
+                    ))}
+                </View>
+                <View style={styles.actionRow}>
                     <DarkSkeleton radius="round" width={24} height={24} />
                     <DarkSkeleton width={100} height={24} />
                 </View>
             </View>
-            <DarkSkeleton width={92} height={220} />
-        </View>
-    </MotiView>
-);
+        </MotiView>
+    );
+};
 
 const styles = StyleSheet.create({
     motiViewAnimate: {
-        height: 220,
+        height: 208,
         width: "100%",
         borderRadius: 16,
         backgroundColor: "#222429",
     },
-    row: {
-        flex: 1,
-        flexDirection: "row",
-    },
-    leftColumn: {
-        flex: 1,
+    container: {
         gap: 16,
+        flex: 1,
         padding: 16,
     },
-    rowJustifySpaceBetween: {
-        marginBottom: 8,
+    iconRow: {
         flexDirection: "row",
+        alignItems: "center",
         justifyContent: "space-between",
     },
-    bottomRow: {
+    actionRow: {
         gap: 8,
+        flex: 1,
         flexDirection: "row",
         alignItems: "flex-end",
     },
 });
 
-export default BundleCardSkeleton;
+export default CardSpraySkeleton;

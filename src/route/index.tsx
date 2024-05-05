@@ -12,7 +12,7 @@ import useThemeContext from "@/context/hook/use-theme-context";
 import Login from "@/screen/auth/login";
 import Plugin from "@/screen/plugin/plugin";
 import SkinDetails from "@/screen/offer-details/skin-details";
-import CardDetails from "@/screen/offer-details/card-details";
+import PlayerCardDetails from "@/screen/offer-details/player-card-details";
 import BuddyDetails from "@/screen/offer-details/buddy-details";
 import SprayDetails from "@/screen/offer-details/spray-details";
 import UnsupportedMultifactor from "@/screen/auth/unsupported-multifactor";
@@ -82,8 +82,8 @@ const Router = (): ReactElement | null => {
                             options={optionsDetailsScreen}
                         />
                         <Stack.Screen
-                            name="CardDetails"
-                            component={CardDetails}
+                            name="PlayerCardDetails"
+                            component={PlayerCardDetails}
                             options={optionsDetailsScreen}
                         />
                         <Stack.Screen

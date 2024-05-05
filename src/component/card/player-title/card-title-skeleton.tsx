@@ -3,7 +3,7 @@ import { StyleSheet, View } from "react-native";
 // component
 import DarkSkeleton from "@/component/skeleton/dark-skeleton";
 
-const BundlePlayerTitleSkeleton = () => (
+const CardTitleSkeleton = () => (
     <MotiView
         transition={{ type: "timing" }}
         animate={styles.motiViewAnimate}
@@ -40,4 +40,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default BundlePlayerTitleSkeleton;
+export default CardTitleSkeleton;

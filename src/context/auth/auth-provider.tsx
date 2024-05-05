@@ -5,6 +5,8 @@ import { ReactNode, useCallback, useEffect, useMemo, useReducer } from "react";
 import valorantProvider from "@/api/valorant-provider";
 // auth
 import authLogic from "@/auth/auth-logic";
+// controller
+import { resetStore } from "@/controller/store";
 // type
 import { NavigationProp } from "@/type/router/navigation";
 import { EAuthContextType, IAuthAction, IAuthContext } from "@/type/context/auth";
@@ -143,6 +145,8 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
     const logout = async () => {
 
         dispatch({ type: EAuthContextType.LOGOUT, payload: {} });
+
+        resetStore();
 
         await clearSecureStore();
 

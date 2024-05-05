@@ -2,7 +2,7 @@ import { TouchableRipple } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { Image, ImageBackground, View } from "react-native";
 // api
-import { useGetSprayByIdQuery } from "@/api/rtk-valorant-api";
+import { useGetSprayByIdQuery, useGetThemeByIdQuery } from "@/api/rtk-valorant-api";
 // component
 import Error from "@/component/error/error";
 import Text from "@/component/typography/text";
@@ -10,18 +10,16 @@ import Text from "@/component/typography/text";
 import useThemeContext from "@/context/hook/use-theme-context";
 // section
 import CostPoint from "@/section/shop/cost-point";
-import BundleSpraySkeleton from "@/section/shop/bundle/spray/bundle-spray-skeleton";
+import CardSpraySkeleton from "@/component/card/spray/card-spray-skeleton";
 // type
 import { Offer } from "@/type/api/shop";
-import { BundleInfo } from "@/type/api/shop/bundle";
 import { NavigationProp } from "@/type/router/navigation";
 
-type Props = {
+type CardSprayProps = {
     offer: Offer;
-    theme: BundleInfo;
 }
 
-const BundleSpray = ({ offer, theme }: Props) => {
+const CardSpray = ({ offer }: CardSprayProps) => {
 
     const navigate = useNavigation<NavigationProp>();
 
@@ -34,7 +32,7 @@ const BundleSpray = ({ offer, theme }: Props) => {
     } = useGetSprayByIdQuery(offer.Rewards[0].ItemID);
 
     if (isLoadingSpray) {
-        return <BundleSpraySkeleton />;
+        return <CardSpraySkeleton />;
     }
 
     if (sprayError || !sprayData) {
@@ -45,7 +43,6 @@ const BundleSpray = ({ offer, theme }: Props) => {
         navigate.navigate("SprayDetails", {
             spray: sprayData.data,
             offer,
-            theme,
         });
     };
 
@@ -77,11 +74,12 @@ const BundleSpray = ({ offer, theme }: Props) => {
             }}
         >
             <ImageBackground
-                blurRadius={50}
                 style={{
                     gap: 16,
                     padding: 16,
                 }}
+                blurRadius={50}
+                source={{ uri: skinData.displayIcon }}
             >
                 <Text variant="titleLarge" numberOfLines={1}>Spray</Text>
                 <View
@@ -99,4 +97,4 @@ const BundleSpray = ({ offer, theme }: Props) => {
     );
 };
 
-export default BundleSpray;
+export default CardSpray;

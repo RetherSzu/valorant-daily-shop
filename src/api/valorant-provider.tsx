@@ -131,16 +131,15 @@ const valorantProvider = {
             },
         };
 
-        console.log(JSON.stringify(options, null, 4));
-
         const response: AxiosResponse<StorefrontResponse> = await axios.request(options);
 
         if (response.data.SkinsPanelLayout.SingleItemStoreOffers) {
             return {
+                plugins: response.data.PluginStores,
                 bundles: response.data.FeaturedBundle,
                 offers: response.data.SkinsPanelLayout,
                 nightMarket: response.data?.BonusStore,
-                plugins: response.data.PluginStores,
+                accessoryStore: response.data.AccessoryStore,
             };
         }
     },

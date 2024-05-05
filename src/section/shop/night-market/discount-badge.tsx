@@ -13,7 +13,6 @@ const DiscountBadge = ({ discount }: Props): ReactElement => {
 
     const { colors } = useThemeContext();
 
-
     return (
         <View
             style={{
@@ -45,7 +44,7 @@ const DiscountBadge = ({ discount }: Props): ReactElement => {
                 -{discount}%
             </Text>
         </View>
-    )
-}
+    );
+};
 
 export default DiscountBadge;
