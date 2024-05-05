@@ -1,10 +1,9 @@
 import { Dimensions, Image, ScrollView, View } from "react-native";
 // components
 import Text from "@/components/typography/text";
+import CostPoint from "@/components/cost/cost-point";
 // contexts
 import useThemeContext from "@/contexts/hook/use-theme-context";
-// sections
-import CostPoint from "@/sections/shop/cost-point";
 // types
 import { SprayDetailScreenProps } from "@/types/router/navigation";
 

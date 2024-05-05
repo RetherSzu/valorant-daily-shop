@@ -7,10 +7,10 @@ import { useGetThemeByIdQuery, useGetWeaponByLevelIdQuery } from "@/api/rtk-valo
 // components
 import Error from "@/components/error/error";
 import Text from "@/components/typography/text";
+import CostPoint from "@/components/cost/cost-point";
 // contexts
 import useThemeContext from "@/contexts/hook/use-theme-context";
 // sections
-import CostPoint from "@/sections/shop/cost-point";
 import CardOfferSkeleton from "@/sections/shop/daily-shop/card-offer-skeleton";
 // types
 import { Offer } from "@/types/api/shop";

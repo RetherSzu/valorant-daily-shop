@@ -6,11 +6,10 @@ import { useGetSprayByIdQuery } from "@/api/rtk-valorant-api";
 // components
 import Error from "@/components/error/error";
 import Text from "@/components/typography/text";
+import CostPoint from "@/components/cost/cost-point";
+import CardSpraySkeleton from "@/components/card/spray/card-spray-skeleton";
 // contexts
 import useThemeContext from "@/contexts/hook/use-theme-context";
-// sections
-import CostPoint from "@/sections/shop/cost-point";
-import CardSpraySkeleton from "@/components/card/spray/card-spray-skeleton";
 // types
 import { Offer } from "@/types/api/shop";
 import { NavigationProp } from "@/types/router/navigation";

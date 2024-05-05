@@ -6,11 +6,10 @@ import { useGetGunBuddyByIdQuery } from "@/api/rtk-valorant-api";
 // components
 import Error from "@/components/error/error";
 import Text from "@/components/typography/text";
+import CostPoint from "@/components/cost/cost-point";
+import CardBuddySkeleton from "@/components/card/buddy/card-buddy-skeleton";
 // contexts
 import useThemeContext from "@/contexts/hook/use-theme-context";
-// sections
-import CostPoint from "@/sections/shop/cost-point";
-import CardBuddySkeleton from "@/components/card/buddy/card-buddy-skeleton";
 // types
 import { Offer } from "@/types/api/shop";
 import { NavigationProp } from "@/types/router/navigation";

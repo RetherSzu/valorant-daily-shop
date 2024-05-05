@@ -5,11 +5,11 @@ import { useGetThemeByIdQuery, useGetWeaponByLevelIdQuery } from "@/api/rtk-valo
 // components
 import Error from "@/components/error/error";
 import Text from "@/components/typography/text";
+import CostPoint from "@/components/cost/cost-point";
+import DiscountBadge from "@/components/cost/discount-badge";
 // contexts
 import useThemeContext from "@/contexts/hook/use-theme-context";
 // sections
-import CostPoint from "@/sections/shop/cost-point";
-import DiscountBadge from "@/sections/shop/night-market/discount-badge";
 import NightMarketCardSkeleton from "@/sections/shop/night-market/night-market-card-skeleton";
 // types
 import { BonusStoreOffer } from "@/types/api/shop/night-market";

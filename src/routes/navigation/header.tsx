@@ -1,10 +1,10 @@
-import React, { ReactElement } from "react";
 import { Image, View } from "react-native";
+import React, { ReactElement } from "react";
+// components
+import CostPoint from "@/components/cost/cost-point";
 // contexts
 import useUserContext from "@/contexts/hook/use-user-context";
 import useThemeContext from "@/contexts/hook/use-theme-context";
-// sections
-import CostPoint from "@/sections/shop/cost-point";
 
 type HeaderProps = {
     leftComponent?: ReactElement;

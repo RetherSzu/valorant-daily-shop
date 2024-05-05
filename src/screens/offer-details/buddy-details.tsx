@@ -1,8 +1,7 @@
 import { Image, View } from "react-native";
 // components
 import Text from "@/components/typography/text";
-// sections
-import CostPoint from "@/sections/shop/cost-point";
+import CostPoint from "@/components/cost/cost-point";
 // types
 import { BuddyDetailScreenProps } from "@/types/router/navigation";
 

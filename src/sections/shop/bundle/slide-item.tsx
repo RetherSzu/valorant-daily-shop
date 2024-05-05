@@ -2,10 +2,9 @@ import { useMemo } from "react";
 import { Dimensions, ImageBackground, View } from "react-native";
 // components
 import Text from "@/components/typography/text";
+import CostPoint from "@/components/cost/cost-point";
 // contexts
 import useBundleContext from "@/contexts/hook/use-bundle-context";
-// sections
-import CostPoint from "@/sections/shop/cost-point";
 // types
 import { BundleData } from "@/types/api/shop/bundle";
 // utils

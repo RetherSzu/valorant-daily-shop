@@ -1,8 +1,9 @@
 import { Dimensions, Image, View } from "react-native";
+// components
+import Text from "@/components/typography/text";
+import CostPoint from "@/components/cost/cost-point";
 // types
 import { PlayerCardDetailScreenProps } from "@/types/router/navigation";
-import Text from "@/components/typography/text";
-import CostPoint from "@/sections/shop/cost-point";
 
 const WIDTH = Dimensions.get("window").width;
 
