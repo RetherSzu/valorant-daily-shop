@@ -63,7 +63,6 @@ const CardSkin = ({ offer }: Props) => {
     if (isLoadingWeapon || isLoadingTheme) {
         return <CardSkinSkeleton />;
     }
-    console.log(JSON.stringify(weaponSkinData, null, 4));
 
     if (weaponSkinError || !skinData || themeError || !themeData) {
         return <Error />;
