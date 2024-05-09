@@ -144,6 +144,7 @@ const SkinDetails = ({ route }: SkinDetailScreenProps) => {
                     gap: 16,
                     position: "relative",
                     overflow: "hidden",
+                    paddingBottom: skin.chromas.length <= 1 && skin.levels.length <= 1 ? 16 : 0,
                 }}
             >
                 <View style={{ flex: 1, borderRadius: 16, overflow: "hidden" }}>
