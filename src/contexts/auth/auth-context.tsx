@@ -6,7 +6,7 @@ import { IAuthContext } from "@/types/context/auth";
 
 export const initialAuthState: IAuthContext = {
     // fn
-    login: (_username, _password) => Promise.resolve(),
+    login: () => Promise.resolve(),
     logout: () => Promise.resolve(),
     // states
     isLoading: false,

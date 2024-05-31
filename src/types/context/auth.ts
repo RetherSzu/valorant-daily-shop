@@ -1,6 +1,6 @@
 export type IAuthContext = {
     // fn
-    login: (username: string, password: string) => Promise<void>;
+    login: () => Promise<void>;
     logout: () => Promise<void>;
     // state
     isLoading: boolean;

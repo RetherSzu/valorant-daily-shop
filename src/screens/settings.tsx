@@ -1,17 +1,21 @@
-import React, { ReactElement } from "react";
 import { View } from "react-native";
+import React, { ReactElement } from "react";
+import { useNavigation } from "@react-navigation/native";
 // components
 import Button from "@/components/button/button";
 import TitleScreen from "@/components/typography/title-screen";
 // contexts
-import useAuthContext from "@/contexts/hook/use-auth-context";
 import useThemeContext from "@/contexts/hook/use-theme-context";
+// types
+import { NavigationProp } from "@/types/router/navigation";
 
 const Settings = (): ReactElement => {
 
     const { colors } = useThemeContext();
 
-    const { logout } = useAuthContext();
+    const navigate = useNavigation<NavigationProp>();
+
+    const handleLogout = () => navigate.navigate("Logout");
 
     return (
         <View
@@ -40,7 +44,7 @@ const Settings = (): ReactElement => {
             >
                 <Button
                     text="Logout"
-                    onPress={logout}
+                    onPress={handleLogout}
                     backgroundColor={colors.primary}
                     underlayColor="#222429"
                 />

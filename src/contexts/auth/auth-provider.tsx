@@ -1,5 +1,4 @@
 import * as SecureStore from "expo-secure-store";
-import { useNavigation } from "@react-navigation/native";
 import { ReactNode, useCallback, useEffect, useMemo, useReducer } from "react";
 // api
 import valorantProvider from "@/api/valorant-provider";
@@ -8,7 +7,6 @@ import authLogic from "@/auth/auth-logic";
 // controllers
 import { resetStore } from "@/controllers/store";
 // types
-import { NavigationProp } from "@/types/router/navigation";
 import { EAuthContextType, IAuthAction, IAuthContext } from "@/types/context/auth";
 // utils
 import { clearSecureStore } from "@/utils/secure-store";
@@ -55,8 +53,6 @@ type AuthProviderProps = {
 const AuthProvider = ({ children }: AuthProviderProps) => {
     const [state, dispatch] = useReducer(reducer, initialAuthState);
 
-    const navigation = useNavigation<NavigationProp>();
-
     const initialize = useCallback(async () => {
 
         const [
@@ -83,32 +79,11 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
                     entitlementsToken: null,
                 },
             });
-
-            const username = await SecureStore.getItemAsync("username");
-            const password = await SecureStore.getItemAsync("password");
-
-            if (username && password) {
-                await login(username, password);
-            }
         }
     }, []);
 
-    const login = async (username: string, password: string) => {
+    const login = async () => {
         try {
-
-            const cookies = await authLogic.authCookie();
-
-            if (cookies["ssid"] != "") {
-                await authLogic.cookieReauth();
-            } else {
-                const multifactor = await authLogic.getToken(username, password);
-
-                if (multifactor) {
-                    navigation.navigate("Multifactor");
-                    return;
-                }
-            }
-
             // Get entitlement token
             await authLogic.getEntitlement();
 
@@ -149,8 +124,6 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
         resetStore();
 
         await clearSecureStore();
-
-        console.log("Logout success!");
     };
 
     useEffect(() => {

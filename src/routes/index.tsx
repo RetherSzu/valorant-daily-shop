@@ -5,11 +5,13 @@ import { useNavigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 // api
 import { useGetThemeByIdQuery } from "@/api/rtk-valorant-api";
+// components
+import LogoutWebView from "@/components/web-view/web-view-logout";
+import LoginWebView from "@/components/web-view/web-view";
 // contexts
 import useAuthContext from "@/contexts/hook/use-auth-context";
 import useThemeContext from "@/contexts/hook/use-theme-context";
 // screens
-import Login from "@/screens/auth/login";
 import Plugin from "@/screens/plugin/plugin";
 import SkinDetails from "@/screens/offer-details/skin-details";
 import BuddyDetails from "@/screens/offer-details/buddy-details";
@@ -66,12 +68,14 @@ const Router = (): ReactElement | null => {
             <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName="Login">
                 {accessToken == null || entitlementsToken == null ? (
                     <>
-                        <Stack.Screen name="Login" component={Login} />
+                        <Stack.Screen name="Login" component={LoginWebView} />
                         <Stack.Screen name="Multifactor" component={UnsupportedMultifactor} />
                     </>
                 ) : (
                     <>
                         <Stack.Screen name="Home" component={StoreTab} />
+
+                        <Stack.Screen name="Logout" component={LogoutWebView} />
 
                         <Stack.Screen
                             name="Plugin"

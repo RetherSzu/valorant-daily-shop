@@ -9,7 +9,6 @@ axiosInstance.interceptors.response.use(
     (response) => response,
     async (error) => {
         if (error.response && error.response.status === 401) {
-            console.log("401 error");
             await clearSecureStore();
         }
         await Promise.reject((error.response && error.response.data) || "Something went wrong");
