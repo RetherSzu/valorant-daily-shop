@@ -1,5 +1,7 @@
+import { TouchableRipple } from "react-native-paper";
+import React, { ReactElement, useMemo } from "react";
 import { Dimensions, Image, View } from "react-native";
-import { ReactElement, useMemo } from "react";
+import { useNavigation } from "@react-navigation/native";
 // api
 import { useGetThemeByIdQuery, useGetWeaponByLevelIdQuery } from "@/api/rtk-valorant-api";
 // components
@@ -12,10 +14,11 @@ import useThemeContext from "@/contexts/hook/use-theme-context";
 // sections
 import NightMarketCardSkeleton from "@/sections/shop/night-market/night-market-card-skeleton";
 // types
+import { NavigationProp } from "@/types/router/navigation";
 import { BonusStoreOffer } from "@/types/api/shop/night-market";
 // utils
-import { getContentTierColor, getContentTierIcon } from "@/utils/content-tier-icon";
 import { getWeaponName } from "@/utils/format-string";
+import { getContentTierColor, getContentTierIcon } from "@/utils/content-tier-icon";
 
 const WIDTH = Dimensions.get("window").width;
 
@@ -26,6 +29,8 @@ type Props = {
 const NightMarketCardItem = ({ item }: Props): ReactElement => {
 
     const { colors } = useThemeContext();
+
+    const navigate = useNavigation<NavigationProp>();
 
     const {
         data: weaponSkinData,
@@ -47,6 +52,15 @@ const NightMarketCardItem = ({ item }: Props): ReactElement => {
         return getWeaponName(weaponSkinData.data.displayName);
     }, [weaponSkinData?.data?.displayName]);
 
+    const onCardPress = () => {
+        if (!weaponSkinData || !themeData) return;
+        navigate.navigate("SkinDetails", {
+            skin: weaponSkinData.data,
+            skinType: filteredDisplayName,
+            theme: themeData?.data,
+        });
+    };
+
     if (isLoadingWeapon || isLoadingTheme) return <NightMarketCardSkeleton />;
 
     if (weaponSkinError || !skinData || themeError || !themeData) return <Error />;
@@ -54,85 +68,93 @@ const NightMarketCardItem = ({ item }: Props): ReactElement => {
     const theme = themeData.data;
 
     return (
-        <View
-            style={{
-                maxWidth: WIDTH - 32,
-                padding: 8,
-                borderRadius: 16,
-                overflow: "hidden",
-                position: "relative",
-                backgroundColor: getContentTierColor(skinData.contentTierUuid),
-            }}
+        <TouchableRipple
+            borderless
+            onPress={onCardPress}
+            style={{ borderRadius: 16 }}
+            rippleColor="rgba(255, 70, 86, .20)"
         >
-            <Image
-                source={getContentTierIcon(skinData.contentTierUuid)}
-                blurRadius={6}
-                resizeMode="cover"
+            <View
                 style={{
-                    right: 0,
-                    bottom: 0,
-                    top: "30%",
-                    left: "50%",
-                    opacity: .1,
-                    position: "absolute",
-                }}
-            />
-            <Image
-                source={{ uri: theme.displayIcon }}
-                blurRadius={6}
-                resizeMode="contain"
-                style={{
-                    position: "absolute",
-                    top: "10%",
-                    left: 0,
-                    right: "60%",
-                    bottom: "30%",
-                    opacity: .05,
-                }}
-            />
-            <DiscountBadge discount={item.DiscountPercent} />
-            <Text variant="titleLarge">
-                {themeData.data.displayName}
-            </Text>
-            <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
-                <Text
-                    variant="titleMedium"
-                    style={{ flex: 1, opacity: .5, textTransform: "uppercase" }}
-                    numberOfLines={1}
-                >
-                    {filteredDisplayName}
-                </Text>
-            </View>
-            <Image
-                source={{ uri: skinData.displayIcon ?? skinData.chromas[0].displayIcon }}
-                style={{
-                    height: 65,
+                    padding: 8,
+                    borderRadius: 16,
+                    overflow: "hidden",
+                    position: "relative",
                     maxWidth: WIDTH - 32,
-                    marginTop: 16,
+                    backgroundColor: getContentTierColor(skinData.contentTierUuid),
                 }}
-                resizeMode="contain"
-            />
-            <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "flex-end" }}>
-                <View style={{ gap: 4 }}>
-                    <Text
-                        variant="titleMedium"
-                        style={{ color: colors.primary, position: "relative", textDecorationLine: "line-through" }}
-                    >
-                        {item.Offer.Cost[Object.keys(item.Offer.Cost)[0]]}
-                    </Text>
-                    <CostPoint
-                        currencyId={Object.keys(item.DiscountCosts)[0]}
-                        cost={item.DiscountCosts[Object.keys(item.DiscountCosts)[0]]}
-                    />
-                </View>
+            >
+
                 <Image
                     source={getContentTierIcon(skinData.contentTierUuid)}
-                    blurRadius={2}
+                    blurRadius={6}
                     resizeMode="cover"
-                    style={{ width: 32, height: 32 }}
+                    style={{
+                        right: 0,
+                        bottom: 0,
+                        top: "30%",
+                        left: "50%",
+                        opacity: .1,
+                        position: "absolute",
+                    }}
                 />
+                <Image
+                    source={{ uri: theme.displayIcon }}
+                    blurRadius={6}
+                    resizeMode="contain"
+                    style={{
+                        left: 0,
+                        top: "10%",
+                        right: "60%",
+                        opacity: .05,
+                        bottom: "30%",
+                        position: "absolute",
+                    }}
+                />
+                <DiscountBadge discount={item.DiscountPercent} />
+                <Text variant="titleLarge">
+                    {themeData.data.displayName}
+                </Text>
+                <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
+                    <Text
+                        numberOfLines={1}
+                        variant="titleMedium"
+                        style={{ flex: 1, opacity: .5, textTransform: "uppercase" }}
+                    >
+                        {filteredDisplayName}
+                    </Text>
+                </View>
+                <Image
+                    source={{ uri: skinData.displayIcon ?? skinData.chromas[0].displayIcon }}
+                    style={{
+                        height: 65,
+                        marginTop: 16,
+                        maxWidth: WIDTH - 32,
+                    }}
+                    resizeMode="contain"
+                />
+                <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "flex-end" }}>
+                    <View style={{ gap: 4 }}>
+                        <Text
+                            variant="titleMedium"
+                            style={{ color: colors.primary, position: "relative", textDecorationLine: "line-through" }}
+                        >
+                            {item.Offer.Cost[Object.keys(item.Offer.Cost)[0]]}
+                        </Text>
+                        <CostPoint
+                            currencyId={Object.keys(item.DiscountCosts)[0]}
+                            cost={item.DiscountCosts[Object.keys(item.DiscountCosts)[0]]}
+                        />
+                    </View>
+                    <Image
+                        source={getContentTierIcon(skinData.contentTierUuid)}
+                        blurRadius={2}
+                        resizeMode="cover"
+                        style={{ width: 32, height: 32 }}
+                    />
+                </View>
             </View>
-        </View>
+        </TouchableRipple>
     );
 };
 
