@@ -47,7 +47,7 @@ const BundleView = () => {
             setBundleLoading(false);
         }
 
-        getBundles();
+        (async () => getBundles())();
     }, [featuredBundle.Bundles.length]);
 
     const renderOffer = useCallback(({ item, index }: { item: ItemOffer, index: number }) => (
