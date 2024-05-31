@@ -21,7 +21,7 @@ const SkinDetails = ({ route }: SkinDetailScreenProps) => {
 
     const { skin, skinType, theme } = route.params;
 
-    const [currentImage, setCurrentImage] = useState(skin.displayIcon ?? skin.chromas[0].displayIcon ?? skin.chromas[0].fullRender);
+    const [currentImage, setCurrentImage] = useState(skin.levels[0].displayIcon ?? skin.chromas[0].displayIcon ?? skin.chromas[0].fullRender);
 
     const [currentIndex, setCurrentIndex] = useState<number>();
 
@@ -48,13 +48,14 @@ const SkinDetails = ({ route }: SkinDetailScreenProps) => {
                         setCurrentVideo(chroma.streamedVideo);
                     }}
                     style={{
-                        backgroundColor: "#222429",
-                        borderRadius: 22,
-                        width: 64, height: 64,
-                        borderColor: currentChromaIndex === index ? colors.primary : "#222429",
-                        borderWidth: 2,
+                        width: 64,
+                        height: 64,
                         padding: 4,
+                        borderWidth: 2,
+                        borderRadius: 22,
                         justifyContent: "center",
+                        backgroundColor: "#222429",
+                        borderColor: currentChromaIndex === index ? colors.primary : "#222429",
                     }}
                 >
                     <Image
@@ -71,8 +72,8 @@ const SkinDetails = ({ route }: SkinDetailScreenProps) => {
             data={skin.levels}
             style={{ flex: 1 }}
             overScrollMode="never"
-            contentContainerStyle={{ gap: 8, paddingBottom: 16 }}
             showsVerticalScrollIndicator={false}
+            contentContainerStyle={{ gap: 8, paddingBottom: 16 }}
             renderItem={({ item, index }) => (
                 <TouchableRipple
                     borderless
@@ -82,9 +83,9 @@ const SkinDetails = ({ route }: SkinDetailScreenProps) => {
                         setCurrentIndex(index);
                     }}
                     style={{
-                        backgroundColor: index === currentIndex ? colors.primary + "8C" : "#222429",
                         padding: 16,
                         borderRadius: 16,
+                        backgroundColor: index === currentIndex ? colors.primary + "8C" : "#222429",
                     }}
                 >
                     <>
@@ -104,11 +105,11 @@ const SkinDetails = ({ route }: SkinDetailScreenProps) => {
     return (
         <View
             style={{
-                backgroundColor: colors.background,
+                gap: 16,
                 flex: 1,
                 paddingHorizontal: 16,
                 flexDirection: "column",
-                gap: 16,
+                backgroundColor: colors.background,
             }}
         >
             <View style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", gap: 16 }}>
@@ -139,11 +140,11 @@ const SkinDetails = ({ route }: SkinDetailScreenProps) => {
             <View
                 style={{
                     flex: 1,
-                    display: "flex",
-                    flexDirection: "column",
                     gap: 16,
-                    position: "relative",
+                    display: "flex",
                     overflow: "hidden",
+                    position: "relative",
+                    flexDirection: "column",
                     paddingBottom: skin.chromas.length <= 1 && skin.levels.length <= 1 ? 16 : 0,
                 }}
             >

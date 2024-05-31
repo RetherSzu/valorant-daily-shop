@@ -102,7 +102,7 @@ const CardItemOffer = ({ item }: Props): ReactElement => {
                 <Image
                     resizeMode="center"
                     style={{ flex: 1, transform: [{ rotate: "22.5deg" }] }}
-                    source={{ uri: skinData.displayIcon ?? skinData.chromas[0].displayIcon ?? skinData.chromas[0].fullRender }}
+                    source={{ uri: skinData.levels[0].displayIcon ?? skinData.chromas[0].displayIcon ?? skinData.chromas[0].fullRender }}
                 />
                 <CostPoint currencyId={Object.keys(item.Cost)[0]} cost={item.Cost[Object.keys(item.Cost)[0]]} />
             </ImageBackground>
