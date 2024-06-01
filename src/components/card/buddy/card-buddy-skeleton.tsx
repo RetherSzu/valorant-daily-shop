@@ -1,10 +1,12 @@
+import React from "react";
 import { MotiView } from "moti";
 import { StyleSheet, View } from "react-native";
 // components
 import DarkSkeleton from "@/components/skeleton/dark-skeleton";
 
-const CardBuddySkeleton = () => (
+const CardBuddySkeleton = React.memo(() => (
     <MotiView
+        // @ts-ignore
         transition={{ type: "timing" }}
         animate={styles.motiViewAnimate}
     >
@@ -21,7 +23,7 @@ const CardBuddySkeleton = () => (
             </View>
         </View>
     </MotiView>
-);
+));
 
 const styles = StyleSheet.create({
     motiViewAnimate: {
@@ -29,26 +31,26 @@ const styles = StyleSheet.create({
         borderRadius: 16,
         width: "100%",
         padding: 16,
-        height: 132
+        height: 132,
     },
     container: {
         gap: 8,
-        flex: 1
+        flex: 1,
     },
     footer: {
         flexDirection: "row",
         justifyContent: "space-between",
-        flex: 1
+        flex: 1,
     },
     actionArea: {
         flexDirection: "row",
         gap: 8,
         flex: 1,
-        alignItems: "flex-end"
+        alignItems: "flex-end",
     },
     endIcon: {
-        justifyContent: "flex-end"
-    }
+        justifyContent: "flex-end",
+    },
 });
 
 export default CardBuddySkeleton;

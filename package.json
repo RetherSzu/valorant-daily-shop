@@ -9,7 +9,6 @@
     "web": "expo start --web"
   },
   "dependencies": {
-    "@hookform/resolvers": "^3.3.4",
     "@react-native-async-storage/async-storage": "1.23.1",
     "@react-navigation/bottom-tabs": "^6.5.11",
     "@react-navigation/material-top-tabs": "^6.6.5",
@@ -28,7 +27,6 @@
     "moti": "^0.27.5",
     "npx": "^10.2.2",
     "react": "18.2.0",
-    "react-hook-form": "^7.50.1",
     "react-native": "0.74.1",
     "react-native-iconify": "^1.0.0",
     "react-native-linear-gradient": "^2.8.3",

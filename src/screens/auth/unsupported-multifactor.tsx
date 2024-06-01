@@ -1,4 +1,5 @@
-import { View } from "react-native";
+import React from "react";
+import { StyleSheet, View } from "react-native";
 // components
 import Text from "@/components/typography/text";
 // contexts
@@ -9,8 +10,8 @@ const UnsupportedMultifactor = () => {
     const { colors } = useThemeContext();
 
     return (
-        <View style={{ backgroundColor: colors.background, flex: 1, justifyContent: "center", padding: 32, gap: 32 }}>
-            <Text style={{ color: colors.text, fontFamily: "Vandchrome" }} variant="displayLarge">
+        <View style={[styles.container, { backgroundColor: colors.background }]}>
+            <Text style={[styles.titleText, { color: colors.text }]} variant="displayLarge">
                 Unsupported Multifactor
             </Text>
             <Text variant="headlineLarge">
@@ -23,4 +24,16 @@ const UnsupportedMultifactor = () => {
     );
 };
 
-export default UnsupportedMultifactor;
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: "center",
+        padding: 32,
+        gap: 32,
+    },
+    titleText: {
+        fontFamily: "Vandchrome",
+    },
+});
+
+export default React.memo(UnsupportedMultifactor);

@@ -1,4 +1,5 @@
-import { FlatList, View } from "react-native";
+import React from "react";
+import { FlatList, StyleSheet, View } from "react-native";
 // components
 import Text from "@/components/typography/text";
 // contexts
@@ -13,12 +14,12 @@ const AccessoryStore = () => {
     const { accessoryStore } = useAccessoryStoreContext();
 
     return (
-        <View style={{ flex: 1, paddingTop: 16, gap: 8, paddingHorizontal: 16 }}>
-            <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
+        <View style={styles.container}>
+            <View style={styles.header}>
                 <Text variant="titleMedium">NEXT OFFER:</Text>
                 <Text
                     variant="titleMedium"
-                    style={{ color: "#E5E1B2" }}
+                    style={styles.timeText}
                     key={accessoryStore.AccessoryStoreRemainingDurationInSeconds}
                 >
                     {secToTime(accessoryStore.AccessoryStoreRemainingDurationInSeconds)}
@@ -26,13 +27,36 @@ const AccessoryStore = () => {
             </View>
 
             <FlatList
-                contentContainerStyle={{ gap: 16 }}
+                contentContainerStyle={styles.listContent}
                 data={accessoryStore.AccessoryStoreOffers}
-                style={{ flex: 1 }}
-                renderItem={(item) => <CardFactory key={item.index} offer={item.item.Offer} />}
+                style={styles.list}
+                renderItem={({ item, index }) => <CardFactory key={index} offer={item.Offer} />}
             />
         </View>
     );
 };
 
-export default AccessoryStore;
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        paddingTop: 16,
+        paddingHorizontal: 16,
+        gap: 8,
+    },
+    header: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+    },
+    timeText: {
+        color: "#E5E1B2",
+    },
+    listContent: {
+        gap: 16,
+    },
+    list: {
+        flex: 1,
+    },
+});
+
+export default React.memo(AccessoryStore);

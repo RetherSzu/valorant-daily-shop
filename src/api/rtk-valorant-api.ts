@@ -6,34 +6,37 @@ import { WeaponSkin, WeaponSkins } from "@/types/api/shop/weapon-skin";
 import { Buddies, Buddy, PlayerCard, PlayerTitle, Spray } from "@/types/api/shop";
 
 type Response<T> = {
-    data: T,
-    status: number
-}
+    data: T;
+    status: number;
+};
+
+const BASE_URL = "https://valorant-api.com/v1/";
+
+const findItemByLevelId = <T>(items: T[], levelId: string): T | undefined => {
+    return items.find(item =>
+        (item as any).levels.some((level: { uuid: string }) => level.uuid === levelId)
+    );
+};
 
 export const rtkValorantApi = createApi({
+    reducerPath: "valorantApi",
     baseQuery: fetchBaseQuery({
-        baseUrl: "https://valorant-api.com/v1/",
-        prepareHeaders: async (headers) => {
+        baseUrl: BASE_URL,
+        prepareHeaders: (headers) => {
             headers.set("Content-Type", "application/json");
             return headers;
         },
     }),
     endpoints: (builder) => ({
         getBundleById: builder.query<Response<BundleInfo>, string>({
-            query: (id: string) => `/bundles/${id}`,
+            query: (id) => `/bundles/${id}`,
         }),
         getWeaponByLevelId: builder.query<Response<WeaponSkin>, string>({
-            query: (_id) => `/weapons/skins`,
+            query: () => `/weapons/skins`,
             // @ts-ignore
             transformResponse: (response: Response<WeaponSkins>, _meta, arg) => {
-                for (let i = 0; i < response.data.length; i++) {
-                    for (let x = 0; x < response.data[i].levels.length; x++) {
-                        if (response.data[i].levels[x].uuid === arg) {
-                            return { status: 200, data: response.data[i] };
-                        }
-                    }
-                }
-                return { status: 404, data: undefined };
+                const foundSkin = findItemByLevelId(response.data, arg);
+                return foundSkin ? { status: 200, data: foundSkin } : { status: 404, data: undefined };
             },
         }),
         getThemeById: builder.query<Response<Theme>, string>({
@@ -49,21 +52,14 @@ export const rtkValorantApi = createApi({
             query: (id) => `/playertitles/${id}`,
         }),
         getGunBuddyById: builder.query<Response<Buddy>, string>({
-            query: (_id) => "/buddies",
+            query: () => "/buddies",
             // @ts-ignore
             transformResponse: (response: Response<Buddies>, _meta, arg) => {
-                for (let i = 0; i < response.data.length; i++) {
-                    for (let x = 0; x < response.data[i].levels.length; x++) {
-                        if (response.data[i].levels[x].uuid === arg) {
-                            return { status: 200, data: response.data[i] };
-                        }
-                    }
-                }
-                return { status: 404, data: undefined };
+                const foundBuddy = findItemByLevelId(response.data, arg);
+                return foundBuddy ? { status: 200, data: foundBuddy } : { status: 404, data: undefined };
             },
         }),
     }),
-    reducerPath: "valorantApi",
 });
 
 export const {

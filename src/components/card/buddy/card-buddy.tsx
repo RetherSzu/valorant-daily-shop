@@ -1,6 +1,7 @@
+import React, { useCallback } from "react";
 import { TouchableRipple } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
-import { Image, ImageBackground, View } from "react-native";
+import { Image, ImageBackground, StyleSheet, View } from "react-native";
 // api
 import { useGetGunBuddyByIdQuery } from "@/api/rtk-valorant-api";
 // components
@@ -32,6 +33,12 @@ const CardBuddy = ({ offer }: Props) => {
         isLoading: isLoadingBuddy,
     } = useGetGunBuddyByIdQuery(offer.Rewards[0].ItemID);
 
+    const onCardPress = useCallback(() => {
+        if (buddyData) {
+            navigate.navigate("BuddyDetails", { buddy: buddyData.data, offer });
+        }
+    }, [navigate, buddyData, offer]);
+
     if (isLoadingBuddy) {
         return <CardBuddySkeleton />;
     }
@@ -42,36 +49,20 @@ const CardBuddy = ({ offer }: Props) => {
 
     const buddy = buddyData.data;
 
-    const onCardPress = () => navigate.navigate("BuddyDetails", { buddy, offer });
-
     return (
         <TouchableRipple
             borderless
             onPress={onCardPress}
             rippleColor="rgba(255, 70, 86, .20)"
-            style={{
-                flex: 1,
-                borderRadius: 16,
-                backgroundColor: colors.card,
-            }}
+            style={[styles.container, { backgroundColor: colors.card }]}
         >
             <ImageBackground
                 blurRadius={20}
-                style={{
-                    padding: 16,
-                    flexDirection: "row",
-                }}
+                style={styles.imageBackground}
                 source={{ uri: buddy.displayIcon }}
             >
-                <View
-                    style={{
-                        gap: 16,
-                        flex: 1,
-                        flexDirection: "column",
-                        justifyContent: "space-between",
-                    }}
-                >
-                    <Text variant="titleLarge" style={{ textTransform: "capitalize" }}>
+                <View style={styles.infoContainer}>
+                    <Text variant="titleLarge" style={styles.title}>
                         {removeCardType(buddy.displayName, "buddy")}
                     </Text>
                     <CostPoint currencyId={Object.keys(offer.Cost)[0]} cost={offer.Cost[Object.keys(offer.Cost)[0]]} />
@@ -79,11 +70,36 @@ const CardBuddy = ({ offer }: Props) => {
                 <Image
                     resizeMode="center"
                     source={{ uri: buddy.displayIcon }}
-                    style={{ width: 100, height: 100, transform: [{ scale: 1.75 }] }}
+                    style={styles.buddyImage}
                 />
             </ImageBackground>
         </TouchableRipple>
     );
 };
 
-export default CardBuddy;
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        borderRadius: 16,
+    },
+    imageBackground: {
+        padding: 16,
+        flexDirection: "row",
+    },
+    infoContainer: {
+        gap: 16,
+        flex: 1,
+        flexDirection: "column",
+        justifyContent: "space-between",
+    },
+    title: {
+        textTransform: "capitalize",
+    },
+    buddyImage: {
+        width: 100,
+        height: 100,
+        transform: [{ scale: 1.75 }],
+    },
+});
+
+export default React.memo(CardBuddy);

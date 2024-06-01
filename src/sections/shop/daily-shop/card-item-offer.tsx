@@ -1,7 +1,7 @@
-import { ReactElement, useMemo } from "react";
 import { TouchableRipple } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
-import { Dimensions, Image, ImageBackground, View } from "react-native";
+import React, { ReactElement, useCallback, useMemo } from "react";
+import { Dimensions, Image, ImageBackground, StyleSheet, View } from "react-native";
 // api
 import { useGetThemeByIdQuery, useGetWeaponByLevelIdQuery } from "@/api/rtk-valorant-api";
 // components
@@ -47,53 +47,48 @@ const CardItemOffer = ({ item }: Props): ReactElement => {
 
     const filteredDisplayName = useMemo(() => {
         if (!weaponSkinData?.data?.displayName) return "";
-
         return getWeaponName(weaponSkinData.data.displayName, themeData?.data?.displayName);
-    }, [weaponSkinData?.data?.displayName]);
+    }, [weaponSkinData?.data?.displayName, themeData?.data?.displayName]);
 
-    const onCardPress = () => {
+    const onCardPress = useCallback(() => {
         if (!weaponSkinData || !themeData) return;
         navigate.navigate("SkinDetails", {
             skin: weaponSkinData.data,
             skinType: filteredDisplayName,
             theme: themeData.data,
         });
-    };
+    }, [navigate, weaponSkinData, themeData, filteredDisplayName]);
 
-    if (isLoadingWeapon || isLoadingTheme) return <CardOfferSkeleton />;
+    const MemoizedCardOfferSkeleton = useMemo(() => <CardOfferSkeleton />, []);
+
+    if (isLoadingWeapon || isLoadingTheme) return MemoizedCardOfferSkeleton;
     if (weaponSkinError || !skinData || themeError || !themeData) return <Error />;
 
     return (
         <TouchableRipple
             borderless
             onPress={onCardPress}
-            style={{
-                flex: 1,
-                borderRadius: 16,
-                overflow: "hidden",
-                maxWidth: WIDTH / 2 - 20,
-                backgroundColor: colors.card,
-            }}
             rippleColor="rgba(255, 70, 86, .20)"
+            style={[styles.touchable, { backgroundColor: colors.card }]}
         >
-            <ImageBackground style={{ flex: 1, padding: 16, position: "relative" }} source={{ uri: skinData.wallpaper }}>
+            <ImageBackground style={styles.imageBackground} source={{ uri: skinData.wallpaper }}>
                 {!skinData.wallpaper && (
                     <Image
-                        source={getContentTierIcon(skinData.contentTierUuid)}
                         blurRadius={2}
-                        style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0, opacity: .1 }}
+                        style={styles.contentTierIcon}
+                        source={getContentTierIcon(skinData.contentTierUuid)}
                     />
                 )}
                 <Text variant="titleLarge" numberOfLines={1}>
                     {themeData.data.displayName}
                 </Text>
                 {filteredDisplayName !== "" && (
-                    <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
-                        <Image source={{ uri: themeData.data.displayIcon }} style={{ width: 16, height: 16 }} />
+                    <View style={styles.row}>
+                        <Image source={{ uri: themeData.data.displayIcon }} style={styles.icon} />
                         <Text
-                            variant="titleMedium"
-                            style={{ flex: 1, opacity: .5, textTransform: "uppercase" }}
                             numberOfLines={1}
+                            variant="titleMedium"
+                            style={styles.filteredDisplayName}
                         >
                             {filteredDisplayName}
                         </Text>
@@ -101,8 +96,12 @@ const CardItemOffer = ({ item }: Props): ReactElement => {
                 )}
                 <Image
                     resizeMode="center"
-                    style={{ flex: 1, transform: [{ rotate: "22.5deg" }] }}
-                    source={{ uri: skinData.levels[0].displayIcon ?? skinData.chromas[0].displayIcon ?? skinData.chromas[0].fullRender }}
+                    style={styles.skinImage}
+                    source={{
+                        uri: skinData.levels[0].displayIcon
+                            ?? skinData.chromas[0].displayIcon
+                            ?? skinData.chromas[0].fullRender,
+                    }}
                 />
                 <CostPoint currencyId={Object.keys(item.Cost)[0]} cost={item.Cost[Object.keys(item.Cost)[0]]} />
             </ImageBackground>
@@ -110,4 +109,44 @@ const CardItemOffer = ({ item }: Props): ReactElement => {
     );
 };
 
-export default CardItemOffer;
+const styles = StyleSheet.create({
+    touchable: {
+        flex: 1,
+        borderRadius: 16,
+        overflow: "hidden",
+        maxWidth: WIDTH / 2 - 20,
+    },
+    imageBackground: {
+        flex: 1,
+        padding: 16,
+        position: "relative",
+    },
+    contentTierIcon: {
+        position: "absolute",
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        opacity: 0.1,
+    },
+    row: {
+        flexDirection: "row",
+        alignItems: "center",
+        gap: 8,
+    },
+    icon: {
+        width: 16,
+        height: 16,
+    },
+    filteredDisplayName: {
+        flex: 1,
+        opacity: 0.5,
+        textTransform: "uppercase",
+    },
+    skinImage: {
+        flex: 1,
+        transform: [{ rotate: "22.5deg" }],
+    },
+});
+
+export default React.memo(CardItemOffer);

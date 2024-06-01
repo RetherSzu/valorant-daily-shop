@@ -1,5 +1,5 @@
-import { useMemo } from "react";
-import { Dimensions, ImageBackground, View } from "react-native";
+import React, { useMemo } from "react";
+import { Dimensions, ImageBackground, StyleSheet, View } from "react-native";
 // components
 import Text from "@/components/typography/text";
 import CostPoint from "@/components/cost/cost-point";
@@ -13,12 +13,11 @@ import { secondsToDhms } from "@/utils/format-time";
 type Props = {
     bundle: BundleData;
     bundleIndex: number;
-}
+};
 
 const { width } = Dimensions.get("screen");
 
 const SlideItem = ({ bundle, bundleIndex }: Props) => {
-
     const { bundles: featuredBundle } = useBundleContext();
 
     const cost = useMemo(() => {
@@ -33,20 +32,15 @@ const SlideItem = ({ bundle, bundleIndex }: Props) => {
     return (
         <ImageBackground
             source={{ uri: bundle.bundleInfo.displayIcon }}
-            style={{
-                height: 200,
-                width: width - 32,
-            }}
-            borderRadius={16}
+            style={styles.imageBackground}
+            imageStyle={styles.image}
         >
-            <View style={{ padding: 8, justifyContent: "space-between", flex: 1 }}>
-                <View style={{ display: "flex" }}>
-                    <View style={{ flexDirection: "row" }}>
-                        <Text variant="bodyLarge">
-                            FEATURED | {secondsToDhms(featuredBundle.Bundles[bundleIndex].DurationRemainingInSeconds)}
-                        </Text>
-                    </View>
-                    <Text variant="headlineLarge" style={{ fontFamily: "Vandchrome" }}>
+            <View style={styles.content}>
+                <View>
+                    <Text variant="bodyLarge">
+                        FEATURED | {secondsToDhms(featuredBundle.Bundles[bundleIndex].DurationRemainingInSeconds)}
+                    </Text>
+                    <Text variant="headlineLarge" style={styles.headline}>
                         {bundle.bundleInfo.displayName}
                     </Text>
                 </View>
@@ -56,4 +50,22 @@ const SlideItem = ({ bundle, bundleIndex }: Props) => {
     );
 };
 
-export default SlideItem;
+const styles = StyleSheet.create({
+    imageBackground: {
+        height: 200,
+        width: width - 32,
+    },
+    image: {
+        borderRadius: 16,
+    },
+    content: {
+        padding: 8,
+        justifyContent: "space-between",
+        flex: 1,
+    },
+    headline: {
+        fontFamily: "Vandchrome",
+    },
+});
+
+export default React.memo(SlideItem);

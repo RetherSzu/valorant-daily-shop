@@ -1,4 +1,5 @@
-import { Image, ImageBackground, View } from "react-native";
+import React from "react";
+import { Image, ImageBackground, View, StyleSheet } from "react-native";
 // api
 import { useGetTitleByIdQuery } from "@/api/rtk-valorant-api";
 // components
@@ -13,10 +14,9 @@ import { Offer } from "@/types/api/shop";
 
 type Props = {
     offer: Offer;
-}
+};
 
 const CardTitle = ({ offer }: Props) => {
-
     const { colors } = useThemeContext();
 
     const {
@@ -38,27 +38,15 @@ const CardTitle = ({ offer }: Props) => {
     return (
         <ImageBackground
             source={require("@/assets/player-title.png")}
-            style={{
-                gap: 16,
-                padding: 8,
-                borderRadius: 16,
-                overflow: "hidden",
-                flexDirection: "column",
-                backgroundColor: colors.card,
-            }}
+            style={[styles.container, { backgroundColor: colors.card }]}
             blurRadius={150}
         >
-            <View style={{ justifyContent: "center", alignItems: "center" }}>
-                <Image source={require("@/assets/player-title.png")} style={{ width: 150, height: 100 }} />
+            <View style={styles.imageContainer}>
+                <Image source={require("@/assets/player-title.png")} style={styles.image} />
             </View>
             <Text
                 variant="titleLarge"
-                style={{
-                    padding: 8,
-                    borderRadius: 8,
-                    textAlign: "center",
-                    backgroundColor: "rgba(0,0,0,0.1)",
-                }}
+                style={styles.titleText}
                 numberOfLines={1}
             >
                 {playerTitle.displayName.replace(" Title", "")}
@@ -68,4 +56,28 @@ const CardTitle = ({ offer }: Props) => {
     );
 };
 
-export default CardTitle;
+const styles = StyleSheet.create({
+    container: {
+        gap: 16,
+        padding: 8,
+        borderRadius: 16,
+        overflow: "hidden",
+        flexDirection: "column",
+    },
+    imageContainer: {
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    image: {
+        width: 150,
+        height: 100,
+    },
+    titleText: {
+        padding: 8,
+        borderRadius: 8,
+        textAlign: "center",
+        backgroundColor: "rgba(0,0,0,0.1)",
+    },
+});
+
+export default React.memo(CardTitle);

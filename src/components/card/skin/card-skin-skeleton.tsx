@@ -1,3 +1,4 @@
+import React from "react";
 import { MotiView } from "moti";
 import { StyleSheet, View } from "react-native";
 // components
@@ -5,6 +6,7 @@ import DarkSkeleton from "@/components/skeleton/dark-skeleton";
 
 const CardSkinSkeleton = () => (
     <MotiView
+        // @ts-ignore
         transition={{ type: "timing" }}
         animate={styles.motiViewAnimate}
     >
@@ -56,4 +58,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default CardSkinSkeleton;
+export default React.memo(CardSkinSkeleton);

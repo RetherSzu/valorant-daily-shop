@@ -1,3 +1,4 @@
+import React from "react";
 import { MotiView } from "moti";
 import { StyleSheet, View } from "react-native";
 // components
@@ -5,8 +6,10 @@ import DarkSkeleton from "@/components/skeleton/dark-skeleton";
 
 const CardPlayerSkeleton = () => (
     <MotiView
+        // @ts-ignore
         transition={{ type: "timing" }}
-        animate={styles.motiViewAnimate}
+        // @ts-ignore
+        animate={motiViewAnimateStyle}
     >
         <View style={styles.row}>
             <View style={styles.leftColumn}>
@@ -22,13 +25,14 @@ const CardPlayerSkeleton = () => (
     </MotiView>
 );
 
+const motiViewAnimateStyle = {
+    height: 220,
+    width: "100%",
+    borderRadius: 16,
+    backgroundColor: "#222429",
+};
+
 const styles = StyleSheet.create({
-    motiViewAnimate: {
-        height: 220,
-        width: "100%",
-        borderRadius: 16,
-        backgroundColor: "#222429",
-    },
     row: {
         flex: 1,
         flexDirection: "row",
@@ -38,11 +42,6 @@ const styles = StyleSheet.create({
         gap: 16,
         padding: 16,
     },
-    rowJustifySpaceBetween: {
-        marginBottom: 8,
-        flexDirection: "row",
-        justifyContent: "space-between",
-    },
     bottomRow: {
         gap: 8,
         flexDirection: "row",
@@ -50,4 +49,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default CardPlayerSkeleton;
+export default React.memo(CardPlayerSkeleton);

@@ -51,7 +51,6 @@ const StoreStackScreen = (): ReactElement | null => {
             setAccessoryStore(shopData.accessoryStore);
         } catch (error) {
             await logout();
-            console.error("Failed to fetch shop data", error);
         }
         setFetchShop(false);
     }, []);

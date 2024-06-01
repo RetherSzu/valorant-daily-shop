@@ -1,3 +1,4 @@
+import React from "react";
 import { MotiView } from "moti";
 import { StyleSheet, View } from "react-native";
 // components
@@ -6,8 +7,9 @@ import DarkSkeleton from "@/components/skeleton/dark-skeleton";
 const CardSpraySkeleton = () => {
     return (
         <MotiView
+            // @ts-ignore
             transition={{ type: "timing" }}
-            animate={{ ...styles.motiViewAnimate }}
+            animate={styles.motiViewAnimate}
         >
             <View style={styles.container}>
                 <DarkSkeleton width={100} />
@@ -50,4 +52,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default CardSpraySkeleton;
+export default React.memo(CardSpraySkeleton);

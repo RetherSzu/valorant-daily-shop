@@ -1,4 +1,5 @@
-import { ScrollView, View } from "react-native";
+import React, { useMemo } from "react";
+import { ScrollView, View, StyleSheet } from "react-native";
 // contexts
 import useThemeContext from "@/contexts/hook/use-theme-context";
 import useNightMarketContext from "@/contexts/hook/use-night-market-context";
@@ -11,28 +12,26 @@ import NightMarketCardItem from "@/sections/shop/night-market/night-market-card-
 import { secondsToDhms } from "@/utils/format-time";
 
 const NightMarket = () => {
-
     const { colors } = useThemeContext();
-
     const { nightMarket } = useNightMarketContext();
 
     if (!nightMarket || !nightMarket.BonusStoreOffers) {
         return <Loading />;
     }
 
-    const nightMarketOffers = (
-        <ScrollView style={{ paddingHorizontal: 16 }} contentContainerStyle={{ rowGap: 16 }} overScrollMode="never">
-            {nightMarket.BonusStoreOffers.map((offer, index) => {
-                return <NightMarketCardItem item={offer} key={index} />;
-            })}
+    const nightMarketOffers = useMemo(() => (
+        <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollViewContent} overScrollMode="never">
+            {nightMarket.BonusStoreOffers.map((offer, index) => (
+                <NightMarketCardItem item={offer} key={index} />
+            ))}
         </ScrollView>
-    );
+    ), [nightMarket.BonusStoreOffers]);
 
     return (
-        <View style={{ backgroundColor: colors.background, flex: 1 }}>
-            <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", padding: 16 }}>
+        <View style={[styles.container, { backgroundColor: colors.background }]}>
+            <View style={styles.header}>
                 <Text variant="titleMedium" style={{ color: colors.text }}>TIME LEFT:</Text>
-                <Text variant="titleMedium" style={{ color: "#E5E1B2" }}>
+                <Text variant="titleMedium" style={styles.timeLeftText}>
                     {secondsToDhms(nightMarket?.BonusStoreRemainingDurationInSeconds ?? 0)}
                 </Text>
             </View>
@@ -41,4 +40,25 @@ const NightMarket = () => {
     );
 };
 
-export default NightMarket;
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+    },
+    header: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+        padding: 16,
+    },
+    timeLeftText: {
+        color: "#E5E1B2",
+    },
+    scrollView: {
+        paddingHorizontal: 16,
+    },
+    scrollViewContent: {
+        rowGap: 16,
+    },
+});
+
+export default React.memo(NightMarket);

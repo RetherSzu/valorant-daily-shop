@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Animated, FlatList, ScrollView, View, ViewToken } from "react-native";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { Animated, FlatList, ScrollView, View, StyleSheet, ViewToken } from "react-native";
 // api
 import valorantProvider from "@/api/valorant-provider";
 // components
@@ -28,7 +28,7 @@ const BundleView = () => {
 
     const handleOnScroll = Animated.event(
         [{ nativeEvent: { contentOffset: { x: scrollX } } }],
-        { useNativeDriver: false },
+        { useNativeDriver: false }
     );
 
     const handleOnViewableItemsChanged = useCallback(({ viewableItems }: { viewableItems: ViewToken[] }) => {
@@ -47,44 +47,28 @@ const BundleView = () => {
             setBundleLoading(false);
         }
 
-        (async () => getBundles())();
+        getBundles();
     }, [featuredBundle.Bundles.length]);
 
     const renderOffer = useCallback(({ item, index }: { item: ItemOffer, index: number }) => (
         <CardFactory offer={item.Offer} key={index} />
-    ), [bundleIndex, bundlesInfos]);
+    ), []);
 
     const offerList = useMemo(() => (
-        <>
-            {bundlesInfos[bundleIndex]?.bundle?.ItemOffers?.map((item, index) => renderOffer({ item, index }))}
-        </>
+        bundlesInfos[bundleIndex]?.bundle?.ItemOffers?.map((item, index) => renderOffer({ item, index }))
     ), [bundleIndex, bundlesInfos, renderOffer]);
 
     if (bundleLoading || !bundlesInfos.length) {
         return (
-            <View
-                style={{
-                    flex: 1,
-                    alignItems: "center",
-                    justifyContent: "center",
-                    backgroundColor: colors.background,
-                }}
-            >
+            <View style={[styles.loadingContainer, { backgroundColor: colors.background }]}>
                 <Loading />
             </View>
         );
     }
 
     return (
-        <ScrollView
-            contentContainerStyle={{
-                gap: 16,
-                paddingTop: 16,
-                paddingHorizontal: 16,
-                backgroundColor: colors.background,
-            }}
-        >
-            <View style={{ position: "relative" }}>
+        <ScrollView contentContainerStyle={[styles.scrollViewContainer, { backgroundColor: colors.background }]}>
+            <View style={styles.flatListContainer}>
                 <FlatList
                     horizontal
                     pagingEnabled
@@ -99,12 +83,30 @@ const BundleView = () => {
                 {bundlesInfos.length > 1 && <Pagination data={bundlesInfos} scrollX={scrollX} />}
             </View>
 
-            <Text variant="headlineMedium" style={{ fontFamily: "Nota" }}>COLLECTION</Text>
+            <Text variant="headlineMedium" style={styles.collectionText}>COLLECTION</Text>
 
             {offerList}
-
         </ScrollView>
     );
 };
 
-export default BundleView;
+const styles = StyleSheet.create({
+    loadingContainer: {
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center",
+    },
+    scrollViewContainer: {
+        gap: 16,
+        paddingTop: 16,
+        paddingHorizontal: 16,
+    },
+    flatListContainer: {
+        position: "relative",
+    },
+    collectionText: {
+        fontFamily: "Nota",
+    },
+});
+
+export default React.memo(BundleView);

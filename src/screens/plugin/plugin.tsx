@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { IconButton } from "react-native-paper";
-import { FlatList, View } from "react-native";
+import { FlatList, StyleSheet, View } from "react-native";
 // api
 import { useGetBundleByIdQuery } from "@/api/rtk-valorant-api";
 // components
@@ -13,43 +13,67 @@ import CardFactory from "@/factories/card-factory";
 import { PluginDetailScreenProps } from "@/types/router/navigation";
 
 const Plugin = ({ route, navigation }: PluginDetailScreenProps) => {
-
     const { colors } = useThemeContext();
 
     const { plugin } = route.params;
 
     const { data, isLoading, error } = useGetBundleByIdQuery(plugin.PurchaseInformation.DataAssetID);
 
+    const goBack = useCallback(() => navigation.goBack(), [navigation]);
+
     if (isLoading) return <Text>Loading...</Text>;
-
     if (error || !data) return <Text>Error...</Text>;
-
-    const goBack = () => navigation.goBack();
 
     const offerData = data.data;
 
     return (
-        <View style={{ backgroundColor: colors.background, flex: 1, padding: 16 }}>
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
+        <View style={[styles.container, { backgroundColor: colors.background }]}>
+            <View style={styles.header}>
                 <IconButton icon="arrow-left" iconColor="#fff" size={32} onPress={goBack} />
-                <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+                <View style={styles.titleContainer}>
                     <Text variant="titleLarge">{offerData.displayName}</Text>
                 </View>
-                <View style={{ width: 72, height: 72 }}></View>
+                <View style={styles.placeholder} />
             </View>
             <FlatList
                 overScrollMode="never"
                 data={plugin.SubOffers}
                 snapToAlignment="center"
-                style={{ marginTop: 16 }}
-                contentContainerStyle={{ gap: 16 }}
+                style={styles.list}
+                contentContainerStyle={styles.listContent}
                 showsVerticalScrollIndicator={false}
-                renderItem={({ item, index }) => {
-                    return <CardFactory offer={item.PurchaseInformation} key={index} />;
-                }}
+                renderItem={({ item, index }) => (
+                    <CardFactory offer={item.PurchaseInformation} key={index} />
+                )}
             />
         </View>
     );
 };
 
-export default Plugin;
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        padding: 16,
+    },
+    header: {
+        flexDirection: "row",
+        alignItems: "center",
+    },
+    titleContainer: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    placeholder: {
+        width: 72,
+        height: 72,
+    },
+    list: {
+        marginTop: 16,
+    },
+    listContent: {
+        gap: 16,
+    },
+});
+
+export default React.memo(Plugin);

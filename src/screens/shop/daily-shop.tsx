@@ -1,4 +1,5 @@
-import { View } from "react-native";
+import React, { useMemo } from "react";
+import { View, StyleSheet } from "react-native";
 // components
 import Text from "@/components/typography/text";
 import Loading from "@/components/loading/loading";
@@ -11,26 +12,28 @@ import CardListOffer from "@/sections/shop/daily-shop/card-list-offer";
 import { secToTime } from "@/utils/format-time";
 
 const DailyShop = () => {
-
     const { colors } = useThemeContext();
-
     const { dailyShop } = useDailyShopContext();
+
+    const remainingTime = useMemo(
+        () => secToTime(dailyShop.SingleItemOffersRemainingDurationInSeconds),
+        [dailyShop.SingleItemOffersRemainingDurationInSeconds]
+    );
 
     if (dailyShop.SingleItemOffers.length === 0) {
         return (
-            <View style={{ flex: 1, backgroundColor: colors.background }}>
+            <View style={[styles.container, { backgroundColor: colors.background }]}>
                 <Loading />
             </View>
         );
     }
 
     return (
-        <View style={{ flex: 1, paddingTop: 16, backgroundColor: colors.background, gap: 8, paddingHorizontal: 16 }}>
-            <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
+        <View style={[styles.container, { backgroundColor: colors.background }]}>
+            <View style={styles.header}>
                 <Text variant="titleMedium">NEXT OFFER:</Text>
-                <Text key={dailyShop.SingleItemOffersRemainingDurationInSeconds} variant="titleMedium"
-                      style={{ color: "#E5E1B2" }}>
-                    {secToTime(dailyShop.SingleItemOffersRemainingDurationInSeconds)}
+                <Text key={dailyShop.SingleItemOffersRemainingDurationInSeconds} variant="titleMedium" style={styles.remainingTime}>
+                    {remainingTime}
                 </Text>
             </View>
             <CardListOffer offers={dailyShop.SingleItemStoreOffers} />
@@ -38,4 +41,21 @@ const DailyShop = () => {
     );
 };
 
-export default DailyShop;
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        paddingTop: 16,
+        paddingHorizontal: 16,
+        gap: 8,
+    },
+    header: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+    },
+    remainingTime: {
+        color: "#E5E1B2",
+    },
+});
+
+export default React.memo(DailyShop);

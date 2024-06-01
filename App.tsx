@@ -11,7 +11,6 @@ import ThemeProvider from "@/contexts/theme/theme-provider";
 import useAuthContext from "@/contexts/hook/use-auth-context";
 import BundleProvider from "@/contexts/bundle/bundle-provider";
 import PluginProvider from "@/contexts/plugin/plugin-provider";
-import SnackbarProvider from "@/contexts/snackbar/snackbar-provider";
 import DailyShopProvider from "@/contexts/daily-shop/daily-shop-provider";
 import NightMarketProvider from "@/contexts/night-market/night-market-provider";
 import AccessoryStoreProvider from "@/contexts/accessory-store/accessory-store-provider";
@@ -50,23 +49,21 @@ export default function App(): ReactElement | null {
         <NavigationContainer theme={MyTheme}>
             <Provider store={store}>
                 <ThemeProvider>
-                    <SnackbarProvider>
-                        <AuthProvider>
-                            <UserProvider>
-                                <DailyShopProvider>
-                                    <BundleProvider>
-                                        <AccessoryStoreProvider>
-                                            <NightMarketProvider>
-                                                <PluginProvider>
-                                                    <Router />
-                                                </PluginProvider>
-                                            </NightMarketProvider>
-                                        </AccessoryStoreProvider>
-                                    </BundleProvider>
-                                </DailyShopProvider>
-                            </UserProvider>
-                        </AuthProvider>
-                    </SnackbarProvider>
+                    <AuthProvider>
+                        <UserProvider>
+                            <DailyShopProvider>
+                                <BundleProvider>
+                                    <AccessoryStoreProvider>
+                                        <NightMarketProvider>
+                                            <PluginProvider>
+                                                <Router />
+                                            </PluginProvider>
+                                        </NightMarketProvider>
+                                    </AccessoryStoreProvider>
+                                </BundleProvider>
+                            </DailyShopProvider>
+                        </UserProvider>
+                    </AuthProvider>
                 </ThemeProvider>
             </Provider>
         </NavigationContainer>

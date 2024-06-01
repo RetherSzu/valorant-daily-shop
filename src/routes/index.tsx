@@ -7,7 +7,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useGetThemeByIdQuery } from "@/api/rtk-valorant-api";
 // components
 import LogoutWebView from "@/components/web-view/web-view-logout";
-import LoginWebView from "@/components/web-view/web-view";
+import LoginWebView from "@/components/web-view/web-view-login";
 // contexts
 import useAuthContext from "@/contexts/hook/use-auth-context";
 import useThemeContext from "@/contexts/hook/use-theme-context";

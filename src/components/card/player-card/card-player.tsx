@@ -1,6 +1,7 @@
+import React, { useCallback } from "react";
 import { TouchableRipple } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
-import { Image, ImageBackground, View } from "react-native";
+import { Image, ImageBackground, StyleSheet, View } from "react-native";
 // api
 import { useGetPlayerCardIdQuery } from "@/api/rtk-valorant-api";
 // components
@@ -32,6 +33,12 @@ const CardPlayer = ({ offer }: CardPlayerProps) => {
         isLoading: isLoadingCard,
     } = useGetPlayerCardIdQuery(offer.Rewards[0].ItemID);
 
+    const onCardPress = useCallback(() => {
+        if (playerCardData) {
+            navigate.navigate("PlayerCardDetails", { playercard: playerCardData.data, offer });
+        }
+    }, [navigate, playerCardData, offer]);
+
     if (isLoadingCard) {
         return <CardPlayerSkeleton />;
     }
@@ -42,45 +49,27 @@ const CardPlayer = ({ offer }: CardPlayerProps) => {
 
     const playercard = playerCardData.data;
 
-    const onCardPress = () => {
-        if (!playerCardData) return;
-        navigate.navigate("PlayerCardDetails", { playercard, offer });
-    };
-
     return (
         <TouchableRipple
             borderless
             onPress={onCardPress}
-            style={{
-                flex: 1,
-                borderRadius: 16,
-                overflow: "hidden",
-                backgroundColor: colors.card,
-            }}
+            style={[styles.container, { backgroundColor: colors.card }]}
             rippleColor="rgba(255, 70, 86, .20)"
         >
             <ImageBackground
                 blurRadius={16}
                 source={{ uri: playercard.wideArt }}
-                style={{ height: 220, flexDirection: "row", overflow: "hidden" }}
+                style={styles.imageBackground}
             >
-                <View
-                    style={{
-                        gap: 16,
-                        flex: 1,
-                        padding: 16,
-                        flexDirection: "column",
-                        justifyContent: "space-between",
-                    }}
-                >
-                    <Text variant="titleLarge" style={{ textTransform: "capitalize" }} numberOfLines={1}>
+                <View style={styles.infoContainer}>
+                    <Text variant="titleLarge" style={styles.title} numberOfLines={1}>
                         {removeCardType(playercard.displayName, "card")}
                     </Text>
-                    <View style={{ flexDirection: "row", justifyContent: "space-around" }}>
+                    <View style={styles.imageContainer}>
                         <Image
                             borderRadius={8}
                             source={{ uri: playercard.wideArt }}
-                            style={{ width: "100%", height: 100 }}
+                            style={styles.wideArt}
                         />
                     </View>
                     <CostPoint currencyId={Object.keys(offer.Cost)[0]} cost={offer.Cost[Object.keys(offer.Cost)[0]]} />
@@ -88,11 +77,46 @@ const CardPlayer = ({ offer }: CardPlayerProps) => {
                 <Image
                     resizeMode="center"
                     source={{ uri: playercard.largeArt }}
-                    style={{ width: 92, height: 220 }}
+                    style={styles.largeArt}
                 />
             </ImageBackground>
         </TouchableRipple>
     );
 };
 
-export default CardPlayer;
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        borderRadius: 16,
+        overflow: "hidden",
+    },
+    imageBackground: {
+        height: 220,
+        flexDirection: "row",
+        overflow: "hidden",
+    },
+    infoContainer: {
+        gap: 16,
+        flex: 1,
+        padding: 16,
+        flexDirection: "column",
+        justifyContent: "space-between",
+    },
+    title: {
+        textTransform: "capitalize",
+    },
+    imageContainer: {
+        flexDirection: "row",
+        justifyContent: "space-around",
+    },
+    wideArt: {
+        width: "100%",
+        height: 100,
+    },
+    largeArt: {
+        width: 92,
+        height: 220,
+    },
+});
+
+export default React.memo(CardPlayer);

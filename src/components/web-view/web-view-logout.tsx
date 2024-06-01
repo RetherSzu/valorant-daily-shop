@@ -1,6 +1,6 @@
-import { View } from "react-native";
-import React, { useRef } from "react";
 import { WebView } from "react-native-webview";
+import { StyleSheet, View } from "react-native";
+import React, { useCallback, useRef } from "react";
 import { WebViewNativeEvent } from "react-native-webview/lib/WebViewTypes";
 // components
 import Loading from "@/components/loading/loading";
@@ -16,7 +16,7 @@ const LogoutWebView = () => {
 
     const { colors } = useThemeContext();
 
-    const handleNavigationStateChange = async (event: WebViewNativeEvent) => {
+    const handleNavigationStateChange = useCallback(async (event: WebViewNativeEvent) => {
         if (event.url === "https://auth.riotgames.com/logout") {
             try {
                 if (webViewRef.current) {
@@ -31,28 +31,16 @@ const LogoutWebView = () => {
             }
             await logout();
         }
-    };
+    }, [logout]);
 
     return (
-        <View style={{ flex: 1, backgroundColor: colors.background }}>
-            <View
-                style={{
-                    position: "absolute",
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                }}
-            >
+        <View style={[styles.container, { backgroundColor: colors.background }]}>
+            <View style={styles.loadingOverlay}>
                 <Loading />
             </View>
             <WebView
                 ref={webViewRef}
-                style={{
-                    width: 0,
-                    height: 0,
-                    display: "none",
-                }}
+                style={styles.hiddenWebView}
                 onNavigationStateChange={handleNavigationStateChange}
                 source={{ uri: "https://auth.riotgames.com/logout" }}
             />
@@ -60,4 +48,22 @@ const LogoutWebView = () => {
     );
 };
 
-export default LogoutWebView;
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+    },
+    loadingOverlay: {
+        position: "absolute",
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+    },
+    hiddenWebView: {
+        width: 0,
+        height: 0,
+        display: "none",
+    },
+});
+
+export default React.memo(LogoutWebView);

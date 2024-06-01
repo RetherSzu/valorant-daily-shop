@@ -1,5 +1,5 @@
-import { View } from "react-native";
-import React, { ReactElement } from "react";
+import { StyleSheet, View } from "react-native";
+import React, { ReactElement, useCallback } from "react";
 import { useNavigation } from "@react-navigation/native";
 // components
 import Button from "@/components/button/button";
@@ -15,33 +15,14 @@ const Settings = (): ReactElement => {
 
     const navigate = useNavigation<NavigationProp>();
 
-    const handleLogout = () => navigate.navigate("Logout");
+    const handleLogout = useCallback(() => navigate.navigate("Logout"), [navigate]);
 
     return (
-        <View
-            style={{
-                gap: 16,
-                flex: 1,
-                padding: 16,
-                alignItems: "center",
-                justifyContent: "center",
-                backgroundColor: colors.primary,
-            }}
-        >
-            <View style={{ flexDirection: "row", alignItems: "flex-start" }}>
+        <View style={[styles.container, { backgroundColor: colors.primary }]}>
+            <View style={styles.titleContainer}>
                 <TitleScreen name="SETTINGS" />
             </View>
-            <View
-                style={{
-                    gap: 16,
-                    flex: 1,
-                    padding: 16,
-                    width: "100%",
-                    borderRadius: 32,
-                    backgroundColor: "#1F2326",
-                    flexDirection: "column-reverse",
-                }}
-            >
+            <View style={styles.buttonContainer}>
                 <Button
                     text="Logout"
                     onPress={handleLogout}
@@ -53,4 +34,27 @@ const Settings = (): ReactElement => {
     );
 };
 
-export default Settings;
+const styles = StyleSheet.create({
+    container: {
+        gap: 16,
+        flex: 1,
+        padding: 16,
+        alignItems: "center",
+        justifyContent: "center",
+    },
+    titleContainer: {
+        flexDirection: "row",
+        alignItems: "flex-start",
+    },
+    buttonContainer: {
+        gap: 16,
+        flex: 1,
+        padding: 16,
+        width: "100%",
+        borderRadius: 32,
+        backgroundColor: "#1F2326",
+        flexDirection: "column-reverse",
+    },
+});
+
+export default React.memo(Settings);
