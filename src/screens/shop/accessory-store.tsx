@@ -7,7 +7,7 @@ import useAccessoryStoreContext from "@/contexts/hook/use-accessory-store-contex
 // factory
 import CardFactory from "@/factories/card-factory";
 // utils
-import { secToTime } from "@/utils/format-time";
+import { secondsToDhms } from "@/utils/format-time";
 
 const AccessoryStore = () => {
 
@@ -22,14 +22,15 @@ const AccessoryStore = () => {
                     style={styles.timeText}
                     key={accessoryStore.AccessoryStoreRemainingDurationInSeconds}
                 >
-                    {secToTime(accessoryStore.AccessoryStoreRemainingDurationInSeconds)}
+                    {secondsToDhms(accessoryStore.AccessoryStoreRemainingDurationInSeconds)}
                 </Text>
             </View>
 
             <FlatList
-                contentContainerStyle={styles.listContent}
-                data={accessoryStore.AccessoryStoreOffers}
                 style={styles.list}
+                showsVerticalScrollIndicator={false}
+                data={accessoryStore.AccessoryStoreOffers}
+                contentContainerStyle={styles.listContent}
                 renderItem={({ item, index }) => <CardFactory key={index} offer={item.Offer} />}
             />
         </View>
