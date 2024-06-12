@@ -99,6 +99,9 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
             // Get user balance
             await valorantProvider.getUserBalance();
 
+            // Account XP
+            await valorantProvider.getAccountXP();
+
             const accessToken = SecureStore.getItem("access_token");
             const entitlementsToken = SecureStore.getItem("entitlements_token");
 

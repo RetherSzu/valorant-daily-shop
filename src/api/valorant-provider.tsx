@@ -3,7 +3,9 @@ import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 // types
 import { StorefrontResponse } from "@/types/api/shop";
 import { WalletResponse } from "@/types/api/user-balance";
+import { AccountXPResponse } from "@/types/api/account-xp";
 import { PlayerInfoResponse } from "@/types/api/auth/user-info";
+import { PlayerLoadoutResponse } from "@/types/api/player-loadout";
 
 // ----------------------------------------------------------------------
 
@@ -156,6 +158,83 @@ const valorantProvider = {
         } catch (error) {
             console.error(error);
         }
+    },
+
+    getAccountXP: async () => {
+        const [accessToken, entitlementsToken, sub, pp, riotVersion] = await Promise.all([
+            SecureStore.getItemAsync("access_token"),
+            SecureStore.getItemAsync("entitlements_token"),
+            SecureStore.getItemAsync("sub"),
+            SecureStore.getItemAsync("pp"),
+            SecureStore.getItemAsync("riot_version"),
+        ]);
+
+        const options = {
+            method: "GET",
+            url: `https://pd.${pp}.a.pvp.net/account-xp/v1/players/${sub}`,
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+                "X-Riot-Entitlements-JWT": `${entitlementsToken}`,
+                "X-Riot-ClientPlatform": X_Riot_ClientPlatform,
+                "X-Riot-ClientVersion": riotVersion,
+            },
+        };
+
+        const response: AxiosResponse<AccountXPResponse> = await axios.request(options);
+
+        return response.data;
+    },
+
+    getPlayerLoadout: async () => {
+        const [accessToken, entitlementsToken, sub, pp, riotVersion] = await Promise.all([
+            SecureStore.getItemAsync("access_token"),
+            SecureStore.getItemAsync("entitlements_token"),
+            SecureStore.getItemAsync("sub"),
+            SecureStore.getItemAsync("pp"),
+            SecureStore.getItemAsync("riot_version"),
+        ]);
+
+        const options = {
+            method: "GET",
+            url: `https://pd.${pp}.a.pvp.net/personalization/v2/players/${sub}/playerloadout`,
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+                "X-Riot-Entitlements-JWT": `${entitlementsToken}`,
+                "X-Riot-ClientPlatform": X_Riot_ClientPlatform,
+                "X-Riot-ClientVersion": riotVersion,
+            },
+        };
+
+        const response: AxiosResponse<PlayerLoadoutResponse> = await requestWithHeaders(options);
+
+        return response.data;
+    },
+
+    getRank: async () => {
+        const [gameName, tagLine, pp] = await Promise.all([
+            SecureStore.getItemAsync("game_name"),
+            SecureStore.getItemAsync("tag_line"),
+            SecureStore.getItemAsync("pp"),
+        ]);
+
+        const options = {
+            method: "GET",
+            url: `https://api.kyroskoh.xyz/valorant/v1/mmr/${pp}/${gameName}/${tagLine}`,
+        };
+
+        try {
+            const response: AxiosResponse = await axios.request(options);
+
+            if (response.data) {
+                return {
+                    rank: response.data.split(" - ")[0],
+                    rr: response.data.split(" - ")[1].split("RR")[0],
+                };
+            }
+        } catch {
+        }
+
+        return { rank: "Unranked", rr: "0" };
     },
 };
 
