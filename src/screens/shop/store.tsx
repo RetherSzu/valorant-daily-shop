@@ -30,7 +30,6 @@ const Store = () => {
     const tabNavigatorOptions = useMemo(() => ({
         initialRouteName: "Daily shop",
         screenOptions: {
-            swipeEnabled: false,
             tabBarGap: 8,
             tabBarItemStyle: styles.tabBarItem,
             tabBarStyle: styles.tabBar,
