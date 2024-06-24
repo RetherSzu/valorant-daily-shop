@@ -106,7 +106,7 @@ const CollectionDetailsScreen = ({ route }: CollectionDetailScreenProps) => {
         currentPlayerLoadoutGun?.SkinLevelID,
         currentLevelIndex,
         currentChromaIndex,
-        skinVariants
+        skinVariants,
     ]);
 
     const isFavorite = useMemo(() => {
@@ -116,13 +116,18 @@ const CollectionDetailsScreen = ({ route }: CollectionDetailScreenProps) => {
     const isFavoriteDisabled = useMemo(() => {
         if (weaponData?.data.defaultSkinUuid === currentSkin.uuid) return false;
         if (currentSkin.themeUuid === "0d7a5bfb-4850-098e-1821-d989bbfd58a8") return true;
+        if (!skins?.Entitlements.some((entitlement) =>
+            currentSkin.levels.some((level) => level.uuid === entitlement.ItemID))
+        ) {
+            return true;
+        }
         if (currentChromaIndex === 0) return false;
         if (!skinVariants?.Entitlements.some((entitlement) =>
             currentSkin.chromas[currentChromaIndex].uuid === entitlement.ItemID)
         ) {
             return true;
         }
-    }, [weaponData, currentSkin, currentChromaIndex, skinVariants]);
+    }, [weaponData, currentSkin, skins, currentChromaIndex, skinVariants]);
 
     const [currentImage, setCurrentImage] = useState(
         currentPlayerLoadoutSkin?.chromas.find(
@@ -289,7 +294,8 @@ const CollectionDetailsScreen = ({ route }: CollectionDetailScreenProps) => {
                     backgroundColor="#222429"
                     loading={isLoadingFavorite}
                     disabled={isFavoriteDisabled}
-                    icon={isLoadingFavorite ? null : isFavorite ? <SvgFavorite color="#FFE500" /> : <SvgFavoriteDisable />}
+                    icon={isLoadingFavorite ? null : isFavorite ? <SvgFavorite color="#FFE500" /> :
+                        <SvgFavoriteDisable />}
                 />
                 <Button
                     text={textButton}
