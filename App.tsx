@@ -11,6 +11,7 @@ import ThemeProvider from "@/contexts/theme/theme-provider";
 import useAuthContext from "@/contexts/hook/use-auth-context";
 import BundleProvider from "@/contexts/bundle/bundle-provider";
 import PluginProvider from "@/contexts/plugin/plugin-provider";
+import ProfileProvider from "@/contexts/profile/profile-provider";
 import DailyShopProvider from "@/contexts/daily-shop/daily-shop-provider";
 import NightMarketProvider from "@/contexts/night-market/night-market-provider";
 import AccessoryStoreProvider from "@/contexts/accessory-store/accessory-store-provider";
@@ -56,7 +57,9 @@ export default function App(): ReactElement | null {
                                     <AccessoryStoreProvider>
                                         <NightMarketProvider>
                                             <PluginProvider>
-                                                <Router />
+                                                <ProfileProvider>
+                                                    <Router />
+                                                </ProfileProvider>
                                             </PluginProvider>
                                         </NightMarketProvider>
                                     </AccessoryStoreProvider>
