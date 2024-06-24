@@ -30,6 +30,7 @@ const CollectionDetailsScreen = ({ route }: CollectionDetailScreenProps) => {
 
     const {
         skins,
+        skinVariants,
         setPlayerLoadout,
         currentPlayerLoadoutSkin,
         currentPlayerLoadoutGun,
@@ -47,6 +48,8 @@ const CollectionDetailsScreen = ({ route }: CollectionDetailScreenProps) => {
     const [sortedSkins, setSortedSkins] = useState<WeaponSkin[]>([]);
 
     const [isLoading, setLoading] = useState<boolean>(false);
+
+    const [isLoadingFavorite, setLoadingFavorite] = useState<boolean>(false);
 
     const [currentLevelIndex, setCurrentLevelIndex] = useState<number | undefined>();
 
@@ -77,31 +80,52 @@ const CollectionDetailsScreen = ({ route }: CollectionDetailScreenProps) => {
         const isDefaultTheme = currentSkin.themeUuid !== "0d7a5bfb-4850-098e-1821-d989bbfd58a8";
         const isNotDefaultSkin = currentSkin.uuid !== weaponData?.data.defaultSkinUuid;
         const isNotOwned = !skins?.Entitlements.some((entitlement) =>
-            currentSkin.levels.some((level) => level.uuid === entitlement.ItemID),
+            currentSkin.levels[currentLevelIndex ?? 0]?.uuid === entitlement.ItemID,
         );
+        const isNotOwnedChroma = !skinVariants?.Entitlements.some((entitlement) =>
+            currentSkin.chromas[currentChromaIndex]?.uuid === entitlement.ItemID,
+        ) && currentChromaIndex !== 0;
 
-        if (isDefaultTheme && isNotDefaultSkin && isNotOwned) return true;
+        if (isNotOwnedChroma || (isDefaultTheme && isNotDefaultSkin && isNotOwned)) {
+            return true;
+        }
 
         if (currentSkin.uuid !== currentPlayerLoadoutSkin?.uuid) {
             setTextButton("Equip skin");
             return false;
         }
 
-        if (currentLevelIndex === undefined || currentSkin.levels[currentLevelIndex].uuid === currentPlayerLoadoutGun?.SkinLevelID) return true;
+        if (currentLevelIndex === undefined || currentSkin.levels[currentLevelIndex]?.uuid === currentPlayerLoadoutGun?.SkinLevelID) {
+            return true;
+        }
 
         setTextButton("Set level");
         return false;
-    }, [currentSkin, weaponData, skins, currentPlayerLoadoutSkin, currentPlayerLoadoutGun?.SkinLevelID, currentLevelIndex]);
+    }, [
+        currentSkin,
+        weaponData,
+        skins,
+        currentPlayerLoadoutSkin,
+        currentPlayerLoadoutGun?.SkinLevelID,
+        currentLevelIndex,
+        currentChromaIndex,
+        skinVariants
+    ]);
 
     const isFavorite = useMemo(() => {
         return Object.keys(favoriteSkins?.FavoritedContent ?? {}).some((key) => favoriteSkins?.FavoritedContent[key].ItemID === currentSkin.chromas[currentChromaIndex].uuid);
     }, [currentSkin, favoriteSkins, currentChromaIndex]);
 
     const isFavoriteDisabled = useMemo(() => {
-        return !skins?.Entitlements.some((entitlement) =>
-            currentSkin.levels.some((level) => level.uuid === entitlement.ItemID),
-        );
-    }, [skins, currentSkin]);
+        if (weaponData?.data.defaultSkinUuid === currentSkin.uuid) return false;
+        if (currentSkin.themeUuid === "0d7a5bfb-4850-098e-1821-d989bbfd58a8") return true;
+        if (currentChromaIndex === 0) return false;
+        if (!skinVariants?.Entitlements.some((entitlement) =>
+            currentSkin.chromas[currentChromaIndex].uuid === entitlement.ItemID)
+        ) {
+            return true;
+        }
+    }, [weaponData, currentSkin, currentChromaIndex, skinVariants]);
 
     const [currentImage, setCurrentImage] = useState(
         currentPlayerLoadoutSkin?.chromas.find(
@@ -175,7 +199,6 @@ const CollectionDetailsScreen = ({ route }: CollectionDetailScreenProps) => {
         setPlayerLoadout(newPlayerLoadout);
         setCurrentPlayerLoadoutSkin(currentSkin);
         try {
-
             const playerLoadoutGun = newPlayerLoadout.Guns.find((gun) => gun.ID === currentPlayerLoadoutGun?.ID);
             if (playerLoadoutGun) {
                 setCurrentPlayerLoadoutGun(playerLoadoutGun);
@@ -188,13 +211,17 @@ const CollectionDetailsScreen = ({ route }: CollectionDetailScreenProps) => {
     }, [currentPlayerLoadoutGun?.ID, currentSkin, currentLevelIndex, currentChromaIndex, isLoading]);
 
     const handleFavorite = useCallback(async () => {
+        if (isLoadingFavorite) return;
+        setLoadingFavorite(true);
         if (isFavorite) {
             const response = await valorantProvider.deletePlayerFavoriteSkin(currentSkin.chromas[currentChromaIndex].uuid);
             setFavoriteSkins(response);
+            setLoadingFavorite(false);
             return;
         }
         const response = await valorantProvider.addPlayerFavoriteSkin(currentSkin.chromas[currentChromaIndex].uuid);
         setFavoriteSkins(response);
+        setLoadingFavorite(false);
     }, [currentSkin, currentChromaIndex]);
 
     const renderListChroma = useMemo(() => (
@@ -265,8 +292,9 @@ const CollectionDetailsScreen = ({ route }: CollectionDetailScreenProps) => {
                     style={{ maxWidth: 64 }}
                     onPress={handleFavorite}
                     backgroundColor="#222429"
+                    loading={isLoadingFavorite}
                     disabled={isFavoriteDisabled}
-                    icon={isFavorite ? <SvgFavorite color="#FFE500" /> : <SvgFavoriteDisable />}
+                    icon={isLoadingFavorite ? null : isFavorite ? <SvgFavorite color="#FFE500" /> : <SvgFavoriteDisable />}
                 />
                 <Button
                     text={textButton}
