@@ -1,11 +1,13 @@
 import * as SecureStore from "expo-secure-store";
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 // types
+import { OwnedItem } from "@/types/api/owned-items";
 import { StorefrontResponse } from "@/types/api/shop";
+import { FavoriteSkin } from "@/types/api/favorite-skin";
 import { WalletResponse } from "@/types/api/user-balance";
 import { AccountXPResponse } from "@/types/api/account-xp";
 import { PlayerInfoResponse } from "@/types/api/auth/user-info";
-import { PlayerLoadoutResponse } from "@/types/api/player-loadout";
+import { PlayerLoadoutGun, PlayerLoadoutResponse } from "@/types/api/player-loadout";
 
 // ----------------------------------------------------------------------
 
@@ -236,6 +238,156 @@ const valorantProvider = {
 
         return { rank: "Unranked", rr: "0" };
     },
+
+    getOwnedItems: async (itemTypeId: string) => {
+        const [accessToken, entitlementsToken, sub, pp, riotVersion] = await Promise.all([
+            SecureStore.getItemAsync("access_token"),
+            SecureStore.getItemAsync("entitlements_token"),
+            SecureStore.getItemAsync("sub"),
+            SecureStore.getItemAsync("pp"),
+            SecureStore.getItemAsync("riot_version"),
+        ]);
+
+        const options = {
+            method: "GET",
+            url: `https://pd.${pp}.a.pvp.net/store/v1/entitlements/${sub}/${itemTypeId}`,
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+                "X-Riot-Entitlements-JWT": `${entitlementsToken}`,
+                "X-Riot-ClientPlatform": X_Riot_ClientPlatform,
+                "X-Riot-ClientVersion": riotVersion,
+            },
+        };
+
+        const response: AxiosResponse<OwnedItem> = await requestWithHeaders(options);
+
+        return response.data;
+    },
+
+    setPlayerLoadout: async (playerLoadout: PlayerLoadoutResponse, ID: string, skinID: string, skinLevelID: string, chromaID: string) => {
+        const [accessToken, entitlementsToken, sub, pp, riotVersion] = await Promise.all([
+            SecureStore.getItemAsync("access_token"),
+            SecureStore.getItemAsync("entitlements_token"),
+            SecureStore.getItemAsync("sub"),
+            SecureStore.getItemAsync("pp"),
+            SecureStore.getItemAsync("riot_version"),
+        ]);
+
+        // @ts-ignore
+        delete playerLoadout["Subject"];
+        // @ts-ignore
+        delete playerLoadout["Version"];
+
+        const options = {
+            method: "PUT",
+            url: `https://pd.${pp}.a.pvp.net/personalization/v2/players/${sub}/playerloadout`,
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+                "X-Riot-Entitlements-JWT": `${entitlementsToken}`,
+                "X-Riot-ClientPlatform": X_Riot_ClientPlatform,
+                "X-Riot-ClientVersion": riotVersion,
+            },
+            data: {
+                ...playerLoadout,
+                Guns: [
+                    ...playerLoadout.Guns.map((gun: PlayerLoadoutGun) => {
+                        if (gun.ID === ID) {
+                            return {
+                                ID: ID,
+                                SkinID: skinID,
+                                SkinLevelID: skinLevelID,
+                                ChromaID: chromaID,
+                                Attachments: [],
+                            };
+                        }
+                        return gun;
+                    }),
+                ],
+            },
+        };
+
+        const response: AxiosResponse<PlayerLoadoutResponse> = await requestWithHeaders(options);
+
+        return response.data;
+    },
+
+    getPlayerFavoriteSkin: async () => {
+        const [accessToken, entitlementsToken, sub, pp, riotVersion] = await Promise.all([
+            SecureStore.getItemAsync("access_token"),
+            SecureStore.getItemAsync("entitlements_token"),
+            SecureStore.getItemAsync("sub"),
+            SecureStore.getItemAsync("pp"),
+            SecureStore.getItemAsync("riot_version"),
+        ]);
+
+        const options = {
+            method: "GET",
+            url: `https://pd.${pp}.a.pvp.net/favorites/v1/players/${sub}/favorites`,
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+                "X-Riot-Entitlements-JWT": `${entitlementsToken}`,
+                "X-Riot-ClientPlatform": X_Riot_ClientPlatform,
+                "X-Riot-ClientVersion": riotVersion,
+            },
+        };
+
+        const response: AxiosResponse<FavoriteSkin> = await requestWithHeaders(options);
+
+        return response.data;
+    },
+
+    addPlayerFavoriteSkin: async (itemID: string) => {
+        const [accessToken, entitlementsToken, sub, pp, riotVersion] = await Promise.all([
+            SecureStore.getItemAsync("access_token"),
+            SecureStore.getItemAsync("entitlements_token"),
+            SecureStore.getItemAsync("sub"),
+            SecureStore.getItemAsync("pp"),
+            SecureStore.getItemAsync("riot_version"),
+        ]);
+
+        const options = {
+            method: "POST",
+            url: `https://pd.${pp}.a.pvp.net/favorites/v1/players/${sub}/favorites`,
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+                "X-Riot-Entitlements-JWT": `${entitlementsToken}`,
+                "X-Riot-ClientPlatform": X_Riot_ClientPlatform,
+                "X-Riot-ClientVersion": riotVersion,
+            },
+            data: {
+                ItemID: itemID,
+            },
+        };
+
+        const response: AxiosResponse = await requestWithHeaders(options);
+
+        return response.data;
+    },
+
+    deletePlayerFavoriteSkin: async (itemID: string) => {
+        const [accessToken, entitlementsToken, sub, pp, riotVersion] = await Promise.all([
+            SecureStore.getItemAsync("access_token"),
+            SecureStore.getItemAsync("entitlements_token"),
+            SecureStore.getItemAsync("sub"),
+            SecureStore.getItemAsync("pp"),
+            SecureStore.getItemAsync("riot_version"),
+        ]);
+
+        const options = {
+            method: "DELETE",
+            url: `https://pd.${pp}.a.pvp.net/favorites/v1/players/${sub}/favorites/${itemID.replace(/-/g, "")}`,
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+                "X-Riot-Entitlements-JWT": `${entitlementsToken}`,
+                "X-Riot-ClientPlatform": X_Riot_ClientPlatform,
+                "X-Riot-ClientVersion": riotVersion,
+            },
+        };
+
+        const response: AxiosResponse = await requestWithHeaders(options);
+
+        return response.data;
+    }
 };
 
 export default valorantProvider;

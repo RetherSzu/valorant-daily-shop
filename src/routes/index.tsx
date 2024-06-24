@@ -18,9 +18,10 @@ import BuddyDetails from "@/screens/offer-details/buddy-details";
 import SprayDetails from "@/screens/offer-details/spray-details";
 import PlayerCardDetails from "@/screens/offer-details/player-card-details";
 import UnsupportedMultifactor from "@/screens/auth/unsupported-multifactor";
+import CollectionDetailsScreen from "@/screens/profile/collection/collection-details-screen";
 // routes
-import StoreTab from "@/routes/store-tab";
 import Header from "@/routes/navigation/header";
+import MainBottomTab from "@/routes/main-bottom-tab";
 // types
 import { RootStackParamList } from "@/types/router/navigation";
 
@@ -73,7 +74,7 @@ const Router = (): ReactElement | null => {
                     </>
                 ) : (
                     <>
-                        <Stack.Screen name="Home" component={StoreTab} />
+                        <Stack.Screen name="Home" component={MainBottomTab} />
 
                         <Stack.Screen name="Logout" component={LogoutWebView} />
 
@@ -81,8 +82,8 @@ const Router = (): ReactElement | null => {
                             name="Plugin"
                             component={Plugin}
                             options={{
-                                animationTypeForReplace: "pop",
                                 animation: "ios",
+                                animationTypeForReplace: "pop",
                             }}
                         />
 
@@ -107,6 +108,12 @@ const Router = (): ReactElement | null => {
                         <Stack.Screen
                             name="SprayDetails"
                             component={SprayDetails}
+                            options={optionsDetailsScreen}
+                        />
+
+                        <Stack.Screen
+                            name="CollectionDetails"
+                            component={CollectionDetailsScreen}
                             options={optionsDetailsScreen}
                         />
                     </>

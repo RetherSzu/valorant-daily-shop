@@ -15,6 +15,7 @@ export type RootStackParamList = {
     PlayerCardDetails: { playercard: PlayerCard, offer: Offer };
     BuddyDetails: { buddy: Buddy, offer: Offer };
     SprayDetails: { spray: Spray, offer: Offer };
+    CollectionDetails: undefined;
 };
 
 export type StoreStackParamList = {
@@ -26,5 +27,6 @@ export type SkinDetailScreenProps = NativeStackScreenProps<RootStackParamList, "
 export type BuddyDetailScreenProps = NativeStackScreenProps<RootStackParamList, "BuddyDetails">;
 export type SprayDetailScreenProps = NativeStackScreenProps<RootStackParamList, "SprayDetails">;
 export type PlayerCardDetailScreenProps = NativeStackScreenProps<RootStackParamList, "PlayerCardDetails">;
+export type CollectionDetailScreenProps = NativeStackScreenProps<RootStackParamList, "CollectionDetails">;
 
 export type NavigationProp = NativeStackNavigationProp<RootStackParamList>;

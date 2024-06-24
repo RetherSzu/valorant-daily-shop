@@ -1,11 +1,12 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 // types
 import { Theme } from "@/types/api/shop/theme";
+import { Weapon } from "@/types/api/shop/weapon";
 import { BundleInfo } from "@/types/api/shop/bundle";
 import { WeaponSkin, WeaponSkins } from "@/types/api/shop/weapon-skin";
 import { Buddies, Buddy, PlayerCard, PlayerTitle, Spray } from "@/types/api/shop";
 
-type Response<T> = {
+export type Response<T> = {
     data: T;
     status: number;
 };
@@ -14,7 +15,7 @@ const BASE_URL = "https://valorant-api.com/v1/";
 
 const findItemByLevelId = <T>(items: T[], levelId: string): T | undefined => {
     return items.find(item =>
-        (item as any).levels.some((level: { uuid: string }) => level.uuid === levelId)
+        (item as any).levels.some((level: { uuid: string }) => level.uuid === levelId),
     );
 };
 
@@ -38,6 +39,9 @@ export const rtkValorantApi = createApi({
                 const foundSkin = findItemByLevelId(response.data, arg);
                 return foundSkin ? { status: 200, data: foundSkin } : { status: 404, data: undefined };
             },
+        }),
+        getWeaponById: builder.query<Response<Weapon>, string>({
+            query: (id) => `/weapons/${id}`,
         }),
         getThemeById: builder.query<Response<Theme>, string>({
             query: (id) => `/themes/${id}`,
@@ -67,6 +71,7 @@ export const {
     useGetTitleByIdQuery,
     useGetSprayByIdQuery,
     useGetBundleByIdQuery,
+    useGetWeaponByIdQuery,
     useGetPlayerCardIdQuery,
     useGetGunBuddyByIdQuery,
     useGetWeaponByLevelIdQuery,

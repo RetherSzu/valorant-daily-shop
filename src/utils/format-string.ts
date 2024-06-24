@@ -14,8 +14,8 @@ export const getWeaponName = (displayName: string, themeName?: string) => {
     const skinName = displayNameWords.filter(word => GUN_NAMES.includes(word)).join(" ");
     if (skinName === "") return themeName ? displayName.replace(themeName ?? "", "").trim() : "Knife";
     return skinName;
-}
+};
 
 export const removeCardType = (displayName: string, type: string) => {
     return displayName.toLowerCase().replace(type, "").trim();
-}
+};
