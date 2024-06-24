@@ -17,7 +17,6 @@ import SkinDetails from "@/screens/offer-details/skin-details";
 import BuddyDetails from "@/screens/offer-details/buddy-details";
 import SprayDetails from "@/screens/offer-details/spray-details";
 import PlayerCardDetails from "@/screens/offer-details/player-card-details";
-import UnsupportedMultifactor from "@/screens/auth/unsupported-multifactor";
 import CollectionDetailsScreen from "@/screens/profile/collection/collection-details-screen";
 // routes
 import Header from "@/routes/navigation/header";
@@ -70,7 +69,6 @@ const Router = (): ReactElement | null => {
                 {accessToken == null || entitlementsToken == null ? (
                     <>
                         <Stack.Screen name="Login" component={LoginWebView} />
-                        <Stack.Screen name="Multifactor" component={UnsupportedMultifactor} />
                     </>
                 ) : (
                     <>

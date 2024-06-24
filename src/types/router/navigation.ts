@@ -8,7 +8,6 @@ import { Buddy, Offer, PlayerCard, Spray } from "@/types/api/shop";
 export type RootStackParamList = {
     Login: undefined;
     Logout: undefined;
-    Multifactor: undefined;
     Home: undefined;
     Plugin: { plugin: StoreOffer };
     SkinDetails: { skin: WeaponSkin, skinType: string, theme: Theme };
