@@ -1,73 +1,90 @@
 import React from "react";
-import { ActivityIndicator, StyleProp, TextStyle, TouchableHighlight, ViewStyle } from "react-native";
+import { ActivityIndicator, StyleProp, StyleSheet, TextStyle, View, ViewStyle } from "react-native";
 // components
 import Text from "@/components/typography/text";
 // contexts
 import useThemeContext from "@/contexts/hook/use-theme-context";
+import { TouchableRipple } from "react-native-paper";
 
 type ButtonProps = {
-    text: string,
-    onPress?: any,
-    onLongPress?: any,
-    style?: StyleProp<ViewStyle>,
-    icon?: any,
-    backgroundColor?: string,
-    underlayColor?: string,
-    textStyle?: StyleProp<TextStyle>,
-    loading?: boolean
+    text?: string;
+    icon?: React.ReactNode;
+    style?: StyleProp<ViewStyle>;
+    loading?: boolean;
+    onPress?: VoidFunction;
+    disabled?: boolean;
+    textStyle?: StyleProp<TextStyle>;
+    rippleColor?: string;
+    onLongPress?: VoidFunction;
+    underlayColor?: string;
+    backgroundColor?: string;
 }
 
-const Button = (
-    {
-        text,
-        onPress,
-        onLongPress,
-        style,
-        icon,
-        backgroundColor,
-        textStyle,
-        underlayColor = "#FF465680",
-        loading = false
-    }: ButtonProps) => {
-
+const Button: React.FC<ButtonProps> = ({
+    text,
+    icon,
+    style,
+    loading = false,
+    onPress,
+    disabled = false,
+    textStyle,
+    rippleColor = "rgba(0, 0, 0, .32)",
+    onLongPress,
+    underlayColor = "#FF465680",
+    backgroundColor,
+}) => {
     const { colors } = useThemeContext();
 
     return (
-        <TouchableHighlight
-            style={[{
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "center",
-                height: 56,
-                borderRadius: 16,
-                backgroundColor: backgroundColor,
-                padding: 16,
-                gap: 16
-            }, style]}
-            underlayColor={underlayColor}
+        <TouchableRipple
+            style={[
+                styles.button,
+                { backgroundColor, opacity: disabled ? 0.5 : 1 },
+                style,
+            ]}
+            borderless
             onPress={onPress}
+            disabled={disabled}
+            rippleColor={rippleColor}
             onLongPress={onLongPress}
-            activeOpacity={0.5}
+            underlayColor={underlayColor}
         >
-            <>
-                {icon ? icon : null}
-                {
-                    loading ? <ActivityIndicator color={colors.text} /> :
-                        <Text
-                            style={[{
-                                fontSize: 16,
-                                fontWeight: "600",
-                                textAlign: "center",
-                                flex: 1
-                            }, textStyle]}
-                            allowFontScaling
-                        >
-                            {text}
-                        </Text>
-                }
-            </>
-        </TouchableHighlight>
+            <View style={styles.content}>
+                {icon}
+                {loading ? (
+                    <ActivityIndicator color={colors.text} />
+                ) : text !== undefined && (
+                    <Text style={[styles.text, textStyle]} allowFontScaling>
+                        {text}
+                    </Text>
+                )}
+            </View>
+        </TouchableRipple>
     );
 };
+
+const styles = StyleSheet.create({
+    button: {
+        flex: 1,
+        padding: 16,
+        maxHeight: 56,
+        borderRadius: 16,
+        alignItems: "center",
+        flexDirection: "row",
+        justifyContent: "center",
+    },
+    content: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "center",
+    },
+    text: {
+        flex: 1,
+        fontSize: 16,
+        marginLeft: 8,
+        fontWeight: "600",
+        textAlign: "center",
+    },
+});
 
 export default Button;
