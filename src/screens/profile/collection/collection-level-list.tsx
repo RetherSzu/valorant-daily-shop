@@ -19,7 +19,7 @@ type Props = {
     currentSkin: WeaponSkin;
     currentLevelIndex?: number;
     playerLoadoutGun: PlayerLoadoutGun;
-    handleLevelPress: (index: number, streamedVideo: string) => void;
+    handleLevelPress: (index: number) => void;
 };
 
 const CollectionLevelList: React.FC<Props> = ({ skin, currentSkin, currentLevelIndex, playerLoadoutGun, handleLevelPress }) => {
@@ -42,7 +42,7 @@ const CollectionLevelList: React.FC<Props> = ({ skin, currentSkin, currentLevelI
                 borderless
                 key={item.uuid}
                 rippleColor={colors.primary}
-                onPress={() => handleLevelPress(index, item.streamedVideo)}
+                onPress={() => handleLevelPress(index)}
                 style={[
                     styles.levelItem,
                     { backgroundColor: isCurrentLevel ? `${colors.primary}8C` : "#222429" },

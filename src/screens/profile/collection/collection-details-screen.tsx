@@ -53,8 +53,6 @@ const CollectionDetailsScreen = ({ route }: CollectionDetailScreenProps) => {
 
     const [currentLevelIndex, setCurrentLevelIndex] = useState<number | undefined>();
 
-    const [currentVideo, setCurrentVideo] = useState<string | null>(null);
-
     const [currentChromaIndex, setCurrentChromaIndex] = useState<number>(
         currentPlayerLoadoutSkin?.chromas.findIndex(
             (chroma) => chroma.uuid === currentPlayerLoadoutGun?.ChromaID,
@@ -67,7 +65,6 @@ const CollectionDetailsScreen = ({ route }: CollectionDetailScreenProps) => {
         setCurrentImage(skinSelected.chromas[0].fullRender);
         setCurrentSkin(skinSelected);
         setCurrentChromaIndex(0);
-        setCurrentVideo(null);
         setCurrentLevelIndex(undefined);
     };
 
@@ -174,14 +171,12 @@ const CollectionDetailsScreen = ({ route }: CollectionDetailScreenProps) => {
     useEffect(() => {
     }, [currentPlayerLoadoutGun, favoriteSkins]);
 
-    const handleChromaPress = useCallback((index: number, fullRender: string, streamedVideo: string | null) => {
+    const handleChromaPress = useCallback((index: number, fullRender: string) => {
         setCurrentChromaIndex(index);
         setCurrentImage(fullRender);
-        setCurrentVideo(streamedVideo);
     }, []);
 
-    const handleLevelPress = useCallback((index: number, streamedVideo: string | null) => {
-        setCurrentVideo(streamedVideo);
+    const handleLevelPress = useCallback((index: number) => {
         setCurrentLevelIndex(index);
     }, []);
 

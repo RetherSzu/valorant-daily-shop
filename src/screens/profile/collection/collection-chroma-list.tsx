@@ -13,7 +13,7 @@ import { WeaponChroma, WeaponSkin } from "@/types/api/shop/weapon-skin";
 type Props = {
     currentSkin: WeaponSkin;
     currentChromaIndex: number;
-    handleChromaPress: (index: number, fullRender: string, streamedVideo: string) => void;
+    handleChromaPress: (index: number, fullRender: string) => void;
 };
 
 const CollectionChromaList: React.FC<Props> = ({ currentChromaIndex, currentSkin, handleChromaPress }) => {
@@ -31,7 +31,7 @@ const CollectionChromaList: React.FC<Props> = ({ currentChromaIndex, currentSkin
             <TouchableRipple
                 key={index}
                 borderless
-                onPress={() => handleChromaPress(index, chroma.fullRender, chroma.streamedVideo)}
+                onPress={() => handleChromaPress(index, chroma.fullRender)}
                 style={[
                     styles.chromaItem,
                     {
