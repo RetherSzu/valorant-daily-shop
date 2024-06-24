@@ -39,15 +39,15 @@ const SkinDetails = ({ route }: SkinDetailScreenProps) => {
         <View style={styles.chromaContainer}>
             {skin.chromas.map((chroma, index) => (
                 <TouchableRipple
-                    key={index}
                     borderless
-                    onPress={() => handleChromaPress(index, chroma.fullRender, chroma.streamedVideo)}
+                    key={index}
                     style={[
                         styles.chromaItem,
                         {
                             borderColor: currentChromaIndex === index ? colors.primary : "#222429",
                         },
                     ]}
+                    onPress={() => handleChromaPress(index, chroma.fullRender, chroma.streamedVideo)}
                 >
                     <Image source={{ uri: chroma.swatch }} style={styles.chromaImage} />
                 </TouchableRipple>
@@ -100,18 +100,18 @@ const SkinDetails = ({ route }: SkinDetailScreenProps) => {
             </View>
             <View style={styles.content}>
                 <View style={styles.imageWrapper}>
-                    <ImageBackground source={{ uri: skin.wallpaper }} style={styles.imageBackground}>
+                    <ImageBackground source={{ uri: skin.wallpaper }} borderRadius={16}>
                         {currentVideo ? (
                             <Player
+                                shouldPlay
+                                useNativeControls={false}
+                                style={styles.videoPlayer}
+                                source={{ uri: currentVideo }}
+                                resizeMode={ResizeMode.COVER}
                                 onClose={() => {
                                     setCurrentVideo(null);
                                     setCurrentIndex(undefined);
                                 }}
-                                shouldPlay
-                                useNativeControls={false}
-                                source={{ uri: currentVideo }}
-                                resizeMode={ResizeMode.COVER}
-                                style={styles.videoPlayer}
                             />
                         ) : (
                             <Image source={{ uri: currentImage }} style={styles.currentImage} resizeMode="contain" />
@@ -127,16 +127,16 @@ const SkinDetails = ({ route }: SkinDetailScreenProps) => {
 
 const styles = StyleSheet.create({
     container: {
+        gap: 16,
         flex: 1,
         paddingHorizontal: 16,
         flexDirection: "column",
-        gap: 16,
     },
     header: {
+        gap: 16,
         display: "flex",
         flexDirection: "row",
         justifyContent: "space-between",
-        gap: 16,
     },
     titleContainer: {
         flex: 1,
@@ -146,8 +146,8 @@ const styles = StyleSheet.create({
     },
     subtitle: {
         opacity: 0.5,
-        textTransform: "uppercase",
         fontFamily: "Nota",
+        textTransform: "uppercase",
     },
     icon: {
         width: 32,
@@ -166,9 +166,6 @@ const styles = StyleSheet.create({
         borderRadius: 16,
         overflow: "hidden",
     },
-    imageBackground: {
-        borderRadius: 16,
-    },
     videoPlayer: {
         minHeight: 200,
         maxWidth: WIDTH,
@@ -181,8 +178,8 @@ const styles = StyleSheet.create({
     chromaContainer: {
         gap: 16,
         display: "flex",
-        flexDirection: "row",
         marginBottom: 16,
+        flexDirection: "row",
     },
     chromaItem: {
         width: 64,

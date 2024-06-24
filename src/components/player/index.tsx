@@ -1,84 +1,61 @@
 import { Video } from "expo-av";
-import { useEffect, useRef, useState } from "react";
-import { ActivityIndicator, LayoutChangeEvent, View } from "react-native";
 import { VideoProps } from "expo-av/src/Video.types";
 import { IconButton, TouchableRipple } from "react-native-paper";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { ActivityIndicator, LayoutChangeEvent, StyleSheet, View } from "react-native";
 // contexts
 import useThemeContext from "@/contexts/hook/use-theme-context";
 
 type PlayerProps = VideoProps & {
     onClose: () => void;
-}
+};
 
-const Player = ({ source, onClose, ...props }: PlayerProps) => {
-
+const Player: React.FC<PlayerProps> = ({ source, onClose, ...props }) => {
     const { colors } = useThemeContext();
-
     const videoRef = useRef<Video>(null);
 
-    const [isLoading, setLoading] = useState(false);
-
+    const [isLoading, setLoading] = useState(true);
     const [isPlaying, setIsPlaying] = useState(true);
-
     const [videoEnd, setVideoEnd] = useState(false);
-
     const [showControls, setShowControls] = useState(false);
+    const [videoLayout, setVideoLayout] = useState({ width: 0, height: 0 });
 
     useEffect(() => {
+        setLoading(true);
         setIsPlaying(true);
         setVideoEnd(false);
         setShowControls(false);
     }, [source]);
 
-    const togglePlayPause = async () => {
+    const togglePlayPause = useCallback(async () => {
         if (isPlaying) {
             await videoRef.current?.pauseAsync();
         } else {
             await videoRef.current?.playAsync();
         }
-        setIsPlaying(!isPlaying);
-    };
+        setIsPlaying((prev) => !prev);
+    }, [isPlaying]);
 
-    const replayVideo = async () => {
+    const replayVideo = useCallback(async () => {
         await videoRef.current?.replayAsync();
         setIsPlaying(true);
         setVideoEnd(false);
         setShowControls(false);
-    };
+    }, []);
 
-    const handleClose = onClose;
+    const toggleShowControls = useCallback(() => setShowControls((prev) => !prev), []);
 
-    const toggleShowControls = () => setShowControls(!showControls);
-
-    const [videoLayout, setVideoLayout] = useState({ width: 0, height: 0 });
-
-    const onVideoLayout = (event: LayoutChangeEvent) => {
+    const onVideoLayout = useCallback((event: LayoutChangeEvent) => {
         const { width, height } = event.nativeEvent.layout;
         setVideoLayout({ width, height });
-    };
+    }, []);
 
     return (
-        <View
-            style={{
-                position: "relative",
-                height: videoLayout.height,
-            }}
-        >
-            <TouchableRipple onPress={toggleShowControls} borderless style={{ borderRadius: 16 }}>
+        <View style={{ ...styles.container, height: videoLayout.height }}>
+            <TouchableRipple onPress={toggleShowControls} borderless style={styles.ripple}>
                 <>
                     {isLoading && (
-                        <View
-                            style={{
-                                top: 0,
-                                left: 0,
-                                right: 0,
-                                bottom: 0,
-                                position: "absolute",
-                                alignItems: "center",
-                                justifyContent: "center",
-                                backgroundColor: "rgba(0, 0, 0, 0.5)",
-                            }}
-                        >
+                        <View style={styles.loadingOverlay}>
                             <ActivityIndicator size="large" color={colors.primary} />
                         </View>
                     )}
@@ -86,42 +63,29 @@ const Player = ({ source, onClose, ...props }: PlayerProps) => {
                         ref={videoRef}
                         source={source}
                         shouldPlay={isPlaying}
+                        onLayout={onVideoLayout}
                         onLoadStart={() => setLoading(true)}
                         onReadyForDisplay={() => setLoading(false)}
-                        onPlaybackStatusUpdate={(playbackStatus) => {
-                            // @ts-ignore
-                            if (playbackStatus.didJustFinish) {
+                        onPlaybackStatusUpdate={(status) => {
+                            if (!status.isLoaded) {
+                                setLoading(true);
+                            } else if (status.didJustFinish) {
                                 setVideoEnd(true);
                                 setIsPlaying(false);
                             }
                         }}
                         {...props}
-                        onLayout={onVideoLayout}
                     />
                     {(showControls || videoEnd) && (
-                        <View
-                            style={{
-                                top: 0,
-                                left: 0,
-                                right: 0,
-                                bottom: 0,
-                                maxHeight: 300,
-                                position: "absolute",
-                                alignItems: "center",
-                                justifyContent: "center",
-                                backgroundColor: "rgba(0, 0, 0, 0.5)",
-                                height: videoLayout.height,
-                            }}
-                        >
+                        <View style={{ ...styles.controlsOverlay, height: videoLayout.height }}>
                             <IconButton
                                 size={48}
-                                mode="contained"
-                                iconColor={colors.text}
-                                onPress={replayVideo}
                                 icon="replay"
+                                mode="contained"
+                                onPress={replayVideo}
+                                iconColor={colors.text}
                                 style={{ backgroundColor: colors.primary }}
                             />
-
                             {!videoEnd && (
                                 <IconButton
                                     size={48}
@@ -136,10 +100,10 @@ const Player = ({ source, onClose, ...props }: PlayerProps) => {
                     )}
                 </>
             </TouchableRipple>
-            <View style={{ position: "absolute", top: 0, right: 0, zIndex: 999 }}>
+            <View style={styles.closeButton}>
                 <IconButton
                     icon="close"
-                    onPress={handleClose}
+                    onPress={onClose}
                     iconColor="#000"
                     style={{ backgroundColor: colors.text }}
                 />
@@ -148,5 +112,42 @@ const Player = ({ source, onClose, ...props }: PlayerProps) => {
     );
 };
 
-export default Player;
+const styles = StyleSheet.create({
+    container: {
+        position: "relative",
+    },
+    ripple: {
+        borderRadius: 16,
+    },
+    loadingOverlay: {
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        zIndex: 1,
+        position: "absolute",
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: "rgba(0, 0, 0, 0.5)",
+    },
+    controlsOverlay: {
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        zIndex: 2,
+        position: "absolute",
+        alignItems: "center",
+        flexDirection: "row",
+        justifyContent: "center",
+        backgroundColor: "rgba(0, 0, 0, 0.5)",
+    },
+    closeButton: {
+        top: 0,
+        right: 0,
+        zIndex: 999,
+        position: "absolute",
+    },
+});
 
+export default Player;
