@@ -2,9 +2,8 @@ import React, { useMemo } from "react";
 import { StyleSheet, View } from "react-native";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 // components
-import Text from "@/components/typography/text";
+import TabHeader from "@/components/header/tab-header";
 // contexts
-import useUserContext from "@/contexts/hook/use-user-context";
 import useThemeContext from "@/contexts/hook/use-theme-context";
 // screens
 import AgentsView from "@/screens/profile/agents/agents-view";
@@ -13,8 +12,6 @@ import CollectionView from "@/screens/profile/collection/collection-view";
 const Tab = createMaterialTopTabNavigator();
 
 const ProfileScreen = () => {
-
-    const { gameName, tagLine } = useUserContext();
 
     const { colors } = useThemeContext();
 
@@ -43,14 +40,7 @@ const ProfileScreen = () => {
 
     return (
         <View style={styles.container}>
-            <View style={styles.header}>
-                <Text variant="displayMedium" style={styles.displayText}>PROFILE</Text>
-                {gameName && tagLine && (
-                    <Text variant="titleSmall" style={styles.userInfo}>
-                        {gameName} #{tagLine}
-                    </Text>
-                )}
-            </View>
+            <TabHeader title="profile" />
             <Tab.Navigator {...tabNavigatorOptions}>
                 <Tab.Screen name="Collection" component={CollectionView} />
                 <Tab.Screen name="Agents" component={AgentsView} />
@@ -63,18 +53,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: "#1B1D21",
-    },
-    header: {
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "space-between",
-        paddingHorizontal: 16,
-    },
-    displayText: {
-        fontFamily: "Vandchrome",
-    },
-    userInfo: {
-        opacity: 0.5,
     },
     tabBarItem: {
         width: "auto",

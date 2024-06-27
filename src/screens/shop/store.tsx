@@ -2,9 +2,8 @@ import React, { useMemo } from "react";
 import { StyleSheet, View } from "react-native";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 // components
-import Text from "@/components/typography/text";
+import TabHeader from "@/components/header/tab-header";
 // contexts
-import useUserContext from "@/contexts/hook/use-user-context";
 import useThemeContext from "@/contexts/hook/use-theme-context";
 import usePluginContext from "@/contexts/hook/use-plugin-context";
 import useNightMarketContext from "@/contexts/hook/use-night-market-context";
@@ -24,8 +23,6 @@ const Store = () => {
     const { plugins } = usePluginContext();
 
     const { nightMarket } = useNightMarketContext();
-
-    const { gameName, tagLine } = useUserContext();
 
     const tabNavigatorOptions = useMemo(() => ({
         initialRouteName: "Daily shop",
@@ -51,14 +48,7 @@ const Store = () => {
 
     return (
         <View style={styles.container}>
-            <View style={styles.header}>
-                <Text variant="displayMedium" style={styles.storeText}>STORE</Text>
-                {gameName && tagLine && (
-                    <Text variant="titleSmall" style={styles.userInfo}>
-                        {gameName} #{tagLine}
-                    </Text>
-                )}
-            </View>
+            <TabHeader title="store" />
             <Tab.Navigator {...tabNavigatorOptions}>
                 <Tab.Screen name="Bundles" component={BundleView} />
                 <Tab.Screen name="Daily shop" component={DailyShop} />
@@ -73,18 +63,6 @@ const Store = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-    },
-    header: {
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "space-between",
-        paddingHorizontal: 16,
-    },
-    storeText: {
-        fontFamily: "Vandchrome",
-    },
-    userInfo: {
-        opacity: 0.5,
     },
     tabBarItem: {
         width: "auto",
