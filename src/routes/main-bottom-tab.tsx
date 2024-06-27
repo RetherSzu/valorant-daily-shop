@@ -23,19 +23,12 @@ const MainBottomTab = () => {
         <>
             <Header />
             <BottomNavigation.Navigator
-                labeled={false}
                 sceneAnimationEnabled
                 initialRouteName="shop"
                 inactiveColor="#7A7B7E"
-                activeIndicatorStyle={{
-                    width: 48,
-                    height: 48,
-                    padding: 8,
-                    borderRadius: 50,
-                    backgroundColor: colors.card,
-                }}
-                sceneAnimationType="shifting"
                 activeColor={colors.primary}
+                sceneAnimationType="shifting"
+                activeIndicatorStyle={{ backgroundColor: colors.card }}
                 barStyle={{ justifyContent: "center", backgroundColor: "#1B1D21" }}
             >
                 <BottomNavigation.Screen
@@ -46,7 +39,7 @@ const MainBottomTab = () => {
                     }}
                 />
                 <BottomNavigation.Screen
-                    name="user"
+                    name="profile"
                     component={ProfileScreen}
                     options={{
                         tabBarIcon: ({ color }) => <SvgUser color={color} />,
