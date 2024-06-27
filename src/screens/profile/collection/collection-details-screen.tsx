@@ -208,8 +208,12 @@ const CollectionDetailsScreen = ({ route }: CollectionDetailScreenProps) => {
     }, [currentLevelIndex, currentSkin]);
 
     const handleLevelPress = useCallback((index: number) => {
+        if (index !== currentSkin.levels.length - 1) {
+            setCurrentChromaIndex(0);
+            setCurrentImage(skinSelected.chromas[0].fullRender);
+        }
         setCurrentLevelIndex(index);
-    }, []);
+    }, [currentSkin]);
 
     const handleEquip = useCallback(async () => {
         if (isLoading || !defaultPlayerLoadout) return;
