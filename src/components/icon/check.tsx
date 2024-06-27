@@ -1,7 +1,7 @@
 import * as React from "react";
 import Svg, { Path, SvgProps } from "react-native-svg";
 
-const SvgCheck = ({ color = "#484C56", width = 24, height = 24 }: SvgProps) => {
+const SvgCheck = ({ color = "#484C56", width = 24, height = 24, opacity= 0.5 }: SvgProps) => {
     return (
         <Svg
             width={width}
@@ -10,7 +10,7 @@ const SvgCheck = ({ color = "#484C56", width = 24, height = 24 }: SvgProps) => {
         >
             <Path
                 fill={color}
-                opacity={0.5}
+                opacity={opacity}
                 d="M12 22c-4.714 0-7.071 0-8.536-1.465C2 19.072 2 16.714 2 12s0-7.071 1.464-8.536C4.93 2 7.286 2 12 2c4.714 0 7.071 0 8.535 1.464C22 4.93 22 7.286 22 12c0 4.714 0 7.071-1.465 8.535C19.072 22 16.714 22 12 22"
             />
             <Path

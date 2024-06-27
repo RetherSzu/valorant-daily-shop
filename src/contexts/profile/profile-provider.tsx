@@ -7,6 +7,7 @@ import { EProfileContextType, IProfileAction, IProfileContext } from "@/types/co
 import { PlayerLoadoutGun, PlayerLoadoutGuns, PlayerLoadoutResponse } from "@/types/api/player-loadout";
 //
 import { initialProfileState, ProfileContext } from "./profile-context";
+import { Agents } from "@/types/api/agent";
 
 // --------------------------------------------------------------------
 
@@ -97,6 +98,18 @@ const reducer = (state: IProfileContext, action: IProfileAction<EProfileContextT
             return {
                 ...state,
                 defaultPlayerLoadout: ac.payload.defaultPlayerLoadout,
+            };
+        case EProfileContextType.SET_OWNED_AGENTS:
+            ac = action as IProfileAction<EProfileContextType.SET_OWNED_AGENTS>;
+            return {
+                ...state,
+                ownedAgents: ac.payload.ownedAgents,
+            };
+        case EProfileContextType.SET_AGENTS:
+            ac = action as IProfileAction<EProfileContextType.SET_AGENTS>;
+            return {
+                ...state,
+                agents: ac.payload.agents,
             };
         default:
             return state;
@@ -204,12 +217,32 @@ const ProfileProvider = ({ children }: BundleProviderProps) => {
                 favoriteSkins: favoriteSkins,
             },
         });
-    }
+    };
+
+    const setOwnedAgents = (ownedAgents: OwnedItem) => {
+        dispatch({
+            type: EProfileContextType.SET_OWNED_AGENTS,
+            payload: {
+                ownedAgents: ownedAgents,
+            },
+        });
+    };
+
+    const setAgents = (agents: Agents) => {
+        dispatch({
+            type: EProfileContextType.SET_AGENTS,
+            payload: {
+                agents: agents,
+            },
+        });
+    };
 
     const memoizedValue = useMemo(
         () => ({
             ...state,
             setSkins,
+            setAgents,
+            setOwnedAgents,
             setSkinVariants,
             setPlayerLoadout,
             setFavoriteSkins,
@@ -218,6 +251,8 @@ const ProfileProvider = ({ children }: BundleProviderProps) => {
         }),
         [
             state.skins,
+            state.agents,
+            state.ownedAgents,
             state.skinVariants,
             state.playerLoadout,
             state.favoriteSkins,

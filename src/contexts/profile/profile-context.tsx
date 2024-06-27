@@ -6,6 +6,8 @@ import { IProfileContext } from "@/types/context/profile";
 
 export const initialProfileState: IProfileContext = {
     setSkins: () => {},
+    setAgents: () => {},
+    setOwnedAgents: () => {},
     setSkinVariants: () => {},
     setPlayerLoadout: () => {},
     setFavoriteSkins: () => {},

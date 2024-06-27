@@ -3,6 +3,7 @@ import { OwnedItem } from "@/types/api/owned-items";
 import { FavoriteSkin } from "@/types/api/favorite-skin";
 import { WeaponSkin } from "@/types/api/shop/weapon-skin";
 import { PlayerLoadout, PlayerLoadoutGun, PlayerLoadoutResponse } from "@/types/api/player-loadout";
+import { Agents } from "@/types/api/agent";
 
 export type IProfileContext = {
     skins?: OwnedItem;
@@ -18,6 +19,10 @@ export type IProfileContext = {
     setCurrentPlayerLoadoutSkin: (currentSkin: WeaponSkin) => void;
     currentPlayerLoadoutGun?: PlayerLoadoutGun;
     setCurrentPlayerLoadoutGun: (currentGun: PlayerLoadoutGun) => void;
+    agents?: Agents;
+    setAgents: (agents: Agents) => void;
+    ownedAgents?: OwnedItem;
+    setOwnedAgents: (ownedAgents: OwnedItem) => void;
 }
 
 export enum EProfileContextType {
@@ -27,7 +32,9 @@ export enum EProfileContextType {
     SET_FAVORITE_SKINS = "SET_FAVORITE_SKINS",
     SET_CURRENT_SKIN = "SET_CURRENT_SKIN",
     SET_PLAYER_LOADOUT_GUN = "SET_PLAYER_LOADOUT_GUN",
-    SET_DEFAULT_PLAYER_LOADOUT = "SET_DEFAULT_PLAYER_LOADOUT"
+    SET_DEFAULT_PLAYER_LOADOUT = "SET_DEFAULT_PLAYER_LOADOUT",
+    SET_AGENTS = "SET_AGENTS",
+    SET_OWNED_AGENTS = "SET_OWNED_AGENTS"
 }
 
 export type IPayloadProfile = {
@@ -51,6 +58,12 @@ export type IPayloadProfile = {
     }
     [EProfileContextType.SET_DEFAULT_PLAYER_LOADOUT]: {
         defaultPlayerLoadout: PlayerLoadoutResponse
+    }
+    [EProfileContextType.SET_AGENTS]: {
+        agents: Agents
+    }
+    [EProfileContextType.SET_OWNED_AGENTS]: {
+        ownedAgents: OwnedItem
     }
 };
 

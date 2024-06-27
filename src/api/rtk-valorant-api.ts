@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 // types
+import { Agents } from "@/types/api/agent";
 import { Theme } from "@/types/api/shop/theme";
 import { Weapon } from "@/types/api/shop/weapon";
 import { BundleInfo } from "@/types/api/shop/bundle";
@@ -63,10 +64,14 @@ export const rtkValorantApi = createApi({
                 return foundBuddy ? { status: 200, data: foundBuddy } : { status: 404, data: undefined };
             },
         }),
+        getAgents: builder.query<Response<Agents>, undefined>({
+            query: () => "/agents?isPlayableCharacter=true",
+        }),
     }),
 });
 
 export const {
+    useGetAgentsQuery,
     useGetThemeByIdQuery,
     useGetTitleByIdQuery,
     useGetSprayByIdQuery,

@@ -7,6 +7,7 @@ import Text from "@/components/typography/text";
 import useUserContext from "@/contexts/hook/use-user-context";
 import useThemeContext from "@/contexts/hook/use-theme-context";
 // screens
+import AgentsView from "@/screens/profile/agents/agents-view";
 import CollectionView from "@/screens/profile/collection/collection-view";
 
 const Tab = createMaterialTopTabNavigator();
@@ -20,6 +21,7 @@ const ProfileScreen = () => {
     const tabNavigatorOptions = useMemo(() => ({
         initialRouteName: "Collections",
         screenOptions: {
+            swipeEnabled: false,
             tabBarGap: 8,
             tabBarItemStyle: styles.tabBarItem,
             tabBarStyle: styles.tabBar,
@@ -51,6 +53,7 @@ const ProfileScreen = () => {
             </View>
             <Tab.Navigator {...tabNavigatorOptions}>
                 <Tab.Screen name="Collection" component={CollectionView} />
+                <Tab.Screen name="Agents" component={AgentsView} />
             </Tab.Navigator>
         </View>
     );
