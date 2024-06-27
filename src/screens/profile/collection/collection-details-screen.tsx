@@ -51,7 +51,11 @@ const CollectionDetailsScreen = ({ route }: CollectionDetailScreenProps) => {
 
     const [isLoadingFavorite, setLoadingFavorite] = useState<boolean>(false);
 
-    const [currentLevelIndex, setCurrentLevelIndex] = useState<number | undefined>();
+    const [currentLevelIndex, setCurrentLevelIndex] = useState<number | undefined>(
+        currentPlayerLoadoutSkin?.levels.findIndex(
+            (level) => level.uuid === currentPlayerLoadoutGun?.SkinLevelID,
+        ) ?? 0,
+    );
 
     const [currentChromaIndex, setCurrentChromaIndex] = useState<number>(
         currentPlayerLoadoutSkin?.chromas.findIndex(
@@ -62,10 +66,22 @@ const CollectionDetailsScreen = ({ route }: CollectionDetailScreenProps) => {
     const [textButton, setTextButton] = useState<string>("Equip skin");
 
     const onCardPress = (skinSelected: WeaponSkin) => {
-        setCurrentImage(skinSelected.chromas[0].fullRender);
         setCurrentSkin(skinSelected);
-        setCurrentChromaIndex(0);
-        setCurrentLevelIndex(undefined);
+        if (skinSelected.uuid === currentPlayerLoadoutSkin?.uuid) {
+            const chromaIndex = skinSelected.chromas.findIndex(
+                (chroma) => chroma.uuid === currentPlayerLoadoutGun?.ChromaID
+            );
+            const levelIndex = skinSelected.levels.findIndex(
+                (level) => level.uuid === currentPlayerLoadoutGun?.SkinLevelID
+            );
+            setCurrentChromaIndex(chromaIndex >= 0 ? chromaIndex : 0);
+            setCurrentLevelIndex(levelIndex >= 0 ? levelIndex : undefined);
+            setCurrentImage(skinSelected.chromas[chromaIndex >= 0 ? chromaIndex : 0].fullRender);
+        } else {
+            setCurrentChromaIndex(0);
+            setCurrentLevelIndex(undefined);
+            setCurrentImage(skinSelected.chromas[0].fullRender);
+        }
     };
 
     const {
@@ -87,7 +103,7 @@ const CollectionDetailsScreen = ({ route }: CollectionDetailScreenProps) => {
             return true;
         }
 
-        if (currentSkin.uuid !== currentPlayerLoadoutSkin?.uuid) {
+        if (currentSkin.chromas[currentChromaIndex]?.uuid !== currentPlayerLoadoutGun?.ChromaID) {
             setTextButton("Equip skin");
             return false;
         }
@@ -176,14 +192,24 @@ const CollectionDetailsScreen = ({ route }: CollectionDetailScreenProps) => {
     useEffect(() => {
     }, [currentPlayerLoadoutGun, favoriteSkins]);
 
+    useEffect(() => {
+        if (currentLevelIndex !== currentSkin.levels.length - 1 && currentChromaIndex !== 0) {
+            setCurrentChromaIndex(0);
+            setCurrentImage(skinSelected.chromas[0].fullRender);
+        }
+    }, [currentLevelIndex, currentSkin, currentChromaIndex]);
+
     const handleChromaPress = useCallback((index: number, fullRender: string) => {
+        if (currentLevelIndex !== currentSkin.levels.length - 1) {
+            setCurrentLevelIndex(currentSkin.levels.length - 1);
+        }
         setCurrentChromaIndex(index);
         setCurrentImage(fullRender);
-    }, []);
+    }, [currentLevelIndex, currentSkin]);
 
     const handleLevelPress = useCallback((index: number) => {
         setCurrentLevelIndex(index);
-    }, []);
+    }, [currentSkin]);
 
     const handleEquip = useCallback(async () => {
         if (isLoading || !defaultPlayerLoadout) return;
