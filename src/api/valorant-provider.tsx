@@ -125,8 +125,9 @@ const valorantProvider = {
         ]);
 
         const options = {
-            method: "GET",
-            url: `https://pd.${pp}.a.pvp.net/store/v2/storefront/${sub}`,
+            method: "POST",
+            url: `https://pd.${pp}.a.pvp.net/store/v3/storefront/${sub}`,
+            data: "{}",
             headers: {
                 Authorization: `Bearer ${accessToken}`,
                 "X-Riot-Entitlements-JWT": `${entitlementsToken}`,
