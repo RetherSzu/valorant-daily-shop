@@ -19,6 +19,7 @@ ensuring players never miss out on exclusive deals.
 - [x] **Bundles Preview**: Preview upcoming and current bundles to plan your purchases.
 - [x] **Night Market Access**: Explore night market deals and discounts anytime, anywhere.
 - [x] **Esports Shop**: Check out exclusive esports merchandise and support your favorite teams.
+- [x] **Multi-account Support**: Add multiple Valorant accounts to track daily shop items for all your profiles.
 
 ## License
 
