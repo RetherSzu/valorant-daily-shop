@@ -12,6 +12,7 @@ import LoginWebView from "@/components/web-view/web-view-login";
 import useAuthContext from "@/contexts/hook/use-auth-context";
 import useThemeContext from "@/contexts/hook/use-theme-context";
 // screens
+import Accounts from "@/screens/accounts";
 import Plugin from "@/screens/plugin/plugin";
 import SkinDetails from "@/screens/offer-details/skin-details";
 import BuddyDetails from "@/screens/offer-details/buddy-details";
@@ -33,7 +34,7 @@ const Router = (): ReactElement | null => {
         isLoading: isLoadingTheme,
     } = useGetThemeByIdQuery("");
 
-    const { accessToken, entitlementsToken, isInitialized } = useAuthContext();
+    const { currentUser, isInitialized } = useAuthContext();
 
     const { colors } = useThemeContext();
 
@@ -42,7 +43,6 @@ const Router = (): ReactElement | null => {
     if (!isInitialized || isLoadingTheme) return null;
 
     const optionsDetailsScreen: {
-        animation: "ios";
         headerShown: boolean;
         header: () => ReactElement;
         animationTypeForReplace: "pop";
@@ -52,67 +52,66 @@ const Router = (): ReactElement | null => {
             <Header leftComponent={
                 <IconButton
                     size={32}
-                    iconColor="#fff"
                     icon="arrow-left"
                     onPress={() => navigation.goBack()}
+                    iconColor="#fff"
                 />
             } />
         ),
-        animation: "ios",
         animationTypeForReplace: "pop",
     };
 
     return (
         <>
             <StatusBar barStyle="light-content" backgroundColor={colors.background} />
-            <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName="Login">
-                {accessToken == null || entitlementsToken == null ? (
+            <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName="Accounts">
+                {currentUser == null ? (
                     <>
+                        <Stack.Screen name="Accounts" component={Accounts} />
                         <Stack.Screen name="Login" component={LoginWebView} />
+                        <Stack.Screen name="Logout" component={LogoutWebView} />
                     </>
                 ) : (
                     <>
                         <Stack.Screen name="Home" component={MainBottomTab} />
 
-                        <Stack.Screen name="Logout" component={LogoutWebView} />
 
                         <Stack.Screen
                             name="Plugin"
-                            component={Plugin}
                             options={{
-                                animation: "ios",
                                 animationTypeForReplace: "pop",
                             }}
+                            component={Plugin}
                         />
 
                         <Stack.Screen
                             name="SkinDetails"
-                            component={SkinDetails}
                             options={optionsDetailsScreen}
+                            component={SkinDetails}
                         />
 
                         <Stack.Screen
                             name="PlayerCardDetails"
-                            component={PlayerCardDetails}
                             options={optionsDetailsScreen}
+                            component={PlayerCardDetails}
                         />
 
                         <Stack.Screen
                             name="BuddyDetails"
-                            component={BuddyDetails}
                             options={optionsDetailsScreen}
+                            component={BuddyDetails}
                         />
 
                         <Stack.Screen
                             name="SprayDetails"
-                            component={SprayDetails}
                             options={optionsDetailsScreen}
+                            component={SprayDetails}
                         />
 
                         <Stack.Screen
                             name="CollectionDetails"
-                            component={CollectionDetailsScreen}
                             options={optionsDetailsScreen}
+                            component={CollectionDetailsScreen}
                         />
                     </>
                 )}

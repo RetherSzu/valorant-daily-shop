@@ -31,8 +31,8 @@ const SlideItem = ({ bundle, bundleIndex }: Props) => {
 
     return (
         <ImageBackground
-            source={{ uri: bundle.bundleInfo.displayIcon }}
             style={styles.imageBackground}
+            source={{ uri: bundle.bundleInfo.displayIcon }}
             imageStyle={styles.image}
         >
             <View style={styles.content}>

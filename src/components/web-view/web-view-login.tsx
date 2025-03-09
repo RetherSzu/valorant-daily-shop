@@ -1,5 +1,4 @@
 import { WebView } from "react-native-webview";
-import * as SecureStore from "expo-secure-store";
 import { Modal, StyleSheet, View } from "react-native";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { WebViewNativeEvent } from "react-native-webview/lib/WebViewTypes";
@@ -8,6 +7,8 @@ import Loading from "@/components/loading/loading";
 // contexts
 import useAuthContext from "@/contexts/hook/use-auth-context";
 import useThemeContext from "@/contexts/hook/use-theme-context";
+// utils
+import secureStore from "@/utils/secure-store";
 
 const LoginWebView = () => {
     const { login } = useAuthContext();
@@ -15,10 +16,12 @@ const LoginWebView = () => {
     const webViewRef = useRef(null);
     const [shownSignIn, setShownSignIn] = useState(false);
     const [modalVisible, setModalVisible] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         return () => {
             cleanupWebView();
+            setLoading(false);
         };
     }, []);
 
@@ -34,9 +37,12 @@ const LoginWebView = () => {
             const id_token = searchParams.get("id_token");
 
             if (access_token && id_token) {
-                SecureStore.setItem("access_token", access_token);
-                SecureStore.setItem("id_token", id_token);
+                setLoading(true);
+                setModalVisible(false);
+                await secureStore.setItem("access_token", access_token);
+                await secureStore.setItem("id_token", id_token);
                 await login();
+                setLoading(false);
             }
         }
     }, [shownSignIn, login]);
@@ -58,6 +64,16 @@ const LoginWebView = () => {
         setShownSignIn(false);
     }, []);
 
+    if (loading) {
+        return (
+            <View style={[styles.container, { backgroundColor: colors.background }]}>
+                <View style={styles.loadingOverlay}>
+                    <Loading />
+                </View>
+            </View>
+        );
+    }
+
     return (
         <View style={[styles.container, { backgroundColor: colors.background }]}>
             <View style={styles.loadingOverlay}>
@@ -66,16 +82,18 @@ const LoginWebView = () => {
             <Modal visible={modalVisible} onRequestClose={cleanupWebView} animationType="slide">
                 <WebView
                     ref={webViewRef}
+                    incognito={true}
                     source={{
                         uri: "https://auth.riotgames.com/authorize?redirect_uri=https%3A%2F%2Fplayvalorant.com%2Fopt_in&client_id=play-valorant-web-prod&response_type=token%20id_token&nonce=1&scope=account%20openid",
                     }}
-                    onNavigationStateChange={handleNavigationStateChange}
                     style={styles.webView}
+                    onNavigationStateChange={handleNavigationStateChange}
                 />
             </Modal>
             {!shownSignIn && (
                 <WebView
                     ref={webViewRef}
+                    incognito={true}
                     source={{
                         uri: "https://auth.riotgames.com/authorize?redirect_uri=https%3A%2F%2Fplayvalorant.com%2Fopt_in&client_id=play-valorant-web-prod&response_type=token%20id_token&nonce=1&scope=account%20openid",
                     }}

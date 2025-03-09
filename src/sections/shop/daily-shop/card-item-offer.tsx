@@ -67,6 +67,7 @@ const CardItemOffer = ({ item }: Props): ReactElement => {
     return (
         <TouchableRipple
             borderless
+            key={item.OfferID}
             onPress={onCardPress}
             rippleColor="rgba(255, 70, 86, .20)"
             style={[styles.touchable, { backgroundColor: colors.card }]}

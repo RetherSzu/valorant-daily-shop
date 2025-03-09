@@ -2,6 +2,8 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React, { ReactElement, useCallback, useEffect, useState } from "react";
 // api
 import valorantProvider from "@/api/valorant-provider";
+// components
+import Loading from "@/components/loading/loading";
 // contexts
 import useUserContext from "@/contexts/hook/use-user-context";
 import useAuthContext from "@/contexts/hook/use-auth-context";
@@ -9,18 +11,17 @@ import useBundleContext from "@/contexts/hook/use-bundle-context";
 import usePluginContext from "@/contexts/hook/use-plugin-context";
 import useDailyShopContext from "@/contexts/hook/use-daily-shop-context";
 import useNightMarketContext from "@/contexts/hook/use-night-market-context";
+import useAccessoryStoreContext from "@/contexts/hook/use-accessory-store-context";
 // screens
 import Store from "@/screens/shop/store";
 // types
 import { StoreStackParamList } from "@/types/router/navigation";
-import useAccessoryStoreContext from "@/contexts/hook/use-accessory-store-context";
-import Loading from "@/components/loading/loading";
 
 const StoreStack = createNativeStackNavigator<StoreStackParamList>();
 
 const StoreStackScreen = (): ReactElement | null => {
 
-    const { logout } = useAuthContext();
+    const { logoutUser } = useAuthContext();
 
     const { initialize } = useUserContext();
 
@@ -50,7 +51,7 @@ const StoreStackScreen = (): ReactElement | null => {
             setNightMarket(shopData.nightMarket);
             setAccessoryStore(shopData.accessoryStore);
         } catch (error) {
-            await logout();
+            await logoutUser();
         }
         setFetchShop(false);
     }, []);

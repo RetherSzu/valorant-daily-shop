@@ -22,6 +22,7 @@ const AgentCard = ({ index, owned, agentIndex, displayIcon, onPress }: Props) =>
     return (
         <TouchableRipple
             borderless
+            key={index}
             onPress={onPress}
             style={[
                 styles.touchable,

@@ -1,5 +1,5 @@
-import * as SecureStore from "expo-secure-store";
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 // types
 import { OwnedItem } from "@/types/api/owned-items";
 import { StorefrontResponse } from "@/types/api/shop";
@@ -8,6 +8,9 @@ import { WalletResponse } from "@/types/api/user-balance";
 import { AccountXPResponse } from "@/types/api/account-xp";
 import { PlayerInfoResponse } from "@/types/api/auth/user-info";
 import { PlayerLoadoutGun, PlayerLoadoutResponse } from "@/types/api/player-loadout";
+// utils
+import user from "@/utils/users";
+import secureStore from "@/utils/secure-store";
 
 // ----------------------------------------------------------------------
 
@@ -28,7 +31,7 @@ const requestWithHeaders = async (options: AxiosRequestConfig<any>) => {
 
 const valorantProvider = {
     getUserInfo: async () => {
-        const accessToken = await SecureStore.getItemAsync("access_token");
+        const accessToken = await secureStore.getItem("access_token");
         const options = {
             method: "GET",
             url: "https://auth.riotgames.com/userinfo",
@@ -37,23 +40,35 @@ const valorantProvider = {
 
         const response: AxiosResponse<PlayerInfoResponse> = await requestWithHeaders(options);
 
-        if (response.data.sub) {
-            await SecureStore.setItemAsync("sub", response.data.sub);
-        }
+        // Save the user's game name and tag line to the device's storage
+        if (response.data.acct.game_name && response.data.acct.tag_line && response.data.sub) {
+            await AsyncStorage.setItem("current_user", response.data.acct.game_name + "#" + response.data.acct.tag_line);
+            await user.setUserInfo("game_name", response.data.acct.game_name);
+            await user.setUserInfo("tag_line", response.data.acct.tag_line);
+            await user.setUserInfo("sub", response.data.sub);
 
-        if (response.data.acct.game_name) {
-            await SecureStore.setItemAsync("game_name", response.data.acct.game_name);
-        }
 
-        if (response.data.acct.tag_line) {
-            await SecureStore.setItemAsync("tag_line", response.data.acct.tag_line);
+            const accessToken = await secureStore.getItem("access_token");
+            if (accessToken) {
+                await user.setUserInfo("access_token", accessToken);
+            }
+
+            const idToken = await secureStore.getItem("id_token");
+            if (idToken) {
+                await user.setUserInfo("id_token", idToken);
+            }
+
+            const entitlementsToken = await secureStore.getItem("entitlements_token");
+            if (entitlementsToken) {
+                await user.setUserInfo("entitlements_token", entitlementsToken);
+            }
         }
     },
 
     getRiotGeo: async (): Promise<void> => {
         const [accessToken, idToken] = await Promise.all([
-            SecureStore.getItemAsync("access_token"),
-            SecureStore.getItemAsync("id_token"),
+            user.getUserInfo("access_token"),
+            user.getUserInfo("id_token"),
         ]);
 
         const options = {
@@ -69,7 +84,7 @@ const valorantProvider = {
 
         const response = await requestWithHeaders(options);
 
-        await SecureStore.setItemAsync("pp", response.data.affinities.live);
+        await user.setUserInfo("pp", response.data.affinities.live);
     },
 
     getRiotVersion: async (): Promise<void> => {
@@ -79,16 +94,16 @@ const valorantProvider = {
         };
 
         const response = await requestWithHeaders(options);
-        await SecureStore.setItemAsync("riot_version", response.data.data.riotClientVersion);
+        await secureStore.setItem("riot_version", response.data.data.riotClientVersion);
     },
 
     getUserBalance: async (): Promise<void> => {
         const [accessToken, entitlementsToken, sub, pp, riotVersion] = await Promise.all([
-            SecureStore.getItemAsync("access_token"),
-            SecureStore.getItemAsync("entitlements_token"),
-            SecureStore.getItemAsync("sub"),
-            SecureStore.getItemAsync("pp"),
-            SecureStore.getItemAsync("riot_version"),
+            user.getUserInfo("access_token"),
+            user.getUserInfo("entitlements_token"),
+            user.getUserInfo("sub"),
+            user.getUserInfo("pp"),
+            secureStore.getItem("riot_version"),
         ]);
 
         const options = {
@@ -110,18 +125,18 @@ const valorantProvider = {
             kingdomCredit: response.data.Balances["85ca954a-41f2-ce94-9b45-8ca3dd39a00d"].toString(),
         };
 
-        await SecureStore.setItemAsync("radianite_point", balance.radianitePoint);
-        await SecureStore.setItemAsync("valorant_point", balance.valorantPoint);
-        await SecureStore.setItemAsync("kingdom_credit", balance.kingdomCredit);
+        await user.setUserInfo("radianite_point", balance.radianitePoint);
+        await user.setUserInfo("valorant_point", balance.valorantPoint);
+        await user.setUserInfo("kingdom_credit", balance.kingdomCredit);
     },
 
     getFrontShop: async () => {
         const [accessToken, entitlementsToken, sub, pp, riotVersion] = await Promise.all([
-            SecureStore.getItemAsync("access_token"),
-            SecureStore.getItemAsync("entitlements_token"),
-            SecureStore.getItemAsync("sub"),
-            SecureStore.getItemAsync("pp"),
-            SecureStore.getItemAsync("riot_version"),
+            user.getUserInfo("access_token"),
+            user.getUserInfo("entitlements_token"),
+            user.getUserInfo("sub"),
+            user.getUserInfo("pp"),
+            secureStore.getItem("riot_version"),
         ]);
 
         const options = {
@@ -165,11 +180,11 @@ const valorantProvider = {
 
     getAccountXP: async () => {
         const [accessToken, entitlementsToken, sub, pp, riotVersion] = await Promise.all([
-            SecureStore.getItemAsync("access_token"),
-            SecureStore.getItemAsync("entitlements_token"),
-            SecureStore.getItemAsync("sub"),
-            SecureStore.getItemAsync("pp"),
-            SecureStore.getItemAsync("riot_version"),
+            user.getUserInfo("access_token"),
+            user.getUserInfo("entitlements_token"),
+            user.getUserInfo("sub"),
+            user.getUserInfo("pp"),
+            secureStore.getItem("riot_version"),
         ]);
 
         const options = {
@@ -185,16 +200,17 @@ const valorantProvider = {
 
         const response: AxiosResponse<AccountXPResponse> = await axios.request(options);
 
-        return response.data;
+        await user.setUserInfo("level", response.data.Progress.Level.toString());
+        await user.setUserInfo("xp", response.data.Progress.XP.toString());
     },
 
     getPlayerLoadout: async () => {
         const [accessToken, entitlementsToken, sub, pp, riotVersion] = await Promise.all([
-            SecureStore.getItemAsync("access_token"),
-            SecureStore.getItemAsync("entitlements_token"),
-            SecureStore.getItemAsync("sub"),
-            SecureStore.getItemAsync("pp"),
-            SecureStore.getItemAsync("riot_version"),
+            user.getUserInfo("access_token"),
+            user.getUserInfo("entitlements_token"),
+            user.getUserInfo("sub"),
+            user.getUserInfo("pp"),
+            secureStore.getItem("riot_version"),
         ]);
 
         const options = {
@@ -209,15 +225,15 @@ const valorantProvider = {
         };
 
         const response: AxiosResponse<PlayerLoadoutResponse> = await requestWithHeaders(options);
-
+        await user.setUserInfo("player_card_id", response.data.Identity.PlayerCardID);
         return response.data;
     },
 
-    getRank: async () => {
+    getPlayerRankAndRR: async () => {
         const [gameName, tagLine, pp] = await Promise.all([
-            SecureStore.getItemAsync("game_name"),
-            SecureStore.getItemAsync("tag_line"),
-            SecureStore.getItemAsync("pp"),
+            user.getUserInfo("game_name"),
+            user.getUserInfo("tag_line"),
+            user.getUserInfo("pp"),
         ]);
 
         const options = {
@@ -229,24 +245,20 @@ const valorantProvider = {
             const response: AxiosResponse = await axios.request(options);
 
             if (response.data) {
-                return {
-                    rank: response.data.split(" - ")[0],
-                    rr: response.data.split(" - ")[1].split("RR")[0],
-                };
+                await user.setUserInfo("rank", response.data.split(" - ")[0]);
+                await user.setUserInfo("rr", response.data.split(" - ")[1].split("RR")[0]);
             }
         } catch {
         }
-
-        return { rank: "Unranked", rr: "0" };
     },
 
     getOwnedItems: async (itemTypeId: string) => {
         const [accessToken, entitlementsToken, sub, pp, riotVersion] = await Promise.all([
-            SecureStore.getItemAsync("access_token"),
-            SecureStore.getItemAsync("entitlements_token"),
-            SecureStore.getItemAsync("sub"),
-            SecureStore.getItemAsync("pp"),
-            SecureStore.getItemAsync("riot_version"),
+            user.getUserInfo("access_token"),
+            user.getUserInfo("entitlements_token"),
+            user.getUserInfo("sub"),
+            user.getUserInfo("pp"),
+            secureStore.getItem("riot_version"),
         ]);
 
         const options = {
@@ -267,11 +279,11 @@ const valorantProvider = {
 
     setPlayerLoadout: async (playerLoadout: PlayerLoadoutResponse, ID: string, skinID: string, skinLevelID: string, chromaID: string) => {
         const [accessToken, entitlementsToken, sub, pp, riotVersion] = await Promise.all([
-            SecureStore.getItemAsync("access_token"),
-            SecureStore.getItemAsync("entitlements_token"),
-            SecureStore.getItemAsync("sub"),
-            SecureStore.getItemAsync("pp"),
-            SecureStore.getItemAsync("riot_version"),
+            user.getUserInfo("access_token"),
+            user.getUserInfo("entitlements_token"),
+            user.getUserInfo("sub"),
+            user.getUserInfo("pp"),
+            secureStore.getItem("riot_version"),
         ]);
 
         // @ts-ignore
@@ -314,11 +326,11 @@ const valorantProvider = {
 
     getPlayerFavoriteSkin: async () => {
         const [accessToken, entitlementsToken, sub, pp, riotVersion] = await Promise.all([
-            SecureStore.getItemAsync("access_token"),
-            SecureStore.getItemAsync("entitlements_token"),
-            SecureStore.getItemAsync("sub"),
-            SecureStore.getItemAsync("pp"),
-            SecureStore.getItemAsync("riot_version"),
+            user.getUserInfo("access_token"),
+            user.getUserInfo("entitlements_token"),
+            user.getUserInfo("sub"),
+            user.getUserInfo("pp"),
+            secureStore.getItem("riot_version"),
         ]);
 
         const options = {
@@ -339,11 +351,11 @@ const valorantProvider = {
 
     addPlayerFavoriteSkin: async (itemID: string) => {
         const [accessToken, entitlementsToken, sub, pp, riotVersion] = await Promise.all([
-            SecureStore.getItemAsync("access_token"),
-            SecureStore.getItemAsync("entitlements_token"),
-            SecureStore.getItemAsync("sub"),
-            SecureStore.getItemAsync("pp"),
-            SecureStore.getItemAsync("riot_version"),
+            user.getUserInfo("access_token"),
+            user.getUserInfo("entitlements_token"),
+            user.getUserInfo("sub"),
+            user.getUserInfo("pp"),
+            secureStore.getItem("riot_version"),
         ]);
 
         const options = {
@@ -367,11 +379,11 @@ const valorantProvider = {
 
     deletePlayerFavoriteSkin: async (itemID: string) => {
         const [accessToken, entitlementsToken, sub, pp, riotVersion] = await Promise.all([
-            SecureStore.getItemAsync("access_token"),
-            SecureStore.getItemAsync("entitlements_token"),
-            SecureStore.getItemAsync("sub"),
-            SecureStore.getItemAsync("pp"),
-            SecureStore.getItemAsync("riot_version"),
+            user.getUserInfo("access_token"),
+            user.getUserInfo("entitlements_token"),
+            user.getUserInfo("sub"),
+            user.getUserInfo("pp"),
+            secureStore.getItem("riot_version"),
         ]);
 
         const options = {
@@ -388,7 +400,7 @@ const valorantProvider = {
         const response: AxiosResponse = await requestWithHeaders(options);
 
         return response.data;
-    }
+    },
 };
 
 export default valorantProvider;

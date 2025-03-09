@@ -1,9 +1,14 @@
 import axios, { AxiosResponse } from "axios";
-import * as SecureStore from "expo-secure-store";
+// utils
+import secureStore from "@/utils/secure-store";
 
 const authLogic = {
     getEntitlement: async (): Promise<undefined> => {
-        const accessToken = await SecureStore.getItemAsync("access_token");
+        const accessToken = await secureStore.getItem("access_token");
+
+        if (!accessToken) {
+            throw new Error("Access token not found");
+        }
 
         const options = {
             method: "POST",
@@ -20,7 +25,7 @@ const authLogic = {
 
         if (!entitlementsToken) throw new Error("Entitlements token not found");
 
-        await SecureStore.setItemAsync("entitlements_token", entitlementsToken);
+        await secureStore.setItem("entitlements_token", entitlementsToken);
     },
 };
 

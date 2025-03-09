@@ -7,12 +7,18 @@ import Loading from "@/components/loading/loading";
 // contexts
 import useAuthContext from "@/contexts/hook/use-auth-context";
 import useThemeContext from "@/contexts/hook/use-theme-context";
+// types
+import { LogoutScreenProps } from "@/types/router/navigation";
+// utils
+import user from "@/utils/users";
 
-const LogoutWebView = () => {
+const LogoutWebView = ({ route, navigation }: LogoutScreenProps) => {
+
+    const { username } = route.params;
 
     const webViewRef = useRef(null);
 
-    const { logout } = useAuthContext();
+    const { logoutUser, dispatch } = useAuthContext();
 
     const { colors } = useThemeContext();
 
@@ -29,9 +35,12 @@ const LogoutWebView = () => {
             if (webViewRef.current) {
                 webViewRef.current = null;
             }
-            await logout();
+
+            await logoutUser(username);
+
+            navigation.navigate("Accounts");
         }
-    }, [logout]);
+    }, [logoutUser, username, user, dispatch, navigation]);
 
     return (
         <View style={[styles.container, { backgroundColor: colors.background }]}>

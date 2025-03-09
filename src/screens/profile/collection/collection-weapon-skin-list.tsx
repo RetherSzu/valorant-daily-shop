@@ -43,6 +43,7 @@ const CollectionWeaponSkinList: React.FC<Props> = ({
         return (
             <TouchableRipple
                 borderless
+                key={item.uuid}
                 onPress={() => onCardPress(item)}
                 rippleColor="rgba(255, 70, 86, .20)"
                 style={[

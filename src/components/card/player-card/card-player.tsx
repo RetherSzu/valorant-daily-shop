@@ -52,6 +52,7 @@ const CardPlayer = ({ offer }: CardPlayerProps) => {
     return (
         <TouchableRipple
             borderless
+            key={offer.OfferID}
             onPress={onCardPress}
             style={[styles.container, { backgroundColor: colors.card }]}
             rippleColor="rgba(255, 70, 86, .20)"

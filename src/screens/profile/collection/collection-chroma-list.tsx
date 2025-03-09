@@ -29,8 +29,8 @@ const CollectionChromaList: React.FC<Props> = ({ currentChromaIndex, currentSkin
 
         return (
             <TouchableRipple
-                key={index}
                 borderless
+                key={index}
                 onPress={() => handleChromaPress(index, chroma.fullRender)}
                 style={[
                     styles.chromaItem,

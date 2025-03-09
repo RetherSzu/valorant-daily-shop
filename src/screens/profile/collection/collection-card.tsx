@@ -69,6 +69,7 @@ const CollectionCard = ({ playerLoadoutGun }: Props) => {
         <TouchableRipple
             borderless
             onPress={onCardPress}
+            key={playerLoadoutGun.ID}
             rippleColor="rgba(255, 70, 86, .20)"
             style={[styles.container, { backgroundColor: colors.card }]}
         >

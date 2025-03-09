@@ -1,11 +1,11 @@
-// types
-import { Offer } from "@/types/api/shop";
 // components
 import CardSkin from "@/components/card/skin/card-skin";
 import CardBuddy from "@/components/card/buddy/card-buddy";
 import CardSpray from "@/components/card/spray/card-spray";
 import CardPlayer from "@/components/card/player-card/card-player";
 import CardTitle from "@/components/card/player-title/card-title";
+// types
+import { Offer } from "@/types/api/shop";
 
 type CardFactoryProps = {
     offer: Offer;

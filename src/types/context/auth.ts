@@ -1,29 +1,25 @@
+import React from "react";
+
 export type IAuthContext = {
     // fn
     login: () => Promise<void>;
-    logout: () => Promise<void>;
+    logoutUser: (user: string) => Promise<void>;
+    dispatch: React.Dispatch<IAuthAction<EAuthContextType>>;
     // state
     isLoading: boolean;
     isSignout: boolean;
-    accessToken: string | null;
-    entitlementsToken: string | null;
+    currentUser: string | null;
     isInitialized: boolean;
 }
 
 export enum EAuthContextType {
     INITIAL = "INITIAL",
-    SET_TOKEN = "SET_TOKEN",
     LOGOUT = "LOGOUT",
 }
 
 export type IPayloadAuth = {
     [EAuthContextType.INITIAL]: {
-        accessToken: string | null;
-        entitlementsToken: string | null;
-    };
-    [EAuthContextType.SET_TOKEN]: {
-        accessToken: string | null;
-        entitlementsToken: string | null;
+        currentUser: string | null;
     };
     [EAuthContextType.LOGOUT]: {};
 };

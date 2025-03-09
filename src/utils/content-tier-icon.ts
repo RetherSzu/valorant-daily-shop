@@ -15,7 +15,6 @@ export const getContentTierIcon = (uuid: string) => {
     }
 };
 
-
 export const getContentTierColor = (uuid: string) => {
     switch (uuid) {
         case "12683d76-48d7-84a3-4e09-6985794f0445":

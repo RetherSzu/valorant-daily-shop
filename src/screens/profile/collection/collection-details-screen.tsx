@@ -195,7 +195,7 @@ const CollectionDetailsScreen = ({ route }: CollectionDetailScreenProps) => {
     useEffect(() => {
         if (currentLevelIndex !== currentSkin.levels.length - 1 && currentChromaIndex !== 0) {
             setCurrentChromaIndex(0);
-            setCurrentImage(skinSelected.chromas[0].fullRender);
+            setCurrentImage(currentSkin.chromas[0].fullRender);
         }
     }, [currentLevelIndex, currentSkin, currentChromaIndex]);
 

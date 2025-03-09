@@ -1,23 +1,28 @@
 import React from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createMaterialBottomTabNavigator } from "react-native-paper/react-navigation";
 // components
 import SvgShop from "@/components/icon/shop";
 import SvgUser from "@/components/icon/user";
-import SvgSetting from "@/components/icon/setting";
+import SvgUsers from "@/components/icon/users";
 // contexts
+import useAuthContext from "@/contexts/hook/use-auth-context";
 import useThemeContext from "@/contexts/hook/use-theme-context";
 // routes
 import Header from "@/routes/navigation/header";
 import StoreStackScreen from "@/routes/store-stack-screen";
 // screens
-import Settings from "@/screens/settings";
 import ProfileScreen from "@/screens/profile/profile-screen";
+// types
+import { EAuthContextType } from "@/types/context/auth";
 
 const BottomNavigation = createMaterialBottomTabNavigator();
 
 const MainBottomTab = () => {
 
     const { colors } = useThemeContext();
+
+    const { dispatch } = useAuthContext();
 
     return (
         <>
@@ -46,10 +51,21 @@ const MainBottomTab = () => {
                     }}
                 />
                 <BottomNavigation.Screen
-                    name="settings"
-                    component={Settings}
+                    name="Accounts"
+                    component={() => null}
                     options={{
-                        tabBarIcon: ({ color }) => <SvgSetting color={color} />,
+                        tabBarIcon: ({ color }) => <SvgUsers color={color} />,
+                    }}
+                    listeners={{
+                        tabPress: async () => {
+                            await AsyncStorage.removeItem("current_user");
+                            dispatch({
+                                type: EAuthContextType.INITIAL,
+                                payload: {
+                                    currentUser: null,
+                                },
+                            });
+                        },
                     }}
                 />
             </BottomNavigation.Navigator>

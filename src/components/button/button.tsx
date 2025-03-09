@@ -37,6 +37,7 @@ const Button: React.FC<ButtonProps> = ({
 
     return (
         <TouchableRipple
+            key={text}
             style={[
                 styles.button,
                 { backgroundColor, opacity: disabled ? 0.5 : 1 },

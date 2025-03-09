@@ -32,9 +32,11 @@ const NightMarketCardItem = ({ item }: Props): ReactElement => {
 
     const navigate = useNavigation<NavigationProp>();
 
-    const { data: weaponSkinData, error: weaponSkinError, isLoading: isLoadingWeapon } = useGetWeaponByLevelIdQuery(
-        item.Offer.Rewards[0].ItemID,
-    );
+    const {
+        data: weaponSkinData,
+        error: weaponSkinError,
+        isLoading: isLoadingWeapon,
+    } = useGetWeaponByLevelIdQuery(item.Offer.Rewards[0].ItemID);
 
     const skinData = weaponSkinData?.data;
 
@@ -63,7 +65,13 @@ const NightMarketCardItem = ({ item }: Props): ReactElement => {
     const theme = themeData.data;
 
     return (
-        <TouchableRipple borderless onPress={onCardPress} style={styles.touchable} rippleColor="rgba(255, 70, 86, .20)">
+        <TouchableRipple
+            key={item.BonusOfferID}
+            style={styles.touchable}
+            onPress={onCardPress}
+            borderless
+            rippleColor="rgba(255, 70, 86, .20)"
+        >
             <View style={[styles.card, { backgroundColor: getContentTierColor(skinData.contentTierUuid) }]}>
                 <Image
                     source={getContentTierIcon(skinData.contentTierUuid)}

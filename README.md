@@ -27,3 +27,5 @@ This project is licensed under the [MIT License](LICENSE).
 ## Disclaimer
 
 This application is a third-party tool and is not officially associated with Riot Games or Valorant.
+
+// npm install --save expo@latest --legacy-peer-deps

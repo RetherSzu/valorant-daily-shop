@@ -50,6 +50,7 @@ const CardSpray = ({ offer }: CardSprayProps) => {
                     source={{ uri: iconUrl }}
                     style={styles.sprayImage}
                     resizeMode="contain"
+                    height={512}
                 />
             </View>
         ));
@@ -68,6 +69,7 @@ const CardSpray = ({ offer }: CardSprayProps) => {
     return (
         <TouchableRipple
             borderless
+            key={offer.OfferID}
             onPress={onCardPress}
             rippleColor="rgba(255, 70, 86, .20)"
             style={[styles.container, { backgroundColor: colors.card }]}

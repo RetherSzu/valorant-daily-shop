@@ -6,8 +6,9 @@ import { StoreOffer } from "@/types/api/shop/plugin-store";
 import { Buddy, Offer, PlayerCard, Spray } from "@/types/api/shop";
 
 export type RootStackParamList = {
+    Accounts: undefined;
     Login: undefined;
-    Logout: undefined;
+    Logout: { username: string };
     Home: undefined;
     Plugin: { plugin: StoreOffer };
     SkinDetails: { skin: WeaponSkin, skinType: string, theme: Theme };
@@ -21,6 +22,7 @@ export type StoreStackParamList = {
     StoreStack: undefined;
 };
 
+export type LogoutScreenProps = NativeStackScreenProps<RootStackParamList, "Logout">;
 export type PluginDetailScreenProps = NativeStackScreenProps<RootStackParamList, "Plugin">;
 export type SkinDetailScreenProps = NativeStackScreenProps<RootStackParamList, "SkinDetails">;
 export type BuddyDetailScreenProps = NativeStackScreenProps<RootStackParamList, "BuddyDetails">;

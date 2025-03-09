@@ -65,6 +65,7 @@ const CardSkin = ({ offer }: Props) => {
     return (
         <TouchableRipple
             borderless
+            key={offer.OfferID}
             onPress={onCardPress}
             rippleColor="rgba(255, 70, 86, .20)"
             style={[styles.container, { backgroundColor: colors.card }]}

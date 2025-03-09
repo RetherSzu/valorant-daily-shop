@@ -51,6 +51,7 @@ const CardBuddy = ({ offer }: Props) => {
 
     return (
         <TouchableRipple
+            key={offer.OfferID}
             borderless
             onPress={onCardPress}
             rippleColor="rgba(255, 70, 86, .20)"

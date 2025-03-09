@@ -1,7 +1,8 @@
-import * as SecureStore from "expo-secure-store";
 import { ReactNode, useMemo, useReducer } from "react";
 // types
 import { EUserContextType, IUserAction, IUserContext } from "@/types/context/user";
+// utils
+import user from "@/utils/users";
 //
 import { initialUserState, UserContext } from "./user-context";
 
@@ -31,7 +32,6 @@ const UserProvider = ({ children }: UserProviderProps) => {
     const [state, dispatch] = useReducer(reducer, initialUserState);
 
     const initialize = async () => {
-
         const [
             gameName,
             tagLine,
@@ -41,13 +41,13 @@ const UserProvider = ({ children }: UserProviderProps) => {
             valorantPoint,
             kingdomCredit,
         ] = await Promise.all([
-            SecureStore.getItemAsync("game_name"),
-            SecureStore.getItemAsync("tag_line"),
-            SecureStore.getItemAsync("sub"),
-            SecureStore.getItemAsync("pp"),
-            SecureStore.getItemAsync("radianite_point"),
-            SecureStore.getItemAsync("valorant_point"),
-            SecureStore.getItemAsync("kingdom_credit"),
+            user.getUserInfo("game_name"),
+            user.getUserInfo("tag_line"),
+            user.getUserInfo("sub"),
+            user.getUserInfo("pp"),
+            user.getUserInfo("radianite_point"),
+            user.getUserInfo("valorant_point"),
+            user.getUserInfo("kingdom_credit"),
         ]);
 
         dispatch({

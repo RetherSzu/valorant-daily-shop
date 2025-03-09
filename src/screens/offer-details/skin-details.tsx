@@ -65,6 +65,7 @@ const SkinDetails = ({ route }: SkinDetailScreenProps) => {
             renderItem={({ item, index }) => (
                 <TouchableRipple
                     borderless
+                    key={index}
                     rippleColor={colors.primary}
                     onPress={() => handleLevelPress(index, item.streamedVideo)}
                     style={[

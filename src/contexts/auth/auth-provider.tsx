@@ -1,15 +1,13 @@
-import * as SecureStore from "expo-secure-store";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ReactNode, useCallback, useEffect, useMemo, useReducer } from "react";
 // api
 import valorantProvider from "@/api/valorant-provider";
 // auth
 import authLogic from "@/auth/auth-logic";
-// controllers
-import { resetStore } from "@/controllers/store";
 // types
 import { EAuthContextType, IAuthAction, IAuthContext } from "@/types/context/auth";
 // utils
-import { clearSecureStore } from "@/utils/secure-store";
+import user from "@/utils/users";
 //
 import { AuthContext, initialAuthState } from "./auth-context";
 
@@ -24,14 +22,6 @@ const reducer = (state: IAuthContext, action: IAuthAction<EAuthContextType>) => 
                 ...state,
                 ...ac.payload,
                 isInitialized: true,
-            };
-        case EAuthContextType.SET_TOKEN:
-            ac = action as IAuthAction<EAuthContextType.SET_TOKEN>;
-
-            return {
-                ...state,
-                accessToken: ac.payload.accessToken,
-                entitlementsToken: ac.payload.entitlementsToken,
             };
         case EAuthContextType.LOGOUT:
             return {
@@ -54,32 +44,12 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
     const [state, dispatch] = useReducer(reducer, initialAuthState);
 
     const initialize = useCallback(async () => {
-
-        const [
-            accessToken,
-            entitlementsToken,
-        ] = await Promise.all([
-            SecureStore.getItemAsync("access_token"),
-            SecureStore.getItemAsync("entitlements_token"),
-        ]);
-
-        try {
-            dispatch({
-                type: EAuthContextType.INITIAL,
-                payload: {
-                    accessToken,
-                    entitlementsToken,
-                },
-            });
-
-        } catch (error) {
-            dispatch({
-                type: EAuthContextType.INITIAL, payload: {
-                    accessToken: null,
-                    entitlementsToken: null,
-                },
-            });
-        }
+        dispatch({
+            type: EAuthContextType.INITIAL,
+            payload: {
+                currentUser: null,
+            },
+        });
     }, []);
 
     const login = async () => {
@@ -102,31 +72,35 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
             // Account XP
             await valorantProvider.getAccountXP();
 
-            const accessToken = SecureStore.getItem("access_token");
-            const entitlementsToken = SecureStore.getItem("entitlements_token");
+            // Get player loadout
+            await valorantProvider.getPlayerLoadout();
+
+            // Get player rank and rr
+            await valorantProvider.getPlayerRankAndRR();
+
+            // Set current user to auth provider
+            const currentUser = await AsyncStorage.getItem("current_user");
 
             dispatch({
-                type: EAuthContextType.SET_TOKEN,
+                type: EAuthContextType.INITIAL,
                 payload: {
-                    accessToken,
-                    entitlementsToken,
+                    currentUser: currentUser,
                 },
             });
 
             return Promise.resolve();
         } catch (error) {
-            dispatch({ type: EAuthContextType.LOGOUT, payload: {} });
+            console.log(error);
             throw error;
         }
     };
 
-    const logout = async () => {
+    const logoutUser = async (username: string): Promise<void> => {
+        if (!username) {
+            return;
+        }
 
-        dispatch({ type: EAuthContextType.LOGOUT, payload: {} });
-
-        resetStore();
-
-        await clearSecureStore();
+        await user.removeUser(username);
     };
 
     useEffect(() => {
@@ -137,17 +111,15 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
         () => ({
             isLoading: state.isLoading,
             isSignout: state.isSignout,
-            accessToken: state.accessToken,
-            entitlementsToken: state.entitlementsToken,
             isInitialized: state.isInitialized,
+            currentUser: state.currentUser,
             //
             login,
-            logout,
+            logoutUser,
+            dispatch,
         }),
         [
             state,
-            state.accessToken,
-            state.entitlementsToken,
             state.isLoading,
             state.isSignout,
         ],

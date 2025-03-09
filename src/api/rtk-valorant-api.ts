@@ -40,6 +40,7 @@ export const rtkValorantApi = createApi({
                 const foundSkin = findItemByLevelId(response.data, arg);
                 return foundSkin ? { status: 200, data: foundSkin } : { status: 404, data: undefined };
             },
+            keepUnusedDataFor: 3600,
         }),
         getWeaponById: builder.query<Response<Weapon>, string>({
             query: (id) => `/weapons/${id}`,
