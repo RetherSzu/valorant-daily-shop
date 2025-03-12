@@ -1,4 +1,4 @@
-import { View } from "react-native";
+import { FlatList } from "react-native";
 import React, { useCallback, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
@@ -51,18 +51,22 @@ const UserList = () => {
     );
 
     return (
-        <View style={{ flex: 2, padding: 16, gap: 16 }}>
-            {Object.keys(users).map((user, index) => (
+        <FlatList
+            data={Object.keys(users)}
+            style={{ flex: 2, padding: 16, gap: 16, marginBottom: 16 }}
+            contentContainerStyle={{ gap: 16 }}
+            showsVerticalScrollIndicator={false}
+            renderItem={({ item, index }) => (
                 <UserItem
                     key={index}
-                    user={users[user]}
+                    user={users[item]}
                     index={index}
-                    handleLogin={() => handleLogin(user)}
-                    handleLogout={() => handleLogout(user)}
+                    handleLogin={() => handleLogin(item)}
+                    handleLogout={() => handleLogout(item)}
                     handleRelogin={handleRelogin}
                 />
-            ))}
-        </View>
+            )}
+        />
     );
 };
 
