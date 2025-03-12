@@ -21,7 +21,7 @@ const SlideItem = ({ bundle, bundleIndex }: Props) => {
     const { bundles: featuredBundle } = useBundleContext();
 
     const cost = useMemo(() => {
-        const costs = featuredBundle.Bundles[bundleIndex]?.TotalBaseCost;
+        const costs = featuredBundle.Bundles[bundleIndex]?.TotalDiscountedCost;
         if (!costs || Object.keys(costs).length === 0) {
             return 0;
         }
