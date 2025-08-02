@@ -54,7 +54,7 @@ const UserList = () => {
         <FlatList
             data={Object.keys(users)}
             style={{ flex: 2, padding: 16, gap: 16, marginBottom: 16 }}
-            contentContainerStyle={{ gap: 16 }}
+            contentContainerStyle={{ gap: 16, paddingBottom: 16 }}
             showsVerticalScrollIndicator={false}
             renderItem={({ item, index }) => (
                 <UserItem
