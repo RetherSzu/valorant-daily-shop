@@ -1,6 +1,6 @@
 import { WebView } from "react-native-webview";
 import { StyleSheet, View } from "react-native";
-import React, { useCallback, useRef } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { WebViewNativeEvent } from "react-native-webview/lib/WebViewTypes";
 // components
 import Loading from "@/components/loading/loading";
@@ -11,19 +11,37 @@ import useThemeContext from "@/contexts/hook/use-theme-context";
 import { LogoutScreenProps } from "@/types/router/navigation";
 // utils
 import user from "@/utils/users";
+import { getWebViewState, saveWebViewState, WebViewState } from "@/utils/web-view-state";
 
 const LogoutWebView = ({ route, navigation }: LogoutScreenProps) => {
-
     const { username } = route.params;
-
     const webViewRef = useRef(null);
-
     const { logoutUser, dispatch } = useAuthContext();
-
     const { colors } = useThemeContext();
+    const [savedState, setSavedState] = useState<WebViewState | null>(null);
+
+    // Load saved state when component mounts
+    useEffect(() => {
+        const loadSavedState = async () => {
+            const state = await getWebViewState("https://auth.riotgames.com/logout");
+            if (state) {
+                setSavedState(state);
+            }
+        };
+        loadSavedState();
+    }, []);
 
     const handleNavigationStateChange = useCallback(async (event: WebViewNativeEvent) => {
-        if (event.url === "https://auth.riotgames.com/logout") {
+        const { url } = event;
+        
+        // Save WebView state
+        const currentState: WebViewState = {
+            url,
+            timestamp: Date.now()
+        };
+        await saveWebViewState(currentState);
+
+        if (url === "https://auth.riotgames.com/logout") {
             try {
                 if (webViewRef.current) {
                     // @ts-ignore
@@ -37,10 +55,11 @@ const LogoutWebView = ({ route, navigation }: LogoutScreenProps) => {
             }
 
             await logoutUser(username);
-
             navigation.navigate("Accounts");
         }
     }, [logoutUser, username, user, dispatch, navigation]);
+
+    const initialUrl = "https://auth.riotgames.com/logout";
 
     return (
         <View style={[styles.container, { backgroundColor: colors.background }]}>
@@ -51,7 +70,8 @@ const LogoutWebView = ({ route, navigation }: LogoutScreenProps) => {
                 ref={webViewRef}
                 style={styles.hiddenWebView}
                 onNavigationStateChange={handleNavigationStateChange}
-                source={{ uri: "https://auth.riotgames.com/logout" }}
+                source={{ uri: savedState?.url || initialUrl }}
+                sharedCookiesEnabled
             />
         </View>
     );

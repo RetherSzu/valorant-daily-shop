@@ -1,10 +1,10 @@
 import React from "react";
+import { TouchableRipple } from "react-native-paper";
 import { ActivityIndicator, StyleProp, StyleSheet, TextStyle, View, ViewStyle } from "react-native";
 // components
 import Text from "@/components/typography/text";
 // contexts
 import useThemeContext from "@/contexts/hook/use-theme-context";
-import { TouchableRipple } from "react-native-paper";
 
 type ButtonProps = {
     text?: string;

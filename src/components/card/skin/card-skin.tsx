@@ -17,6 +17,7 @@ import { NavigationProp } from "@/types/router/navigation";
 // utils
 import { getWeaponName } from "@/utils/format-string";
 import { getContentTierIcon } from "@/utils/content-tier-icon";
+import Loading from "@/components/loading/loading";
 
 type Props = {
     offer: Offer;
@@ -55,7 +56,7 @@ const CardSkin = ({ offer }: Props) => {
     }, [navigate, weaponSkinData, themeData, filteredDisplayName]);
 
     if (isLoadingWeapon || isLoadingTheme) {
-        return <CardSkinSkeleton />;
+        return <Loading />;
     }
 
     if (weaponSkinError || !skinData || themeError || !themeData) {

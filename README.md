@@ -1,3 +1,5 @@
+![Valorant Daily Shop - Banner](/assets/banner.png)
+
 # Valorant Daily Shop
 
 > [!WARNING]

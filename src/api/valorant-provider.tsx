@@ -47,7 +47,6 @@ const valorantProvider = {
             await user.setUserInfo("tag_line", response.data.acct.tag_line);
             await user.setUserInfo("sub", response.data.sub);
 
-
             const accessToken = await secureStore.getItem("access_token");
             if (accessToken) {
                 await user.setUserInfo("access_token", accessToken);

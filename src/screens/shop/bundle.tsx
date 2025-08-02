@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Animated, FlatList, ScrollView, View, StyleSheet, ViewToken } from "react-native";
+import { Animated, FlatList, ScrollView, StyleSheet, View, ViewToken } from "react-native";
 // api
 import valorantProvider from "@/api/valorant-provider";
 // components
@@ -28,7 +28,7 @@ const BundleView = () => {
 
     const handleOnScroll = Animated.event(
         [{ nativeEvent: { contentOffset: { x: scrollX } } }],
-        { useNativeDriver: false }
+        { useNativeDriver: false },
     );
 
     const handleOnViewableItemsChanged = useCallback(({ viewableItems }: { viewableItems: ViewToken[] }) => {
@@ -40,14 +40,17 @@ const BundleView = () => {
             if (featuredBundle.Bundles.length === 0) return;
             const bundlesInfos = await Promise.all(featuredBundle.Bundles.map(async (bundle) => {
                 const bundleInfo = await valorantProvider.getBundle(bundle.DataAssetID);
+                if (bundleInfo === undefined) {
+                    return null;
+                }
                 return { bundleInfo, bundle };
             }));
 
-            setBundlesInfos(bundlesInfos);
+            setBundlesInfos(bundlesInfos.filter((bundle) => bundle !== null));
             setBundleLoading(false);
         }
 
-        getBundles();
+        (async () => getBundles())();
     }, [featuredBundle.Bundles.length]);
 
     const renderOffer = useCallback(({ item, index }: { item: ItemOffer, index: number }) => (
@@ -58,10 +61,18 @@ const BundleView = () => {
         bundlesInfos[bundleIndex]?.bundle?.ItemOffers?.map((item, index) => renderOffer({ item, index }))
     ), [bundleIndex, bundlesInfos, renderOffer]);
 
-    if (bundleLoading || !bundlesInfos.length) {
+    if (bundleLoading) {
         return (
             <View style={[styles.loadingContainer, { backgroundColor: colors.background }]}>
                 <Loading />
+            </View>
+        );
+    }
+
+    if (bundlesInfos.length === 0) {
+        return (
+            <View style={[styles.loadingContainer, { backgroundColor: colors.background }]}>
+                <Text>No bundles found</Text>
             </View>
         );
     }
@@ -78,7 +89,21 @@ const BundleView = () => {
                     onScroll={handleOnScroll}
                     showsHorizontalScrollIndicator={false}
                     onViewableItemsChanged={handleOnViewableItemsChanged}
-                    renderItem={({ item, index }) => <SlideItem bundle={item} bundleIndex={index} />}
+                    renderItem={({ item, index }) => {
+                        const prevIndex = index === 0 ? -1 : index - 1;
+                        const nextIndex = index + 1 > bundlesInfos.length - 1 ? -1 : index + 1;
+
+                        return (
+                            <SlideItem
+                                bundle={item}
+                                bundleIndex={index}
+                                nextIndex={nextIndex}
+                                prevIndex={prevIndex}
+                                next={() => setBundleIndex(nextIndex)}
+                                prev={() => setBundleIndex(prevIndex)}
+                            />
+                        );
+                    }}
                 />
                 {bundlesInfos.length > 1 && <Pagination data={bundlesInfos} scrollX={scrollX} />}
             </View>

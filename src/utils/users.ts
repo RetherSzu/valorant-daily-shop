@@ -99,7 +99,7 @@ const user = {
         const users = await secureStore.getItem("users");
 
         if (!users) {
-            console.error("No users found");
+            console.log("No users found");
             return {};
         }
 
