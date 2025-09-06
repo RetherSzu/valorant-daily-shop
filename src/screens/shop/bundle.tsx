@@ -25,6 +25,7 @@ const BundleView = () => {
     const [bundleLoading, setBundleLoading] = useState(true);
 
     const scrollX = useRef(new Animated.Value(0)).current;
+    const flatListRef = useRef<FlatList>(null);
 
     const handleOnScroll = Animated.event(
         [{ nativeEvent: { contentOffset: { x: scrollX } } }],
@@ -34,6 +35,37 @@ const BundleView = () => {
     const handleOnViewableItemsChanged = useCallback(({ viewableItems }: { viewableItems: ViewToken[] }) => {
         setBundleIndex(viewableItems[0].index ?? 0);
     }, []);
+
+    const scrollToIndex = useCallback(
+        (index: number) => {
+            if (flatListRef.current && index >= 0 && index < bundlesInfos.length) {
+                flatListRef.current.scrollToIndex({
+                    index,
+                    animated: true,
+                });
+                setBundleIndex(index);
+            }
+        },
+        [bundlesInfos.length]
+    );
+
+    const handleOnMomentumScrollEnd = useCallback(
+        (event: any) => {
+            if (!bundlesInfos || bundlesInfos.length === 0) return;
+            const { contentOffset } = event.nativeEvent;
+            const { width } = event.nativeEvent.layoutMeasurement;
+            const currentIndex = Math.round(contentOffset.x / width);
+
+            if (
+                currentIndex !== bundleIndex &&
+                currentIndex >= 0 &&
+                currentIndex < bundlesInfos.length
+            ) {
+                scrollToIndex(currentIndex);
+            }
+        },
+        [bundleIndex, bundlesInfos.length, scrollToIndex]
+    );
 
     useEffect(() => {
         async function getBundles() {
@@ -81,12 +113,14 @@ const BundleView = () => {
         <ScrollView contentContainerStyle={[styles.scrollViewContainer, { backgroundColor: colors.background }]}>
             <View style={styles.flatListContainer}>
                 <FlatList
+                    ref={flatListRef}
                     horizontal
                     pagingEnabled
                     data={bundlesInfos}
                     overScrollMode="never"
                     snapToAlignment="center"
                     onScroll={handleOnScroll}
+                    onMomentumScrollEnd={handleOnMomentumScrollEnd}
                     showsHorizontalScrollIndicator={false}
                     onViewableItemsChanged={handleOnViewableItemsChanged}
                     renderItem={({ item, index }) => {
@@ -99,8 +133,8 @@ const BundleView = () => {
                                 bundleIndex={index}
                                 nextIndex={nextIndex}
                                 prevIndex={prevIndex}
-                                next={() => setBundleIndex(nextIndex)}
-                                prev={() => setBundleIndex(prevIndex)}
+                                next={() => scrollToIndex(nextIndex)}
+                                prev={() => scrollToIndex(prevIndex)}
                             />
                         );
                     }}
